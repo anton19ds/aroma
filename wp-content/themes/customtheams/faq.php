@@ -17,20 +17,20 @@
      <div class="container">
           <div class="faq-wrap">
                <div class="faq-tabs">
-                    <button class="faq-tab" onclick="openTab(event, 'product')">
+                    <button type="button" class="faq-tab" data-faq-tab="product">
                          <img src="https://www.natureinbottle.com/front-assets/images/f1.png">
                          <span>Product and pricing</span>
                     </button>
-                    <button class="faq-tab" onclick="openTab(event, 'orders')">
+                    <button type="button" class="faq-tab" data-faq-tab="orders">
                          <img src="https://www.natureinbottle.com/front-assets/images/f2.png">
                          <span>Orders and payments</span>
                     </button>
-                    <button class="faq-tab active" onclick="openTab(event, 'shipping')">
+                    <button type="button" class="faq-tab active" data-faq-tab="shipping">
                          <img src="https://www.natureinbottle.com/front-assets/images/f3.png">
                          <span>Shipping and returns</span>
                     </button>
                </div>
-               <div id="product" class="faq-content">
+               <div id="product" class="faq-content" hidden>
                     <div class="faq-item">
                          <button class="faq-question">How are your prices so low compared to other companies?</button>
                          <div class="faq-answer">
@@ -76,7 +76,7 @@
                          </div>
                     </div>
                </div>
-               <div id="orders" class="faq-content">
+               <div id="orders" class="faq-content" hidden>
                     <div class="faq-item">
                          <button class="faq-question">How long does it take to process the order?</button>
                          <div class="faq-answer">
@@ -114,7 +114,7 @@
                          </div>
                     </div>
                </div>
-               <div id="shipping" class="faq-content active">
+               <div id="shipping" class="faq-content">
                     <div class="faq-item">
                          <button class="faq-question">Do you ship internationally?</button>
                          <div class="faq-answer">
@@ -159,4 +159,21 @@
           </div>
      </div>
 </section>
+<script>
+(function() {
+	var wrap = document.querySelector('.faq-wrap');
+	if (!wrap) return;
+	wrap.addEventListener('click', function(e) {
+		var btn = e.target.closest('.faq-tab');
+		if (!btn) return;
+		var tabId = btn.getAttribute('data-faq-tab');
+		if (!tabId) return;
+		wrap.querySelectorAll('.faq-tab').forEach(function(t) { t.classList.remove('active'); });
+		btn.classList.add('active');
+		wrap.querySelectorAll('.faq-content').forEach(function(panel) {
+			panel.hidden = panel.id !== tabId;
+		});
+	});
+})();
+</script>
 <?php get_footer();?>
