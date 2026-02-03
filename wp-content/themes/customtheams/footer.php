@@ -186,7 +186,7 @@
 			</div>
 			<div class="footer-world">
 				<h2><?php echo get_field('worldwide_shipping', 55312)?></h2>
-				<img src="https://www.natureinbottle.com/images/map.png" alt="" title="">
+				<img src="<?php echo get_template_directory_uri(); ?>/images/photo/map.png" alt="" title="">
 				<h3><?php echo get_field('text_after_map', 55312)?></h3>
 				
 			</div>
@@ -194,7 +194,7 @@
 		<div class="prd-cate-abt">
 			<div class="product-category">
 				<div class="product-cate-image">
-					<img src="https://www.natureinbottle.com/images/puure-promise.png" alt="" title="">
+					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/puure-promise.png" alt="" title="">
 				</div>
 				<div class="product-cate-cnt">
 					<h2>Категории продуктов</h2>
@@ -236,8 +236,8 @@
 
 				</div>
 				<div class="mobile-footer-flex">
-					<img src="https://www.natureinbottle.com/images/90-days.png" alt="" title="">
-					<img src="https://www.natureinbottle.com/images/puure-promise.png" alt="" title=""
+					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/90-days.png" alt="" title="">
+					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/puure-promise.png" alt="" title=""
 						class="mobile-show">
 				</div>
 			</div>
@@ -265,7 +265,7 @@
 <script>
 	//jQuery(document).ready(function ($) {
 	function quickview(pid) {
-		jQuery(".boxquickview").html('<center style="position: fixed;top: 0;background: #9b9191a3;width: 100%;height: 1500px;"><img src="https://www.natureinbottle.com/images/loader.gif" style="width: 45px;margin-top: 20%;" /></center>');
+		jQuery(".boxquickview").html('<center style="position: fixed;top: 0;background: #9b9191a3;width: 100%;height: 1500px;"><img src="<?php echo get_template_directory_uri(); ?>/images/photo/loader.gif" style="width: 45px;margin-top: 20%;" /></center>');
 		var pid = pid;
 		if (pid == '' || pid == undefined || pid == '0') {
 			return false;

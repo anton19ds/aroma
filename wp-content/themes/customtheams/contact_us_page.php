@@ -8,7 +8,7 @@
 
 <div class="gurantee-section breadcrum-banner mobile-margin-ess essent_oilBanner-wrap">
 	<div class="gurantee-section-bg"
-		style="background-image: url('https://www.natureinbottle.com/upload/pages/Essential-Oils-Organic-NatureInBottle.jpeg');">
+		style="background-image: url('<?php echo get_template_directory_uri(); ?>/images/photo/Essential-Oils-Organic-NatureInBottle.jpeg');">
 		<div class="gurantee-content">
 			<h2><?php the_title(); ?></h2>
 			<p>
@@ -46,7 +46,7 @@
 					<h4>Чат с нами:</h4>
 					<div class="chat-info">
 						<span>
-							<img src="https://www.natureinbottle.com/front-assets/images/Whatsapp_Icon.png"
+							<img src="<?php echo get_template_directory_uri(); ?>/images/photo/Whatsapp_Icon.png"
 								alt="WhatsApp">
 							<a href="https://wa.me/18887555274" target="_blank">Message us on Whatsapp</a>
 						</span>
@@ -75,18 +75,18 @@
 			<div class="flag-wrapper">
 
 				<div class="flag-card">
-					<img src="https://www.natureinbottle.com/front-assets/images/hjd/united-states.png" alt="">
+					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/united-states.png" alt="">
 					<h3>Telegram</h3>
 				</div>
 
 				<div class="flag-card">
-					<img src="https://www.natureinbottle.com/front-assets/images/hjd/european-union.png" alt="">
+					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/european-union.png" alt="">
 					<h3>Whatsapp</h3>
 				</div>
 
 
 				<div class="flag-card">
-					<img src="https://www.natureinbottle.com/front-assets/images/hjd/india.png" alt="">
+					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/india.png" alt="">
 					<h3>Email</h3>
 				</div>
 			</div>
