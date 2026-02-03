@@ -1,0 +1,485 @@
+# Copyright (C) 2025 Yandex LLC
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Yandex Pay and Split 1.1.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-09-22T10:03:09+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: yandex-pay-and-split\n"
+
+#. Plugin Name of the plugin
+#: yandex-pay-and-split.php
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:47
+msgid "Yandex Pay and Split"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: yandex-pay-and-split.php
+msgid "https://wordpress.org/plugins/yandex-pay-and-split/"
+msgstr ""
+
+#. Description of the plugin
+#: yandex-pay-and-split.php
+msgid "The official Yandex Pay and Split module for WooCommerce"
+msgstr ""
+
+#. Author of the plugin
+#: yandex-pay-and-split.php
+msgid "Yandex LLC"
+msgstr ""
+
+#. Author URI of the plugin
+#: yandex-pay-and-split.php
+msgid "https://pay.yandex.ru"
+msgstr ""
+
+#: includes/class-wc-yandex-pay-and-split.php:207
+#: includes/class-wc-yandex-pay-and-split.php:230
+msgid "Failed refund"
+msgstr ""
+
+#. translators: %s is replaced with the number of orders
+#: includes/class-wc-yandex-pay-and-split.php:211
+#, php-format
+msgid "Failed refund (%s)"
+msgid_plural "Failed refund (%s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-wc-yandex-pay-and-split.php:260
+msgid "Settings"
+msgstr ""
+
+#: includes/class-wc-yandex-pay-and-split.php:288
+msgid "Read Documentation"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:16
+#: includes/payment-methods/widget-settings.php:26
+msgid "Theme"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:19
+#: includes/payment-methods/general-settings.php:128
+#: includes/payment-methods/widget-settings.php:29
+msgid "Light"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:20
+#: includes/payment-methods/general-settings.php:129
+#: includes/payment-methods/widget-settings.php:30
+msgid "Dark"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:25
+#: includes/payment-methods/widget-settings.php:44
+msgid "Size"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:28
+#: includes/payment-methods/widget-settings.php:47
+msgid "Small"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:29
+#: includes/payment-methods/widget-settings.php:48
+msgid "Medium"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:30
+msgid "Large"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:35
+msgid "Align"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:38
+msgid "Left"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:39
+msgid "Center"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:40
+msgid "Right"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:48
+msgid "Badges"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:52
+#: includes/payment-methods/badges-settings.php:54
+msgid "Enable badges"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:62
+msgid "Badge BNPL"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:66
+#: includes/payment-methods/badges-settings.php:106
+msgid "Color"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:69
+#: includes/payment-methods/badges-settings.php:109
+msgid "Primary"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:70
+msgid "Green"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:71
+#: includes/payment-methods/badges-settings.php:110
+msgid "Gray"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:72
+#: includes/payment-methods/badges-settings.php:111
+#: includes/payment-methods/widget-settings.php:64
+msgid "Transparent"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:77
+#: includes/payment-methods/badges-settings.php:115
+msgid "Variant"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:80
+msgid "Detailed"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:81
+msgid "Simple"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:102
+msgid "Badge cashback"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:118
+#: includes/payment-methods/widget-settings.php:38
+#: includes/payment-methods/widget-settings.php:62
+msgid "Default"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:119
+msgid "Compact"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:140
+msgid "Badge loop settings"
+msgstr ""
+
+#: includes/payment-methods/badges-settings.php:155
+msgid "Badge single page settings"
+msgstr ""
+
+#. translators: link to the testing documentation
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:156
+#, php-format
+msgid "SANDBOX ENABLED. You can use sandbox testing data only. See the <a href=\"%s\">Yandex Pay testing guide</a> for more details."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:245
+msgid "Yandex Pay and Split payment gateway disabled"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:247
+msgid "You must fill the \"Merchant ID\" and \"API-key\"."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:358
+msgid "Something was wrong"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:360
+msgid "Couldn't connect to the Yandex Pay api"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:379
+msgid "Only one refund is allowed at a time"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:425
+msgid "Couldn't refund the order"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:530
+msgid "Order status change event failed."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-and-split.php:577
+msgid "Set up Yandex Pay gateway method first."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-card.php:27
+msgid "Yandex Pay"
+msgstr ""
+
+#. translators: %s: link to Yandex Pay settings page
+#: includes/payment-methods/class-wc-gateway-yandex-pay-card.php:30
+#, php-format
+msgid "The official Yandex Pay and Split module for WooCommerce. Configure additional settings in %s."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-card.php:34
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:46
+msgid "Yandex Pay and Split Settings"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-card.php:70
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:152
+msgid "Merchant id should be filled."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-card.php:91
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:158
+msgid "Api key should be filled."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-split.php:32
+#: includes/settings/class-wc-yandex-pay-main-settings.php:142
+msgid "Yandex Split"
+msgstr ""
+
+#. translators: %s: link to Yandex Pay settings page
+#: includes/payment-methods/class-wc-gateway-yandex-pay-split.php:35
+#, php-format
+msgid "All other general settings can be adjusted <a href=\"%s\">in the Yandex Pay and Split Settings</a>."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-split.php:67
+#: includes/payment-methods/settings.php:16
+#: includes/payment-methods/widget-settings.php:20
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-yandex-pay-split.php:69
+msgid "Enable Yandex Split"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:16
+msgid "Merchant"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:20
+msgid "Merchant ID"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:22
+msgid "Your Merchant ID received when registering with Yandex Pay"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:24
+msgid "Enter the merchant id"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:27
+msgid "API-key"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:29
+msgid "API-key from the Yandex Pay personal account"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:31
+msgid "Enter the api-key"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:34
+msgid "Other"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:38
+msgid "Testing"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:40
+msgid "Enable the test environment?"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:44
+msgid "TTL"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:46
+msgid "From 180 to 604 800 seconds"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:48
+msgid "Enter a number"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:55
+msgid "Orders"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:59
+msgid "Pending order status"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:65
+msgid "Success order status"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:71
+msgid "Error order status"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:77
+msgid "Refund order status"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:83
+msgid "Failed refund order status"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:89
+msgid "Payment purpose"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:91
+msgid "Purpose of payment"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:95
+msgid "Button"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:99
+msgid "Button type"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:101
+msgid "Use the Yandex Pay button"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:105
+msgid "Button theme"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:108
+msgid "Black"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:109
+msgid "White"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:110
+msgid "WhiteOutlined"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:115
+msgid "Button width"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:118
+msgid "Auto"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:119
+msgid "Max"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:124
+msgid "Icons theme"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:125
+msgid "Choose the theme of the icon displayed next to the name of the payment method on the checkout page"
+msgstr ""
+
+#: includes/payment-methods/general-settings.php:130
+msgid "Don't use the icon"
+msgstr ""
+
+#: includes/payment-methods/settings.php:18
+msgid "Enable Yandex Pay"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:16
+msgid "Widgets"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:22
+msgid "Enable widgets"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:35
+msgid "Padding"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:39
+msgid "None"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:53
+#: includes/payment-methods/widget-settings.php:55
+msgid "Outline"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:59
+msgid "Background"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:63
+msgid "Saturated"
+msgstr ""
+
+#: includes/payment-methods/widget-settings.php:69
+#: includes/payment-methods/widget-settings.php:71
+msgid "Hide header"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:135
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:241
+msgid "General"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:242
+msgid "Badge Settings"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-admin-settings.php:243
+msgid "Widget Settings"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-main-settings.php:124
+msgid "With any bank card"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-main-settings.php:133
+msgid "Full payment"
+msgstr ""
+
+#: includes/settings/class-wc-yandex-pay-main-settings.php:151
+msgid "Payment in installments"
+msgstr ""
+
+#. translators: 1) required WooCommerce version
+#: yandex-pay-and-split.php:107
+#, php-format
+msgid "Yandex Pay and Split for WooCommerce payment gateway requires WooCommerce version %s or higher to work properly. Please update WooCommerce to use this plugin."
+msgstr ""
+
+#. translators: 1) required PHP version
+#: yandex-pay-and-split.php:120
+#, php-format
+msgid "Yandex Pay and Split for WooCommerce payment gateway requires PHP version %s or higher to work properly. Please update PHP to use this plugin."
+msgstr ""

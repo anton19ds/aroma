@@ -1,0 +1,5 @@
+{
+    "require": {
+        "yandex_pay_and_split/jwt": "^1.0"
+    }
+}

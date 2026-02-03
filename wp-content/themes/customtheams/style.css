@@ -1,0 +1,312 @@
+/*
+Theme Name: customtheams
+Author: the customtheams
+Author URI: https://wordpress.org/
+Description: Theme
+Requires at least: 5.3
+Tested up to: 6.8
+Requires PHP: 5.6
+Version: 2.5
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: customtheams
+
+*/
+
+.bs-searchbox {
+    display: none !important;
+}
+.successful h6 {
+    font-size: 17px !important;
+    line-height: 20px !important;
+}
+.review-container h2 {
+    font-weight: 500;
+    font-size: 32px;
+    color: #4b4931;
+    text-align: center;
+}
+.rating-home span {
+    font-weight: 400;
+    color: #4b4931;
+}
+.rating-home {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.review-container {
+    border-bottom: 2px solid #e2e2e2;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+}
+.rating-home i {
+    color: #ffdb28;
+}
+.review-content {
+    background: #c16970;
+}
+.home-review-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 30px;
+}
+.review-content {
+    border-radius: 10px;
+    padding: 40px 30px 20px 30px;
+    text-align: center;
+    color: #fff;
+}
+.revicont-star i {
+    color: #ffdb28;
+}
+.review-content h3 {
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.review-content p {
+    font-size: 14px;
+    font-style: italic;
+    color: #fff;
+    line-height: 20px;
+}
+.review-content h4 {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 0;
+}
+.common-anchor-link {
+    background-color: #a96ca9;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    display: block;
+    margin: 10px auto auto;
+    max-width: 120px;
+    width: 100%;
+    line-height: 21px;
+    margin-top: 30px;
+}
+span.qu {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.review-content {
+    position: relative;
+}
+span.qu svg {
+    width: 47px;
+    height: fit-content;
+    transform: rotate(5deg);
+}
+span.qu svg path {
+    fill: #fff;
+    opacity: .5;
+}
+.rotate {
+    display: none;
+}
+@media only screen and (min-width: 700px) and (max-width: 1200px) {
+    .rotate {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        gap: 17px;
+        align-items: center;
+        flex-direction: column;
+        position: fixed;
+        background: #fff;
+        z-index: 99999999999;
+        width: 100%;
+        left: 0;
+    }
+    .rotate figure {
+        z-index: 9;
+    }
+    .rotate figure img {
+        width: 60%;
+        margin: 0 auto;
+        display: flex;
+        margin-bottom: 20px;
+    }
+    .rotate h2 {
+        width: 50%;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 22px;
+        z-index: 9;
+        font-weight: 600;
+    }
+    .rotate h2 {
+        font-size: 35px;
+        width: 80%;
+        line-height: 45px;
+    }
+    .closeTab svg {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .rotate svg {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .rotate.closeTabWhole {
+        display: none;
+    }
+}
+@media only screen and (min-width: 700px) and (max-width: 950px) {
+    .rotate figure img {
+        width: 40%;
+        margin-bottom: 0px;
+    }
+    .rotate h2 {
+        font-size: 25px;
+        width: 50%;
+        line-height: 30px;
+    }
+    .closeTab svg {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .rotate svg {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .rotate.closeTabWhole {
+        display: none;
+    }
+}
+@media only screen and (min-width: 800px) and (max-width: 850px) {
+    .rotate {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        gap: 17px;
+        align-items: center;
+        flex-direction: column;
+        position: fixed;
+        background: #fff;
+        z-index: 99999999999;
+        width: 100%;
+        left: 0;
+    }
+    .rotate figure {
+        z-index: 9;
+    }
+    .rotate figure img {
+        width: 46%;
+        margin: 0 auto;
+        display: flex;
+        margin-bottom: 0px;
+    }
+    .rotate h2 {
+        width: 50%;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 22px;
+        z-index: 9;
+        font-weight: 600;
+    }
+    .rotate h2 {
+        font-size: 25px;
+        width: 80%;
+        line-height: 35px;
+    }
+    .closeTab svg {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .rotate svg {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .rotate.closeTabWhole {
+        display: none;
+    }
+}
+.webMaintain .dropdown-menu {
+    top: 226px;
+}
+.webMaintain .navigation li:hover .dropdown-menu.mega-dropdown-menu {
+    top: 227px;
+}
+.handle-counter input {
+    border-bottom: none;
+    display: flex;
+    align-items: flex-start;
+    height: 38px;
+}
+.handle-counter input:last-child {}
+custom-table-row:last-child {}
+.custom-table-row:nth-child(5) input {
+    border: none;
+}
+.handle-counter input {
+    border-bottom: 0px solid #ddd !important;
+}
+
+.review-content p {
+    font-weight: 400;
+}
+.rating-home span {
+    font-size: 15px;
+}
+.common-anchor-link:hover {
+    color: #fff;
+}
+.owl-carousel .owl-stage {
+    display: flex;
+}
+.owl-carousel .owl-item {
+    display: flex;
+    flex: 1 0 auto;
+}
+.owl-carousel .thumbnail {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
+}
+.owl-carousel .thumbnail .caption {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+}
+.owl-carousel .thumbnail .caption .flex-text {
+    flex-grow: 1;
+}
+.owl-dots {
+    display: none !important;
+}
+.successful h6 {
+    font-size: 17px !important;
+    line-height: 20px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
