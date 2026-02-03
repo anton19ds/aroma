@@ -4,6 +4,54 @@
  * @package WordPress
  * @subpackage CustomTheam
  */
+
+// Загрузка .env для параметров почты
+function customtheams_load_env() {
+	$env_path = get_template_directory() . '/.env';
+	if ( ! file_exists( $env_path ) ) {
+		return;
+	}
+	$lines = file( $env_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
+	if ( ! $lines ) {
+		return;
+	}
+	foreach ( $lines as $line ) {
+		$line = trim( $line );
+		if ( $line === '' || strpos( $line, '#' ) === 0 ) {
+			continue;
+		}
+		if ( strpos( $line, '=' ) === false ) {
+			continue;
+		}
+		list( $key, $value ) = explode( '=', $line, 2 );
+		$key   = trim( $key );
+		$value = trim( $value, " \t\n\r\0\x0B\"'" );
+		if ( ! getenv( $key ) ) {
+			putenv( "$key=$value" );
+			$_ENV[ $key ] = $value;
+		}
+	}
+}
+customtheams_load_env();
+
+// Настройка SMTP из .env при отправке почты
+add_action( 'phpmailer_init', 'customtheams_phpmailer_smtp' );
+function customtheams_phpmailer_smtp( $phpmailer ) {
+	$host = getenv( 'MAIL_HOST' );
+	if ( empty( $host ) ) {
+		return;
+	}
+	$phpmailer->isSMTP();
+	$phpmailer->Host       = $host;
+	$phpmailer->Port       = (int) getenv( 'MAIL_PORT' ) ?: 587;
+	$phpmailer->SMTPAuth   = ! empty( getenv( 'MAIL_USERNAME' ) );
+	$phpmailer->Username   = getenv( 'MAIL_USERNAME' ) ?: '';
+	$phpmailer->Password   = getenv( 'MAIL_PASSWORD' ) ?: '';
+	$phpmailer->SMTPSecure = getenv( 'MAIL_ENCRYPTION' ) ?: 'tls';
+	$phpmailer->From       = getenv( 'MAIL_FROM_ADDRESS' ) ?: get_option( 'admin_email' );
+	$phpmailer->FromName   = getenv( 'MAIL_FROM_NAME' ) ?: get_bloginfo( 'name' );
+}
+
 add_post_type_support('post', 'maintitle');
 
 add_filter('woocommerce_locate_template', 'debug_woocommerce_templates', 10, 3);

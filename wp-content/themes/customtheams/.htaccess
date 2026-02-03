@@ -1,0 +1,4 @@
+# Запрет доступа к .env (пароли и настройки почты)
+<Files ".env">
+    Require all denied
+</Files>
