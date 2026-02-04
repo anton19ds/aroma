@@ -159,10 +159,42 @@
           </div>
      </div>
 </section>
+<style>
+.faq-answer {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.3s ease;
+	overflow: hidden;
+}
+.faq-answer.open {
+	grid-template-rows: 1fr;
+}
+.faq-answer > * {
+	min-height: 0;
+	overflow: hidden;
+}
+.faq-question {
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	position: relative;
+}
+.faq-question::after {
+	content: '+';
+	position: absolute;
+	right: 0;
+	transition: transform 0.3s ease;
+}
+.faq-item:has(.faq-answer.open) .faq-question::after {
+	transform: rotate(45deg);
+}
+</style>
 <script>
 (function() {
 	var wrap = document.querySelector('.faq-wrap');
 	if (!wrap) return;
+
+	// Переключение табов (Product / Orders / Shipping)
 	wrap.addEventListener('click', function(e) {
 		var btn = e.target.closest('.faq-tab');
 		if (!btn) return;
@@ -173,6 +205,30 @@
 		wrap.querySelectorAll('.faq-content').forEach(function(panel) {
 			panel.hidden = panel.id !== tabId;
 		});
+	});
+
+	// Аккордеон: клик по .faq-question открывает/закрывает .faq-answer
+	wrap.addEventListener('click', function(e) {
+		var question = e.target.closest('.faq-question');
+		if (!question) return;
+		var item = question.closest('.faq-item');
+		var content = question.closest('.faq-content');
+		var answer = item ? item.querySelector('.faq-answer') : null;
+		if (!answer) return;
+
+		var isOpen = answer.classList.contains('open');
+		// Закрыть все ответы в текущей вкладке
+		content.querySelectorAll('.faq-answer.open').forEach(function(a) {
+			a.classList.remove('open');
+		});
+		content.querySelectorAll('.faq-question').forEach(function(q) {
+			q.classList.remove('active');
+		});
+		// Открыть текущий, если был закрыт
+		if (!isOpen) {
+			answer.classList.add('open');
+			question.classList.add('active');
+		}
 	});
 })();
 </script>
