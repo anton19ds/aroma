@@ -785,9 +785,17 @@ function end_pure_page_image_buffer() {
 add_action( 'shutdown', 'end_pure_page_image_buffer', 999 );
 
 /**
- * Создание ACF Options Page для редактирования страницы Pure
+ * Создание ACF Options Page для редактирования страницы Pure и FAQ
  */
 if( function_exists('acf_add_options_page') ) {
+	// Проверка, что ACF установлен
+	if ( !class_exists('ACF') ) {
+		add_action('admin_notices', function() {
+			echo '<div class="notice notice-error"><p><strong>Внимание:</strong> Плагин Advanced Custom Fields (ACF) не установлен или не активирован. Установите ACF для работы с настройками страниц.</p></div>';
+		});
+		return;
+	}
+	
 	acf_add_options_page(array(
 		'page_title' 	=> 'Настройки страницы Pure',
 		'menu_title'	=> 'Pure Page Settings',
@@ -802,6 +810,31 @@ if( function_exists('acf_add_options_page') ) {
 		'capability'	=> 'edit_posts',
 		'icon_url'      => 'dashicons-editor-help',
 	));
+	
+	// Уведомление с инструкцией
+	add_action('admin_notices', function() {
+		$screen = get_current_screen();
+		if ( $screen && ( $screen->id === 'toplevel_page_pure-page-settings' || $screen->id === 'toplevel_page_faq-page-settings' ) ) {
+			$page_name = ( $screen->id === 'toplevel_page_pure-page-settings' ) ? 'Pure' : 'FAQ';
+			echo '<div class="notice notice-info is-dismissible">';
+			echo '<p><strong>Инструкция по настройке полей ACF:</strong></p>';
+			echo '<ol style="margin-left: 20px;">';
+			echo '<li>Поля зарегистрированы через код темы и должны работать автоматически</li>';
+			echo '<li>Если поля не отображаются, перейдите в <a href="' . admin_url('edit.php?post_type=acf-field-group') . '"><strong>Custom Fields → Field Groups</strong></a></li>';
+			echo '<li>Найдите группу "Настройки страницы ' . $page_name . '" и нажмите "Sync available" (если есть)</li>';
+			echo '<li>Или создайте новую группу полей вручную с Location Rule: Options Page → ' . $page_name . ' Page Settings</li>';
+			echo '</ol>';
+			echo '</div>';
+		}
+	});
+	
+	// Попытка синхронизации полей при загрузке админки
+	add_action('acf/init', function() {
+		if ( function_exists('acf_get_local_field_groups') ) {
+			// Локальные группы полей уже зарегистрированы через acf_add_local_field_group
+			// Они должны автоматически синхронизироваться с БД при первом сохранении через интерфейс ACF
+		}
+	});
 }
 
 /**
