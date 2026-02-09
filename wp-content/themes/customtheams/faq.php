@@ -7,30 +7,57 @@
 
 <?php get_header();?>
 
+<?php
+$faq_banner_title = get_field('faq_banner_title', 'option');
+$faq_banner_subtitle = get_field('faq_banner_subtitle', 'option');
+if (!$faq_banner_title) $faq_banner_title = 'FAQ';
+if (!$faq_banner_subtitle) $faq_banner_subtitle = 'Frequently Asked Questions';
+?>
 <div class="bannerContainer inner-banner faqhb">
      <div class="bannerItem">
-          <h2>FAQ</h2>
-          <p> Frequently Asked Questions </p>
+          <h2><?php echo esc_html($faq_banner_title); ?></h2>
+          <p><?php echo esc_html($faq_banner_subtitle); ?></p>
      </div>
 </div>
 <section class="faq-sect">
      <div class="container">
           <div class="faq-wrap">
                <div class="faq-tabs">
-                    <button type="button" class="faq-tab active" data-faq-tab="product">
-                         <img src="https://www.natureinbottle.com/front-assets/images/f1.png">
-                         <span>Product and pricing</span>
+                    <?php
+                    $faq_tabs = get_field('faq_tabs', 'option');
+                    $tab_ids = array('product', 'orders', 'shipping');
+                    $tab_defaults = array(
+                        array('label' => 'Product and pricing', 'img' => 'https://www.natureinbottle.com/front-assets/images/f1.png'),
+                        array('label' => 'Orders and payments', 'img' => 'https://www.natureinbottle.com/front-assets/images/f2.png'),
+                        array('label' => 'Shipping and returns', 'img' => 'https://www.natureinbottle.com/front-assets/images/f3.png'),
+                    );
+                    for ($i = 0; $i < 3; $i++) {
+                        $tab_id = $tab_ids[$i];
+                        $label = $tab_defaults[$i]['label'];
+                        $img_src = $tab_defaults[$i]['img'];
+                        if ($faq_tabs && isset($faq_tabs[$i])) {
+                            $t = $faq_tabs[$i];
+                            if (!empty($t['label'])) $label = $t['label'];
+                            if (!empty($t['image'])) {
+                                if (is_array($t['image']) && isset($t['image']['url'])) $img_src = $t['image']['url'];
+                                elseif (is_numeric($t['image'])) $img_src = wp_get_attachment_image_url($t['image'], 'full');
+                                else $img_src = $t['image'];
+                            }
+                        }
+                        $active = ($i === 0) ? ' active' : '';
+                        ?>
+                    <button type="button" class="faq-tab<?php echo $active; ?>" data-faq-tab="<?php echo esc_attr($tab_id); ?>">
+                         <img src="<?php echo esc_url($img_src); ?>" alt="">
+                         <span><?php echo esc_html($label); ?></span>
                     </button>
-                    <button type="button" class="faq-tab" data-faq-tab="orders">
-                         <img src="https://www.natureinbottle.com/front-assets/images/f2.png">
-                         <span>Orders and payments</span>
-                    </button>
-                    <button type="button" class="faq-tab" data-faq-tab="shipping">
-                         <img src="https://www.natureinbottle.com/front-assets/images/f3.png">
-                         <span>Shipping and returns</span>
-                    </button>
+                    <?php } ?>
                </div>
                <div id="product" class="faq-content">
+                    <?php if ($faq_product = get_field('faq_section_product', 'option')) {
+                    $section_key = 'faq_section_product';
+                    $defaults = array();
+                    include get_template_directory() . '/inc/faq-output.php';
+                    } else { ?>
                     <div class="faq-item">
                          <button class="faq-question">How are your prices so low compared to other companies?</button>
                          <div class="faq-answer">
@@ -75,8 +102,14 @@
                               <p> You can easily determine the Origin of any essential oil and other natural products in the detailed description on our website. Other products such as essential oil blends, body butters, scented essential oil candles are formulated in-house at our own facility from the different ingredients we source from around the world. </p>
                          </div>
                     </div>
+                    <?php } ?>
                </div>
                <div id="orders" class="faq-content" hidden>
+                    <?php if ($faq_orders = get_field('faq_section_orders', 'option')) {
+                    $section_key = 'faq_section_orders';
+                    $defaults = array();
+                    include get_template_directory() . '/inc/faq-output.php';
+                    } else { ?>
                     <div class="faq-item">
                          <button class="faq-question">How long does it take to process the order?</button>
                          <div class="faq-answer">
@@ -113,8 +146,14 @@
                               <p> In order to maintain low minimums and reduced prices for all our customers, we do not honor free sample requests. But we do offer our products in very small sizes that are useful for testing purposes. We urge you to take advantage of our small sizes and no minimum order restrictions to test our products before committing yourself to a bulk purchase. </p>
                          </div>
                     </div>
+                    <?php } ?>
                </div>
                <div id="shipping" class="faq-content" hidden>
+                    <?php if ($faq_shipping = get_field('faq_section_shipping', 'option')) {
+                    $section_key = 'faq_section_shipping';
+                    $defaults = array();
+                    include get_template_directory() . '/inc/faq-output.php';
+                    } else { ?>
                     <div class="faq-item">
                          <button class="faq-question">Do you ship internationally?</button>
                          <div class="faq-answer">
@@ -155,6 +194,7 @@
                               <p> International Returns: Due to high shipping costs, international customers are responsible for all shipping charges related to returning an item and all shipping, duties and customs fees originally associated with receiving the order. </p>
                          </div>
                     </div>
+                    <?php } ?>
                </div>
           </div>
      </div>

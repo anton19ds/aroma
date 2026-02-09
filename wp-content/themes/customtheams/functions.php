@@ -795,6 +795,13 @@ if( function_exists('acf_add_options_page') ) {
 		'capability'	=> 'edit_posts',
 		'icon_url'      => 'dashicons-admin-generic',
 	));
+	acf_add_options_page(array(
+		'page_title' 	=> 'Настройки страницы FAQ',
+		'menu_title'	=> 'FAQ Page Settings',
+		'menu_slug' 	=> 'faq-page-settings',
+		'capability'	=> 'edit_posts',
+		'icon_url'      => 'dashicons-editor-help',
+	));
 }
 
 /**
@@ -966,6 +973,117 @@ if( function_exists('acf_add_local_field_group') ) {
 					'param' => 'options_page',
 					'operator' => '==',
 					'value' => 'pure-page-settings',
+				),
+			),
+		),
+	));
+
+	acf_add_local_field_group(array(
+		'key' => 'group_faq_page',
+		'title' => 'Настройки страницы FAQ',
+		'fields' => array(
+			array(
+				'key' => 'field_faq_banner_title',
+				'label' => 'Заголовок баннера',
+				'name' => 'faq_banner_title',
+				'type' => 'text',
+				'default_value' => 'FAQ',
+			),
+			array(
+				'key' => 'field_faq_banner_subtitle',
+				'label' => 'Подзаголовок баннера',
+				'name' => 'faq_banner_subtitle',
+				'type' => 'text',
+				'default_value' => 'Frequently Asked Questions',
+			),
+			array(
+				'key' => 'field_faq_tabs',
+				'label' => 'Вкладки (3 шт.: Product, Orders, Shipping)',
+				'name' => 'faq_tabs',
+				'type' => 'repeater',
+				'max' => 3,
+				'sub_fields' => array(
+					array(
+						'key' => 'field_faq_tab_image',
+						'label' => 'Иконка',
+						'name' => 'image',
+						'type' => 'image',
+					),
+					array(
+						'key' => 'field_faq_tab_label',
+						'label' => 'Подпись',
+						'name' => 'label',
+						'type' => 'text',
+					),
+				),
+			),
+			array(
+				'key' => 'field_faq_section_product',
+				'label' => 'Вопросы — Product and pricing',
+				'name' => 'faq_section_product',
+				'type' => 'repeater',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_faq_question',
+						'label' => 'Вопрос',
+						'name' => 'question',
+						'type' => 'text',
+					),
+					array(
+						'key' => 'field_faq_answer',
+						'label' => 'Ответ',
+						'name' => 'answer',
+						'type' => 'wysiwyg',
+					),
+				),
+			),
+			array(
+				'key' => 'field_faq_section_orders',
+				'label' => 'Вопросы — Orders and payments',
+				'name' => 'faq_section_orders',
+				'type' => 'repeater',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_faq_orders_question',
+						'label' => 'Вопрос',
+						'name' => 'question',
+						'type' => 'text',
+					),
+					array(
+						'key' => 'field_faq_orders_answer',
+						'label' => 'Ответ',
+						'name' => 'answer',
+						'type' => 'wysiwyg',
+					),
+				),
+			),
+			array(
+				'key' => 'field_faq_section_shipping',
+				'label' => 'Вопросы — Shipping and returns',
+				'name' => 'faq_section_shipping',
+				'type' => 'repeater',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_faq_shipping_question',
+						'label' => 'Вопрос',
+						'name' => 'question',
+						'type' => 'text',
+					),
+					array(
+						'key' => 'field_faq_shipping_answer',
+						'label' => 'Ответ',
+						'name' => 'answer',
+						'type' => 'wysiwyg',
+					),
+				),
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'options_page',
+					'operator' => '==',
+					'value' => 'faq-page-settings',
 				),
 			),
 		),
