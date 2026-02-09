@@ -785,6 +785,20 @@ function end_pure_page_image_buffer() {
 add_action( 'shutdown', 'end_pure_page_image_buffer', 999 );
 
 /**
+ * Настройка пути для автоматической загрузки ACF JSON файлов
+ */
+add_filter('acf/settings/save_json', function($path) {
+	$path = get_template_directory() . '/acf-json';
+	return $path;
+});
+
+add_filter('acf/settings/load_json', function($paths) {
+	unset($paths[0]);
+	$paths[] = get_template_directory() . '/acf-json';
+	return $paths;
+});
+
+/**
  * Создание ACF Options Page для редактирования страницы Pure и FAQ
  */
 if( function_exists('acf_add_options_page') ) {
@@ -811,28 +825,75 @@ if( function_exists('acf_add_options_page') ) {
 		'icon_url'      => 'dashicons-editor-help',
 	));
 	
-	// Уведомление с инструкцией
+	// Уведомление с инструкцией по синхронизации
 	add_action('admin_notices', function() {
+		if ( !function_exists('acf_get_field_groups') ) {
+			return;
+		}
+		
 		$screen = get_current_screen();
-		if ( $screen && ( $screen->id === 'toplevel_page_pure-page-settings' || $screen->id === 'toplevel_page_faq-page-settings' ) ) {
-			$page_name = ( $screen->id === 'toplevel_page_pure-page-settings' ) ? 'Pure' : 'FAQ';
-			echo '<div class="notice notice-info is-dismissible">';
-			echo '<p><strong>Инструкция по настройке полей ACF:</strong></p>';
-			echo '<ol style="margin-left: 20px;">';
-			echo '<li>Поля зарегистрированы через код темы и должны работать автоматически</li>';
-			echo '<li>Если поля не отображаются, перейдите в <a href="' . admin_url('edit.php?post_type=acf-field-group') . '"><strong>Custom Fields → Field Groups</strong></a></li>';
-			echo '<li>Найдите группу "Настройки страницы ' . $page_name . '" и нажмите "Sync available" (если есть)</li>';
-			echo '<li>Или создайте новую группу полей вручную с Location Rule: Options Page → ' . $page_name . ' Page Settings</li>';
-			echo '</ol>';
-			echo '</div>';
+		if ( !$screen ) {
+			return;
+		}
+		
+		// Показываем уведомление на страницах Field Groups и Options Pages
+		if ( $screen->id === 'acf-field-group' || 
+			 $screen->id === 'edit-acf-field-group' ||
+			 $screen->id === 'toplevel_page_pure-page-settings' || 
+			 $screen->id === 'toplevel_page_faq-page-settings' ) {
+			
+			$existing_groups = acf_get_field_groups();
+			$existing_keys = array();
+			foreach ( $existing_groups as $group ) {
+				$existing_keys[] = $group['key'];
+			}
+			
+			$missing_groups = array();
+			if ( !in_array('group_pure_page', $existing_keys) ) {
+				$missing_groups[] = 'Настройки страницы Pure';
+			}
+			if ( !in_array('group_faq_page', $existing_keys) ) {
+				$missing_groups[] = 'Настройки страницы FAQ';
+			}
+			
+			if ( !empty($missing_groups) ) {
+				echo '<div class="notice notice-warning is-dismissible">';
+				echo '<p><strong>⚠️ Требуется синхронизация ACF полей:</strong></p>';
+				echo '<p>Группы полей не найдены в базе данных. JSON файлы находятся в папке <code>acf-json</code> темы.</p>';
+				echo '<p><strong>Что делать:</strong></p>';
+				echo '<ol style="margin-left: 20px; margin-top: 10px;">';
+				echo '<li>Перейдите в <a href="' . admin_url('edit.php?post_type=acf-field-group') . '"><strong>Custom Fields → Field Groups</strong></a></li>';
+				echo '<li>Найдите группы с пометкой <strong>"Sync available"</strong> и нажмите кнопку синхронизации</li>';
+				echo '<li>Или используйте <a href="' . admin_url('edit.php?post_type=acf-field-group&page=acf-tools&tool=import') . '"><strong>Custom Fields → Tools → Import Field Groups</strong></a> для ручного импорта</li>';
+				echo '</ol>';
+				echo '<p><strong>Отсутствующие группы:</strong> ' . implode(', ', $missing_groups) . '</p>';
+				echo '</div>';
+			}
 		}
 	});
 	
-	// Попытка синхронизации полей при загрузке админки
+	// Автоматический импорт JSON файлов при первой загрузке
 	add_action('acf/init', function() {
-		if ( function_exists('acf_get_local_field_groups') ) {
-			// Локальные группы полей уже зарегистрированы через acf_add_local_field_group
-			// Они должны автоматически синхронизироваться с БД при первом сохранении через интерфейс ACF
+		if ( !function_exists('acf_get_field_groups') ) {
+			return;
+		}
+		
+		$json_path = get_template_directory() . '/acf-json';
+		if ( !is_dir($json_path) ) {
+			return;
+		}
+		
+		// Проверяем, есть ли уже группы в БД
+		$existing_groups = acf_get_field_groups();
+		$existing_keys = array();
+		foreach ( $existing_groups as $group ) {
+			$existing_keys[] = $group['key'];
+		}
+		
+		// Если групп нет, пытаемся загрузить из JSON
+		if ( !in_array('group_pure_page', $existing_keys) || !in_array('group_faq_page', $existing_keys) ) {
+			// ACF автоматически загрузит JSON файлы из папки acf-json
+			// Пользователю нужно будет зайти в Custom Fields → Field Groups и нажать "Sync available"
 		}
 	});
 }
