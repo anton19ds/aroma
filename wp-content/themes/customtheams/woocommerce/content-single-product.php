@@ -1271,24 +1271,6 @@ global $woocommerce;
 		<div class="blogTypeContainer">
 			<h3>Sustainable natural ingredients, from a source you can trust</h3>
 			<div class="blogTypeGrid">
-									<div class="blogTypeGridContent">
-													<img src="https://www.natureinbottle.com/upload/overview/overview181220221559021671359342.jpeg" alt="THE PERFECT CHEMISTRY">
-												<h2> THE PERFECT CHEMISTRY </h2>
-						<p>
-	All our products are created with respect for nature, ensuring unmatched attention to quality and detail at every step of the process. We select and source oils that fit the ideal fatty acid profile to provide the maximum therapeutic benefits. No chemical solvents, no high-heat temperatures, and no chemical refining is done to alter the condition (colour, scent) of the oil.</p>
-					</div>
-									<div class="blogTypeGridContent">
-													<img src="https://www.natureinbottle.com/upload/overview/Organic-Sustainable-Oils.jpeg" alt="ORGANIC &amp; SUSTAINABLE">
-												<h2> ORGANIC &amp; SUSTAINABLE </h2>
-						<p>
-	We only offer products that are certified organic, wildcrafted in their natural habitat, or grown using organic practices in cases where organic certification is unavailable or impractical. We rely on our relationships with the distiller/supplier and knowledge of their good practices to ensure that the product is free from pesticides and adulteration.</p>
-					</div>
-									<div class="blogTypeGridContent">
-													<img src="https://www.natureinbottle.com/upload/overview/Wholesale-Worldwide-Shipping.jpeg" alt="WHOLESALE WORLDWIDE SHIPPING">
-												<h2> WHOLESALE WORLDWIDE SHIPPING </h2>
-						<p>
-	We are a non-MLM company, selling online directly to our customers located in over 220 countries across the world. Our pricing is always wholesale, for every customer - there is no need to sign up or become a member to avail the benefits of our wholesale pricing. We also provide hugely subsidised rates for international shipping.</p>
-					</div>
 					<?php
 					// Вывод трех последних статей из рубрики с ID 345
 					$args = array(
