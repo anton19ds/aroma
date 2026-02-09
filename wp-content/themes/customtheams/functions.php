@@ -783,3 +783,191 @@ function end_pure_page_image_buffer() {
 	}
 }
 add_action( 'shutdown', 'end_pure_page_image_buffer', 999 );
+
+/**
+ * Создание ACF Options Page для редактирования страницы Pure
+ */
+if( function_exists('acf_add_options_page') ) {
+	acf_add_options_page(array(
+		'page_title' 	=> 'Настройки страницы Pure',
+		'menu_title'	=> 'Pure Page Settings',
+		'menu_slug' 	=> 'pure-page-settings',
+		'capability'	=> 'edit_posts',
+		'icon_url'      => 'dashicons-admin-generic',
+	));
+}
+
+/**
+ * Регистрация ACF полей для страницы Pure через код (опционально)
+ * Можно также создать поля через админку ACF
+ */
+if( function_exists('acf_add_local_field_group') ) {
+	acf_add_local_field_group(array(
+		'key' => 'group_pure_page',
+		'title' => 'Настройки страницы Pure',
+		'fields' => array(
+			// Hero секция
+			array(
+				'key' => 'field_pure_hero_title',
+				'label' => 'Заголовок Hero секции',
+				'name' => 'pure_hero_title',
+				'type' => 'text',
+				'default_value' => 'P.U.U.R.E. ОБЕЩАНИЕ',
+			),
+			array(
+				'key' => 'field_pure_hero_subtitle',
+				'label' => 'Подзаголовок Hero секции',
+				'name' => 'pure_hero_subtitle',
+				'type' => 'text',
+				'default_value' => 'чистый • натуральный • терапевтический',
+			),
+			// Секция 1
+			array(
+				'key' => 'field_pure_section1_title',
+				'label' => 'Заголовок первой секции',
+				'name' => 'pure_section1_title',
+				'type' => 'text',
+				'default_value' => '<strong>P</strong>URE AND AUTHENTIC (ЧИСТЫЙ И АУТЕНТИЧНЫЙ)',
+			),
+			array(
+				'key' => 'field_pure_section1_description',
+				'label' => 'Описание первой секции',
+				'name' => 'pure_section1_description',
+				'type' => 'textarea',
+			),
+			array(
+				'key' => 'field_pure_section1_items',
+				'label' => 'Элементы первой секции',
+				'name' => 'pure_section1_items',
+				'type' => 'repeater',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_section1_item_image',
+						'label' => 'Изображение',
+						'name' => 'image',
+						'type' => 'image',
+					),
+					array(
+						'key' => 'field_section1_item_title',
+						'label' => 'Заголовок',
+						'name' => 'title',
+						'type' => 'text',
+					),
+					array(
+						'key' => 'field_section1_item_text',
+						'label' => 'Текст',
+						'name' => 'text',
+						'type' => 'wysiwyg',
+					),
+					array(
+						'key' => 'field_section1_item_class',
+						'label' => 'CSS класс (опционально)',
+						'name' => 'class',
+						'type' => 'text',
+					),
+					array(
+						'key' => 'field_section1_item_standards',
+						'label' => 'Стандарты качества (HTML, опционально)',
+						'name' => 'standards',
+						'type' => 'textarea',
+					),
+				),
+			),
+			// Секция 2
+			array(
+				'key' => 'field_pure_section2_title',
+				'label' => 'Заголовок второй секции',
+				'name' => 'pure_section2_title',
+				'type' => 'text',
+				'default_value' => '<strong>U</strong>NIVERSALLY ACCEPTED QUALITY (УНИВЕРСАЛЬНО ПРИНЯТОЕ КАЧЕСТВО)',
+			),
+			array(
+				'key' => 'field_pure_section2_description',
+				'label' => 'Описание второй секции',
+				'name' => 'pure_section2_description',
+				'type' => 'textarea',
+			),
+			array(
+				'key' => 'field_pure_section2_items',
+				'label' => 'Элементы второй секции',
+				'name' => 'pure_section2_items',
+				'type' => 'repeater',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_section2_item_image',
+						'label' => 'Изображение',
+						'name' => 'image',
+						'type' => 'image',
+					),
+					array(
+						'key' => 'field_section2_item_title',
+						'label' => 'Заголовок',
+						'name' => 'title',
+						'type' => 'text',
+					),
+					array(
+						'key' => 'field_section2_item_text',
+						'label' => 'Текст',
+						'name' => 'text',
+						'type' => 'wysiwyg',
+					),
+				),
+			),
+			// Баннер 1
+			array(
+				'key' => 'field_pure_banner1_title',
+				'label' => 'Заголовок первого баннера',
+				'name' => 'pure_banner1_title',
+				'type' => 'text',
+				'default_value' => '<strong class="banner-text-bold">U</strong>NMATCHED PRICING (НЕСРАВНЕННЫЕ ЦЕНЫ)',
+			),
+			array(
+				'key' => 'field_pure_banner1_image',
+				'label' => 'Изображение первого баннера',
+				'name' => 'pure_banner1_image',
+				'type' => 'image',
+			),
+			array(
+				'key' => 'field_pure_banner1_text',
+				'label' => 'Текст первого баннера',
+				'name' => 'pure_banner1_text',
+				'type' => 'wysiwyg',
+			),
+			// Баннер 2
+			array(
+				'key' => 'field_pure_banner2_title',
+				'label' => 'Заголовок второго баннера',
+				'name' => 'pure_banner2_title',
+				'type' => 'text',
+				'default_value' => '<strong class="banner-text-bold">R</strong>ELIABLE CUSTOMER SERVICE (НАДЕЖНОЕ ОБСЛУЖИВАНИЕ КЛИЕНТОВ)',
+			),
+			array(
+				'key' => 'field_pure_banner2_bg_image',
+				'label' => 'Фоновое изображение второго баннера',
+				'name' => 'pure_banner2_bg_image',
+				'type' => 'image',
+			),
+			array(
+				'key' => 'field_pure_banner2_image',
+				'label' => 'Изображение второго баннера',
+				'name' => 'pure_banner2_image',
+				'type' => 'image',
+			),
+			array(
+				'key' => 'field_pure_banner2_text',
+				'label' => 'Текст второго баннера',
+				'name' => 'pure_banner2_text',
+				'type' => 'wysiwyg',
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'options_page',
+					'operator' => '==',
+					'value' => 'pure-page-settings',
+				),
+			),
+		),
+	));
+}
