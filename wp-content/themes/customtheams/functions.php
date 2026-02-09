@@ -738,3 +738,48 @@ function truemisha_redirect_to_thank_you() {
  
 }
 add_action( 'template_redirect', 'truemisha_redirect_to_thank_you' );
+
+/**
+ * Замена внешних URL изображений на локальные для страницы Pure
+ */
+function replace_pure_page_images( $content ) {
+	// Получаем URL директории темы
+	$theme_images_url = get_template_directory_uri() . '/images/';
+	
+	// Массив замен: внешний URL => локальное имя файла
+	$image_replacements = array(
+		'https://www.natureinbottle.com/front-assets/images/sourcing_through_vetted_suppliers.jpg' => $theme_images_url . 'sourcing_through_vetted_suppliers.jpg',
+		'https://www.natureinbottle.com/front-assets/images/quality_standards.jpg' => $theme_images_url . 'quality_standards.jpg',
+		'https://www.natureinbottle.com/front-assets/images/complete_quality_control.jpg' => $theme_images_url . 'complete_quality_control.jpg',
+		'https://www.natureinbottle.com/front-assets/images/gas_chromatography_and_mass_apectrometry_analysis.jpg' => $theme_images_url . 'gas_chromatography_and_mass_apectrometry_analysis.jpg',
+		'https://www.natureinbottle.com/front-assets/images/organoleptic_testing.jpg' => $theme_images_url . 'organoleptic_testing.jpg',
+		'https://www.natureinbottle.com/front-assets/images/contamination_testing.jpg' => $theme_images_url . 'contamination_testing.jpg',
+		'https://www.natureinbottle.com/front-assets/images/Best-Price.png' => $theme_images_url . 'Best-Price.png',
+		'https://www.natureinbottle.com/front-assets/images/reliable_customer_service_background.jpg' => $theme_images_url . 'reliable_customer_service_background.jpg',
+		'https://www.natureinbottle.com/front-assets/images/90_dAYS_money_back.png' => $theme_images_url . '90_dAYS_money_back.png',
+	);
+	
+	// Заменяем все URL
+	foreach ( $image_replacements as $external_url => $local_url ) {
+		$content = str_replace( $external_url, $local_url, $content );
+	}
+	
+	return $content;
+}
+
+// Используем буферизацию вывода для замены URL в шаблоне Pure
+function start_pure_page_image_buffer() {
+	global $template;
+	if ( $template && basename( $template ) === 'pure-page.php' ) {
+		ob_start( 'replace_pure_page_images' );
+	}
+}
+add_action( 'template_redirect', 'start_pure_page_image_buffer', 1 );
+
+function end_pure_page_image_buffer() {
+	global $template;
+	if ( $template && basename( $template ) === 'pure-page.php' && ob_get_level() > 0 ) {
+		ob_end_flush();
+	}
+}
+add_action( 'shutdown', 'end_pure_page_image_buffer', 999 );

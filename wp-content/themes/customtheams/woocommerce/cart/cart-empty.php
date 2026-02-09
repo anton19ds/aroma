@@ -1,4 +1,3 @@
-123123123
 <?php
 /**
  * Empty cart page

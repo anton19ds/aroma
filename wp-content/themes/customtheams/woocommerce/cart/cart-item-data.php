@@ -1,4 +1,3 @@
-2123123123
 <?php
 /**
  * Cart item data (when outputting non-flat)

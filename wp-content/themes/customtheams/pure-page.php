@@ -25,7 +25,7 @@
 		<div class="timeline-grid-wrapper">
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/sourcing_through_vetted_suppliers.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/sourcing_through_vetted_suppliers.jpg">
 				</div>
 				<div class="timeline-detail">
 					<h3>Закупка у проверенных поставщиков</h3>
@@ -34,7 +34,7 @@
 			</div>
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/quality_standards.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/quality_standards.jpg">
 				</div>
 				<div class="timeline-detail qs-wrap">
 					<h3>Стандарты качества</h3>
@@ -50,7 +50,7 @@
 			</div>
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/complete_quality_control.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/complete_quality_control.jpg">
 				</div>
 				<div class="timeline-detail">
 					<h3>Полный контроль качества</h3>
@@ -71,7 +71,7 @@
 		<div class="timeline-grid-wrapper">
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/gas_chromatography_and_mass_apectrometry_analysis.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/gas_chromatography_and_mass_apectrometry_analysis.jpg">
 				</div>
 				<div class="timeline-detail">
 					<h3>Газовая хроматография и масс-спектрометрия (ГХ/МС)</h3>
@@ -82,7 +82,7 @@
 			</div>
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/organoleptic_testing.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/organoleptic_testing.jpg">
 				</div>
 				<div class="timeline-detail">
 					<h3>Органолептическое тестирование</h3>
@@ -91,7 +91,7 @@
 			</div>
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/complete_quality_control.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/complete_quality_control.jpg">
 				</div>
 				<div class="timeline-detail">
 					<h3>Удельный вес, коэффициент преломления и оптическое вращение</h3>
@@ -100,7 +100,7 @@
 			</div>
 			<div class="timeline-img-detail-wrap">
 				<div class="timeline-img">
-					<img alt="" src="https://www.natureinbottle.com/front-assets/images/contamination_testing.jpg">
+					<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/contamination_testing.jpg">
 				</div>
 				<div class="timeline-detail">
 					<h3>Тестирование на загрязнение</h3>
@@ -116,18 +116,18 @@
 			<strong class="banner-text-bold">U</strong>NMATCHED PRICING (НЕСРАВНЕННЫЕ ЦЕНЫ)
 		</h3>
 		<div class="banner-img-text">
-			<img alt="" src="https://www.natureinbottle.com/front-assets/images/Best-Price.png">
+			<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/Best-Price.png">
 			<div class="we-non-mlm"> Мы — компания <strong>не MLM</strong>, продающая онлайн напрямую потребителю, поэтому у нас нет посредников. Наши цены <strong>всегда оптовые</strong>, для <strong>каждого клиента</strong> — наше намерение всегда заключалось в том, чтобы обеспечить доступность эфирных масел и натуральных косметических ингредиентов высшего качества для всех — от новых ремесленников с начинающимся бизнесом до устоявшихся профессиональных производителей косметики. </div>
 		</div>
 	</div>
 </div>
-<div class="banner-with-content-wrap" style="background-image: url(https://www.natureinbottle.com/front-assets/images/reliable_customer_service_background.jpg);">
+<div class="banner-with-content-wrap" style="background-image: url(<?php echo get_template_directory_uri(); ?>/images/reliable_customer_service_background.jpg);">
 	<div class="banner-inside-detl-wrap">
 		<h3 class="banner-text">
 			<strong class="banner-text-bold">R</strong>ELIABLE CUSTOMER SERVICE (НАДЕЖНОЕ ОБСЛУЖИВАНИЕ КЛИЕНТОВ)
 		</h3>
 		<div class="banner-img-text">
-			<img alt="" src="https://www.natureinbottle.com/front-assets/images/90_dAYS_money_back.png">
+			<img alt="" src="<?php echo get_template_directory_uri(); ?>/images/90_dAYS_money_back.png">
 			<div class="we-non-mlm"> Наша гарантия возврата денег в течение 90 дней демонстрирует нашу уверенность в качестве нашей продукции. Мы понимаем, что покупатели хотят быть уверены в том, что покупают, поэтому мы стремимся к полному удовлетворению потребностей наших клиентов. Если вы недовольны своей покупкой по какой-либо причине, мы сделаем все возможное, чтобы решить проблему к вашему удовлетворению. Мы также предлагаем бесплатные образцы большинства наших продуктов, чтобы вы могли попробовать перед покупкой. </div>
 		</div>
 	</div>

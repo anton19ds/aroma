@@ -1,4 +1,3 @@
-123123123123
 <?php
 /**
  * Checkout billing information form
