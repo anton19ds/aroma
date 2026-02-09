@@ -8,8 +8,8 @@
 <?php get_header();?>
 
 <?php
-$faq_banner_title = get_field('faq_banner_title', 'option');
-$faq_banner_subtitle = get_field('faq_banner_subtitle', 'option');
+$faq_banner_title = get_field('faq_banner_title');
+$faq_banner_subtitle = get_field('faq_banner_subtitle');
 if (!$faq_banner_title) $faq_banner_title = 'FAQ';
 if (!$faq_banner_subtitle) $faq_banner_subtitle = 'Frequently Asked Questions';
 ?>

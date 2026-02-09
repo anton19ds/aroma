@@ -14,7 +14,7 @@
 		$hero_title = get_field('pure_hero_title');
 		$hero_subtitle = get_field('pure_hero_subtitle');
 		?>
-		<h1><?php echo $hero_title ? esc_html($hero_title) : 'P.U.U.R.E. ОБЕЩАНИЕ'; ?></h1>
+		<h1><?php echo $hero_title ? esc_html($hero_title) : 'P.U.U.R.E. ОБЕЩАНИЕ !'; ?></h1>
 		<h4><?php echo $hero_subtitle ? esc_html($hero_subtitle) : 'чистый • натуральный • терапевтический'; ?></h4>
 	</div>
 </div>
