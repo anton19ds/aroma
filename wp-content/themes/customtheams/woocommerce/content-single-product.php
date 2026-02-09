@@ -1289,6 +1289,35 @@ global $woocommerce;
 						<p>
 	We are a non-MLM company, selling online directly to our customers located in over 220 countries across the world. Our pricing is always wholesale, for every customer - there is no need to sign up or become a member to avail the benefits of our wholesale pricing. We also provide hugely subsidised rates for international shipping.</p>
 					</div>
+					<?php
+					// Вывод трех последних статей из рубрики с ID 345
+					$args = array(
+						'post_type' => 'post',
+						'posts_per_page' => 3,
+						'cat' => 345,
+						'orderby' => 'date',
+						'order' => 'DESC'
+					);
+					$category_posts = new WP_Query($args);
+					
+					if ($category_posts->have_posts()) {
+						while ($category_posts->have_posts()) {
+							$category_posts->the_post();
+							$thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
+							if (!$thumbnail_url) {
+								$thumbnail_url = 'https://www.natureinbottle.com/upload/overview/overview181220221559021671359342.jpeg'; // Заглушка, если нет изображения
+							}
+							?>
+							<div class="blogTypeGridContent">
+								<img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+								<h2><?php echo esc_html(get_the_title()); ?></h2>
+								<p><?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?></p>
+							</div>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 							</div>
 		</div>
 	</div>
