@@ -810,20 +810,157 @@ if( function_exists('acf_add_options_page') ) {
 		return;
 	}
 	
-	acf_add_options_page(array(
+	// Создание Options Pages с правильными параметрами
+	$pure_options_page = acf_add_options_page(array(
 		'page_title' 	=> 'Настройки страницы Pure',
 		'menu_title'	=> 'Pure Page Settings',
 		'menu_slug' 	=> 'pure-page-settings',
 		'capability'	=> 'edit_posts',
 		'icon_url'      => 'dashicons-admin-generic',
+		'autoload'      => false,
 	));
-	acf_add_options_page(array(
+	
+	$faq_options_page = acf_add_options_page(array(
 		'page_title' 	=> 'Настройки страницы FAQ',
 		'menu_title'	=> 'FAQ Page Settings',
 		'menu_slug' 	=> 'faq-page-settings',
 		'capability'	=> 'edit_posts',
 		'icon_url'      => 'dashicons-editor-help',
+		'autoload'      => false,
 	));
+	
+	// Функция для проверки и исправления Location Rules после импорта
+	add_action('acf/init', function() use ($pure_options_page, $faq_options_page) {
+		if ( !function_exists('acf_get_field_groups') ) {
+			return;
+		}
+		
+		// Проверяем группы полей
+		$field_groups = acf_get_field_groups();
+		foreach ( $field_groups as $field_group ) {
+			// Исправляем Location Rules для группы Pure
+			if ( $field_group['key'] === 'group_pure_page' ) {
+				$location = $field_group['location'];
+				$needs_update = false;
+				
+				// Проверяем, правильно ли настроены Location Rules
+				if ( empty($location) || 
+					 !isset($location[0][0]['param']) || 
+					 $location[0][0]['param'] !== 'options_page' ||
+					 $location[0][0]['value'] !== 'pure-page-settings' ) {
+					$needs_update = true;
+				}
+				
+				if ( $needs_update ) {
+					// Обновляем Location Rules
+					acf_update_field_group(array(
+						'ID' => $field_group['ID'],
+						'location' => array(
+							array(
+								array(
+									'param' => 'options_page',
+									'operator' => '==',
+									'value' => 'pure-page-settings',
+								),
+							),
+						),
+					));
+				}
+			}
+			
+			// Исправляем Location Rules для группы FAQ
+			if ( $field_group['key'] === 'group_faq_page' ) {
+				$location = $field_group['location'];
+				$needs_update = false;
+				
+				if ( empty($location) || 
+					 !isset($location[0][0]['param']) || 
+					 $location[0][0]['param'] !== 'options_page' ||
+					 $location[0][0]['value'] !== 'faq-page-settings' ) {
+					$needs_update = true;
+				}
+				
+				if ( $needs_update ) {
+					acf_update_field_group(array(
+						'ID' => $field_group['ID'],
+						'location' => array(
+							array(
+								array(
+									'param' => 'options_page',
+									'operator' => '==',
+									'value' => 'faq-page-settings',
+								),
+							),
+						),
+					));
+				}
+			}
+		}
+	}, 20);
+	
+	// Функция для проверки и исправления Location Rules при загрузке Options Pages
+	add_action('acf/input/admin_head', function() {
+		if ( !function_exists('acf_get_field_groups') ) {
+			return;
+		}
+		
+		$screen = get_current_screen();
+		if ( !$screen ) {
+			return;
+		}
+		
+		// Проверяем только на страницах Options Pages
+		if ( $screen->id === 'toplevel_page_pure-page-settings' || 
+			 $screen->id === 'toplevel_page_faq-page-settings' ) {
+			
+			$field_groups = acf_get_field_groups();
+			$expected_slug = ( $screen->id === 'toplevel_page_pure-page-settings' ) ? 'pure-page-settings' : 'faq-page-settings';
+			$expected_key = ( $screen->id === 'toplevel_page_pure-page-settings' ) ? 'group_pure_page' : 'group_faq_page';
+			
+			foreach ( $field_groups as $field_group ) {
+				if ( isset($field_group['key']) && $field_group['key'] === $expected_key ) {
+					$location = isset($field_group['location']) ? $field_group['location'] : array();
+					
+					// Проверяем Location Rules
+					if ( empty($location) || 
+						 !isset($location[0][0]['param']) || 
+						 $location[0][0]['param'] !== 'options_page' ||
+						 !isset($location[0][0]['value']) || 
+						 $location[0][0]['value'] !== $expected_slug ) {
+						
+						// Исправляем Location Rules
+						if ( isset($field_group['ID']) ) {
+							acf_update_field_group(array(
+								'ID' => $field_group['ID'],
+								'location' => array(
+									array(
+										array(
+											'param' => 'options_page',
+											'operator' => '==',
+											'value' => $expected_slug,
+										),
+									),
+								),
+							));
+							
+							// Очищаем кеш ACF
+							if ( function_exists('acf_get_store') ) {
+								acf_get_store('field-groups')->reset();
+							}
+							
+							// Перезагружаем страницу для применения изменений
+							echo '<script>
+								setTimeout(function() {
+									location.reload();
+								}, 500);
+							</script>';
+							break;
+						}
+					}
+				}
+			}
+		}
+	});
 	
 	// Уведомление с инструкцией по синхронизации
 	add_action('admin_notices', function() {
@@ -868,6 +1005,37 @@ if( function_exists('acf_add_options_page') ) {
 				echo '</ol>';
 				echo '<p><strong>Отсутствующие группы:</strong> ' . implode(', ', $missing_groups) . '</p>';
 				echo '</div>';
+			} else {
+				// Проверяем, правильно ли настроены Location Rules
+				$groups_with_wrong_location = array();
+				foreach ( $existing_groups as $group ) {
+					if ( $group['key'] === 'group_pure_page' || $group['key'] === 'group_faq_page' ) {
+						$location = isset($group['location']) ? $group['location'] : array();
+						$expected_value = ( $group['key'] === 'group_pure_page' ) ? 'pure-page-settings' : 'faq-page-settings';
+						
+						if ( empty($location) || 
+							 !isset($location[0][0]['value']) || 
+							 $location[0][0]['value'] !== $expected_value ) {
+							$groups_with_wrong_location[] = $group['title'];
+						}
+					}
+				}
+				
+				if ( !empty($groups_with_wrong_location) ) {
+					echo '<div class="notice notice-error is-dismissible">';
+					echo '<p><strong>❌ Проблема с Location Rules:</strong></p>';
+					echo '<p>Группы полей найдены, но Location Rules настроены неправильно.</p>';
+					echo '<p><strong>Что делать:</strong></p>';
+					echo '<ol style="margin-left: 20px; margin-top: 10px;">';
+					echo '<li>Перейдите в <a href="' . admin_url('edit.php?post_type=acf-field-group') . '"><strong>Custom Fields → Field Groups</strong></a></li>';
+					echo '<li>Откройте каждую из следующих групп: <strong>' . implode(', ', $groups_with_wrong_location) . '</strong></li>';
+					echo '<li>В разделе <strong>"Location"</strong> проверьте, что выбрано: <strong>Options Page</strong> → <strong>Pure Page Settings</strong> (или <strong>FAQ Page Settings</strong>)</li>';
+					echo '<li>Если Location Rules неправильные, исправьте их и сохраните группу</li>';
+					echo '<li>После сохранения обновите страницу Options Page - поля должны появиться</li>';
+					echo '</ol>';
+					echo '<p><strong>Проблемные группы:</strong> ' . implode(', ', $groups_with_wrong_location) . '</p>';
+					echo '</div>';
+				}
 			}
 		}
 	});
