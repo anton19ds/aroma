@@ -94,32 +94,21 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 	background-color: #7a4a87;
 	color: #fff;
 }
-.contact-form-custom .form-row-name-email-message {
+.contact-form-custom .form-row-name-email {
 	display: flex;
 	gap: 1.25rem;
-	align-items: stretch;
 	margin-bottom: 0.75rem;
 }
-.contact-form-custom .form-col-fields {
-	flex: 0 0 280px;
-	display: flex;
-	flex-direction: column;
-	gap: 0.75rem;
-}
-.contact-form-custom .form-col-message {
+.contact-form-custom .form-row-name-email .form-field-wrap {
 	flex: 1;
-	min-width: 0;
+	margin-bottom: 0;
 }
-.contact-form-custom .form-col-message textarea {
-	height: 100%;
-	min-height: 120px;
+.contact-form-custom .form-row-message {
+	margin-bottom: 0.75rem;
 }
 @media (max-width: 767px) {
-	.contact-form-custom .form-row-name-email-message {
+	.contact-form-custom .form-row-name-email {
 		flex-direction: column;
-	}
-	.contact-form-custom .form-col-fields {
-		flex: 1 1 auto;
 	}
 }
 </style>
@@ -189,23 +178,21 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 
 				<form method="post" action="" class="contact-form-custom row" id="contact-form-custom">
 					<?php wp_nonce_field( 'contact_form_submit', 'contact_form_nonce' ); ?>
-					<div class="col-12 form-row-name-email-message">
-						<div class="form-col-fields">
-							<div class="form-field-wrap">
-								<label for="contact_name" class="form-label">Имя <span class="text-danger">*</span></label>
-								<input type="text" name="contact_name" id="contact_name" class="form-control" required
-									value="<?php echo isset( $_POST['contact_name'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['contact_name'] ) ) ) : ''; ?>">
-							</div>
-							<div class="form-field-wrap">
-								<label for="contact_email" class="form-label">Email для обратной связи <span class="text-danger">*</span></label>
-								<input type="email" name="contact_email" id="contact_email" class="form-control" required
-									value="<?php echo isset( $_POST['contact_email'] ) ? esc_attr( sanitize_email( wp_unslash( $_POST['contact_email'] ) ) ) : ''; ?>">
-							</div>
+					<div class="col-12 form-row-name-email">
+						<div class="form-field-wrap">
+							<label for="contact_name" class="form-label">Имя <span class="text-danger">*</span></label>
+							<input type="text" name="contact_name" id="contact_name" class="form-control" required
+								value="<?php echo isset( $_POST['contact_name'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['contact_name'] ) ) ) : ''; ?>">
 						</div>
-						<div class="form-col-message form-field-wrap">
-							<label for="contact_message" class="form-label">Сообщение <span class="text-danger">*</span></label>
-							<textarea name="contact_message" id="contact_message" class="form-control" rows="5" required minlength="10"><?php echo isset( $_POST['contact_message'] ) ? esc_textarea( wp_unslash( $_POST['contact_message'] ) ) : ''; ?></textarea>
+						<div class="form-field-wrap">
+							<label for="contact_email" class="form-label">Email для обратной связи <span class="text-danger">*</span></label>
+							<input type="email" name="contact_email" id="contact_email" class="form-control" required
+								value="<?php echo isset( $_POST['contact_email'] ) ? esc_attr( sanitize_email( wp_unslash( $_POST['contact_email'] ) ) ) : ''; ?>">
 						</div>
+					</div>
+					<div class="col-12 form-field-wrap form-row-message">
+						<label for="contact_message" class="form-label">Сообщение <span class="text-danger">*</span></label>
+						<textarea name="contact_message" id="contact_message" class="form-control" rows="5" required minlength="10"><?php echo isset( $_POST['contact_message'] ) ? esc_textarea( wp_unslash( $_POST['contact_message'] ) ) : ''; ?></textarea>
 					</div>
 					<div class="col-12 form-field-wrap">
 						<label for="contact_captcha" class="form-label">Сколько будет <?php echo (int) $captcha_num1; ?> + <?php echo (int) $captcha_num2; ?>? <span class="text-danger">*</span></label>
