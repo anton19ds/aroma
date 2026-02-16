@@ -95,6 +95,9 @@ function theme_name_scripts()
     
     wp_enqueue_style('new-style-ff', get_template_directory_uri() . '/css/stylesheet.css', array(), '1.0');
     wp_enqueue_style('nib', get_template_directory_uri() . '/css/nib.css', array(), '1.0');
+    if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+        wp_enqueue_style( 'elixir-myaccount-orders', get_template_directory_uri() . '/css/elixir-myaccount-orders.css', array(), '1.0' );
+    }
     wp_enqueue_style('new-style', get_template_directory_uri() . '/new.css', array(), '1.0');
     wp_enqueue_style('style-name', get_stylesheet_uri());
 
