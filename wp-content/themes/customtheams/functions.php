@@ -105,6 +105,82 @@ function theme_name_scripts()
 }
 add_filter('show_admin_bar', '__return_false');
 
+/**
+ * Отправка письма покупателю с содержимым заказа после оформления.
+ * WooCommerce по умолчанию отправляет письма при статусах "processing" и "on-hold".
+ * Для статуса "pending" (ожидание оплаты) письмо не отправляется — добавляем его.
+ */
+add_action( 'woocommerce_order_status_pending', 'elixir_send_order_email_to_customer_on_pending', 10, 2 );
+function elixir_send_order_email_to_customer_on_pending( $order_id, $order = null ) {
+	if ( ! $order ) {
+		$order = wc_get_order( $order_id );
+	}
+	if ( ! $order || ! is_a( $order, 'WC_Order' ) ) {
+		return;
+	}
+	$mailer = WC()->mailer();
+	$emails = $mailer->get_emails();
+	if ( isset( $emails['WC_Email_Customer_On_Hold_Order'] ) && $emails['WC_Email_Customer_On_Hold_Order']->is_enabled() ) {
+		$emails['WC_Email_Customer_On_Hold_Order']->trigger( $order_id, $order );
+	}
+}
+
+/**
+ * Отправка уведомления о заказе в Telegram при оформлении.
+ * Требует в .env: TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID
+ */
+add_action( 'woocommerce_new_order', 'elixir_send_order_to_telegram', 10, 2 );
+function elixir_send_order_to_telegram( $order_id, $order = null ) {
+	$token = getenv( 'TELEGRAM_BOT_TOKEN' );
+	$chat_id = getenv( 'TELEGRAM_CHAT_ID' );
+	if ( empty( $token ) || empty( $chat_id ) ) {
+		return;
+	}
+	if ( ! $order ) {
+		$order = wc_get_order( $order_id );
+	}
+	if ( ! $order || ! is_a( $order, 'WC_Order' ) ) {
+		return;
+	}
+
+	$items_lines = array();
+	foreach ( $order->get_items() as $item ) {
+		$name = $item->get_name();
+		$qty = $item->get_quantity();
+		$total = strip_tags( wc_price( $item->get_total() + $item->get_total_tax() ) );
+		$items_lines[] = sprintf( '• %s × %d — %s', esc_html( $name ), $qty, $total );
+	}
+	$items_block = implode( "\n", $items_lines );
+
+	$shipping = $order->has_shipping_address() ? $order->get_formatted_shipping_address() : $order->get_formatted_billing_address();
+	$payment = $order->get_payment_method_title();
+
+	$msg = "🛒 <b>Новый заказ #" . esc_html( $order->get_order_number() ) . "</b>\n\n";
+	$msg .= "<b>Покупатель:</b>\n";
+	$msg .= "• Имя: " . esc_html( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() ) . "\n";
+	$msg .= "• Email: " . esc_html( $order->get_billing_email() ) . "\n";
+	$msg .= "• Телефон: " . esc_html( $order->get_billing_phone() ) . "\n";
+	$msg .= "• Адрес доставки:\n" . esc_html( preg_replace( '#<br\s*/?>#i', "\n", $shipping ) ) . "\n\n";
+	$msg .= "<b>Товары:</b>\n" . $items_block . "\n\n";
+	$msg .= "<b>Итого:</b> " . strip_tags( $order->get_formatted_order_total() ) . "\n";
+	$msg .= "<b>Оплата:</b> " . esc_html( $payment ? $payment : '—' ) . "\n";
+	$msg .= "<b>Статус:</b> " . esc_html( wc_get_order_status_name( $order->get_status() ) );
+
+	$url = 'https://api.telegram.org/bot' . $token . '/sendMessage';
+	$body = array(
+		'chat_id'    => $chat_id,
+		'text'       => $msg,
+		'parse_mode' => 'HTML',
+		'disable_web_page_preview' => true,
+	);
+
+	wp_remote_post( $url, array(
+		'body' => $body,
+		'timeout' => 15,
+		'blocking' => false,
+	) );
+}
+
 //add_theme_support('menus');
 //add_theme_support('mob-menu');
 
