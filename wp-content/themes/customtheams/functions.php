@@ -1,11 +1,18 @@
 <?php
 /**
+ * Theme Functions and Definitions
  *
  * @package WordPress
  * @subpackage CustomTheam
  */
 
-// Загрузка .env для параметров почты
+// =============================================================================
+// ENV & Mail
+// =============================================================================
+
+/**
+ * Загружает переменные окружения из .env в putenv и $_ENV.
+ */
 function customtheams_load_env() {
 	$env_path = get_template_directory() . '/.env';
 	if ( ! file_exists( $env_path ) ) {
@@ -34,7 +41,9 @@ function customtheams_load_env() {
 }
 customtheams_load_env();
 
-// Настройка SMTP из .env при отправке почты
+/**
+ * Настраивает PHPMailer для SMTP из .env.
+ */
 add_action( 'phpmailer_init', 'customtheams_phpmailer_smtp' );
 function customtheams_phpmailer_smtp( $phpmailer ) {
 	$host = getenv( 'MAIL_HOST' );
@@ -52,58 +61,65 @@ function customtheams_phpmailer_smtp( $phpmailer ) {
 	$phpmailer->FromName   = getenv( 'MAIL_FROM_NAME' ) ?: get_bloginfo( 'name' );
 }
 
-add_post_type_support('post', 'maintitle');
+add_post_type_support( 'post', 'maintitle' );
 
-add_filter('woocommerce_locate_template', 'debug_woocommerce_templates', 10, 3);
-function debug_woocommerce_templates($template, $template_name, $template_path)
-{
-    error_log("Looking for: $template_name in $template_path");
-    error_log("Found at: $template");
-    return $template;
+// =============================================================================
+// ACF & Debug (шаблоны WooCommerce)
+// =============================================================================
+
+add_filter( 'woocommerce_locate_template', 'customtheams_debug_woocommerce_templates', 10, 3 );
+function customtheams_debug_woocommerce_templates( $template, $template_name, $template_path ) {
+	error_log( "WooCommerce template: $template_name in $template_path -> $template" );
+	return $template;
 }
-function my_acf_load_field($field)
-{
+
+add_filter( 'field/name=event', 'customtheams_acf_load_field' );
+function customtheams_acf_load_field( $field ) {
     $field['required'] = true;
     $field['instructions'] = '<i class="help" title="Instructions here"></i>';
     $field['wrapper']['id'] = 'my-custom-id';
     $field['wrapper']['data-jsify'] = '123';
-    $field['wrapper']['title'] = 'Text here';
-    return $field;
+	$field['wrapper']['title'] = 'Text here';
+	return $field;
 }
 
-// function themename_enqueue_styles()
-// {
-    
-// }
-// add_action('wp_enqueue_scripts', 'themename_enqueue_styles');
+// =============================================================================
+// Styles & Scripts
+// =============================================================================
 
-add_filter('field/name=event', 'my_acf_load_field');
-// правильный способ подключить стили и скрипты
-add_action('wp_enqueue_scripts', 'theme_name_scripts');
-// add_action('wp_print_styles', 'theme_name_scripts'); // можно использовать этот хук он более поздний
-function theme_name_scripts()
-{
-    wp_enqueue_style('main', get_template_directory_uri() . "/main.css");
-    wp_enqueue_style('merge', get_template_directory_uri() . "/merge.css");
-    
-    wp_enqueue_style('himanshu-style', get_template_directory_uri() . '/himanshu.css', array(), '1.0');
-    //wp_enqueue_style('new-style-css', get_template_directory_uri() . '/css/style.css', array(), '1.0');
-    wp_enqueue_style('responsive', get_template_directory_uri() . "/responsive.css");
-    
-    
-    
-    
-    wp_enqueue_style('new-style-ff', get_template_directory_uri() . '/css/stylesheet.css', array(), '1.0');
-    wp_enqueue_style('nib', get_template_directory_uri() . '/css/nib.css', array(), '1.0');
-    if ( function_exists( 'is_account_page' ) && is_account_page() ) {
-        wp_enqueue_style( 'elixir-myaccount-orders', get_template_directory_uri() . '/css/elixir-myaccount-orders.css', array(), '1.0' );
-    }
-    wp_enqueue_style('new-style', get_template_directory_uri() . '/new.css', array(), '1.0');
-    wp_enqueue_style('style-name', get_stylesheet_uri());
-
-    //wp_enqueue_script( 'script-name', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
+add_action( 'wp_enqueue_scripts', 'customtheams_enqueue_assets' );
+function customtheams_enqueue_assets() {
+	$theme_uri = get_template_directory_uri();
+	wp_enqueue_style( 'main', $theme_uri . '/main.css' );
+	wp_enqueue_style( 'merge', $theme_uri . '/merge.css' );
+	wp_enqueue_style( 'himanshu-style', $theme_uri . '/himanshu.css', array(), '1.0' );
+	wp_enqueue_style( 'responsive', $theme_uri . '/responsive.css' );
+	wp_enqueue_style( 'new-style-ff', $theme_uri . '/css/stylesheet.css', array(), '1.0' );
+	wp_enqueue_style( 'nib', $theme_uri . '/css/nib.css', array(), '1.0' );
+	if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+		wp_enqueue_style( 'elixir-myaccount-orders', $theme_uri . '/css/elixir-myaccount-orders.css', array(), '1.0' );
+	}
+	wp_enqueue_style( 'new-style', $theme_uri . '/new.css', array(), '1.0' );
+	wp_enqueue_style( 'style-name', get_stylesheet_uri() );
 }
-add_filter('show_admin_bar', '__return_false');
+
+add_filter( 'show_admin_bar', '__return_false' );
+
+/**
+ * Включает использование купонов при оформлении заказа (если отключены в настройках WooCommerce).
+ * Купоны: WooCommerce → Настройки → Общие → «Включить купоны».
+ */
+add_filter( 'woocommerce_coupons_enabled', 'customtheams_enable_checkout_coupons' );
+function customtheams_enable_checkout_coupons( $enabled ) {
+	if ( is_checkout() || is_cart() ) {
+		return true;
+	}
+	return $enabled;
+}
+
+// =============================================================================
+// WooCommerce: Order Emails & Telegram
+// =============================================================================
 
 /**
  * Отправка письма покупателю с содержимым заказа после оформления.
@@ -187,200 +203,157 @@ function elixir_send_order_to_telegram( $order_id, $order = null ) {
 	}
 }
 
-//add_theme_support('menus');
-//add_theme_support('mob-menu');
+// =============================================================================
+// Menus & Navigation
+// =============================================================================
 
-
-function my_theme_register_nav_menus() {
-    register_nav_menus([
-        'header_menu'  => 'Меню в шапке',
-        'footer_menu'  => 'Меню в подвале',
-        'sidebar_menu' => 'Меню в сайдбаре',
-        'mob_menu' => 'Мобильное меню',
-    ]);
+add_action( 'after_setup_theme', 'customtheams_register_nav_menus' );
+function customtheams_register_nav_menus() {
+	register_nav_menus( array(
+		'header_menu'  => 'Меню в шапке',
+		'footer_menu'  => 'Меню в подвале',
+		'sidebar_menu' => 'Меню в сайдбаре',
+		'mob_menu'     => 'Мобильное меню',
+	) );
 }
-add_action('after_setup_theme', 'my_theme_register_nav_menus');
 
-// $walker = new Walker_Nav_Menu;
+class My_Walker_Nav_Menu_Footer extends Walker_Nav_Menu {
 
-// $args = array(
-// 	'walker' => $walker,
-// );
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' );
+		$output .= "\n" . $indent . '<ul class="">' . "\n";
+	}
 
-class My_Walker_Nav_Menu_Footer extends Walker_Nav_Menu{
+	public function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
+		$item = $data_object;
+		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' );
+		$depth_classes = array(
+			( 0 === $depth ? 'main-menu-item' : 'box' ),
+			( $depth >= 2 ? 'sub-sub-menu-item' : '' ),
+			( $depth % 2 ? 'menu-item-odd' : 'menu-item-even' ),
+			'menu-item-depth-' . $depth,
+		);
+		$depth_class_names = esc_attr( implode( ' ', $depth_classes ) );
+		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+		$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
+		$output .= $indent . '<li id="nav-menu-item-' . $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
 
-    function start_lvl(&$output, $depth = 0, $args = null)
-    {
-        $indent = ($depth > 0 ? str_repeat("\t", $depth) : ''); // отступ в коде
-        $display_depth = ($depth + 1); // потому что первый уровень подменю считается как 0
-        $classes = [
-            'sub-menu',
-            ($display_depth % 2 ? '' : ''),
-            ($display_depth >= 2 ? '' : ''),
-            'menu-depth-' . $display_depth,
-        ];
-        $class_names = implode(' ', $classes);
+		$attributes = ! empty( $item->attr_title ) ? ' title="' . esc_attr( $item->attr_title ) . '"' : '';
+		$attributes .= ! empty( $item->target ) ? ' target="' . esc_attr( $item->target ) . '"' : '';
+		$attributes .= ! empty( $item->xfn ) ? ' rel="' . esc_attr( $item->xfn ) . '"' : '';
+		$attributes .= ! empty( $item->url ) ? ' href="' . esc_attr( $item->url ) . '"' : '';
+		$attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'main-menu-link' ) . '"';
 
-        $output .= "\n" . $indent . '<ul class="">' . "\n";
-    }
-    function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
-    {
-        $item = $data_object; // используем более описательное имя для использования внутри этого метода.
-        $image_id = get_field('icon_menu', $item->ID);
-        $indent = ($depth > 0 ? str_repeat("\t", $depth) : ''); // отступ в коде
-        $depth_classes = [
-            ($depth == 0 ? 'main-menu-item' : 'box'),
-            ($depth >= 2 ? 'sub-sub-menu-item' : ''),
-            ($depth % 2 ? 'menu-item-odd' : 'menu-item-even'),
-            'menu-item-depth-' . $depth,
-        ];
-        $depth_class_names = esc_attr(implode(' ', $depth_classes));
-        $classes = empty($item->classes) ? [] : (array) $item->classes;
-        $class_names = esc_attr(implode(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item)));
-        $output .= $indent . '<li id="nav-menu-item-' . $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
-        $attributes = !empty($item->attr_title) ? ' title="' . esc_attr($item->attr_title) . '"' : '';
-        $attributes .= !empty($item->target) ? ' target="' . esc_attr($item->target) . '"' : '';
-        $attributes .= !empty($item->xfn) ? ' rel="' . esc_attr($item->xfn) . '"' : '';
-        $attributes .= !empty($item->url) ? ' href="' . esc_attr($item->url) . '"' : '';
-        $attributes .= ' class="menu-link ' . ($depth > 0 ? 'sub-menu-link' : 'main-menu-link') . '"';
-        if ($depth != 0) {
-            $stingPatern = '<a style="text-transform: uppercase;" {ATTRIBUTES}>{TITLE}</a>';
-        } else {
-            $stingPatern = '<a style="text-transform: uppercase;" {ATTRIBUTES}>{TITLE}</a>';
-        }
-        $item_output = strtr($stingPatern, [
-            '{ATTRIBUTES}' => $attributes,
-            '{TITLE}' => apply_filters('the_title', $item->title, $item->ID),
-        ]);
-
-        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
-    }
-
+		$link_template = '<a style="text-transform: uppercase;" {ATTRIBUTES}>{TITLE}</a>';
+		$item_output   = strtr( $link_template, array(
+			'{ATTRIBUTES}' => $attributes,
+			'{TITLE}'      => apply_filters( 'the_title', $item->title, $item->ID ),
+		) );
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
 }
-/**
- * Пользовательский класс walker для навигационных меню.
- */
-class My_Walker_Nav_Menu_Mob extends Walker_Nav_Menu{
+class My_Walker_Nav_Menu_Mob extends Walker_Nav_Menu {
 
-    function start_lvl(&$output, $depth = 0, $args = null)
-    {
-        $indent = ($depth > 0 ? str_repeat("\t", $depth) : ''); // отступ в коде
-        $display_depth = ($depth + 1); // потому что первый уровень подменю считается как 0
-        $classes = [
-            'sub-menu',
-            ($display_depth % 2 ? 'menu-odd' : 'menu-even'),
-            ($display_depth >= 2 ? 'sub-sub-menu' : ''),
-            'menu-depth-' . $display_depth,
-        ];
-        $class_names = implode(' ', $classes);
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' );
+		$output .= "\n" . $indent . '<div class="dropdown-menu mega-dropdown-menu"><div class="container"><div class="tab-content"><div class="tab-pane active"><ul class="nav-list list-inline top_menu_icon_text content">' . "\n";
+	}
 
-        $output .= "\n" . $indent . '<div class="dropdown-menu mega-dropdown-menu"><div class="container"><div class="tab-content"><div class="tab-pane active"><ul class="nav-list list-inline top_menu_icon_text content">' . "\n";
-    }
-    function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
-    {
-        $item = $data_object; // используем более описательное имя для использования внутри этого метода.
-        $image_id = get_field('icon_menu', $item->ID);
-        $indent = ($depth > 0 ? str_repeat("\t", $depth) : ''); // отступ в коде
-        $depth_classes = [
-            ($depth == 0 ? 'main-menu-item' : 'box'),
-            ($depth >= 2 ? 'sub-sub-menu-item' : ''),
-            ($depth % 2 ? 'menu-item-odd' : 'menu-item-even'),
-            'menu-item-depth-' . $depth,
-        ];
-        $depth_class_names = esc_attr(implode(' ', $depth_classes));
-        $classes = empty($item->classes) ? [] : (array) $item->classes;
-        $class_names = esc_attr(implode(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item)));
-        $output .= $indent . '<li id="nav-menu-item-' . $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
-        $attributes = !empty($item->attr_title) ? ' title="' . esc_attr($item->attr_title) . '"' : '';
-        $attributes .= !empty($item->target) ? ' target="' . esc_attr($item->target) . '"' : '';
-        $attributes .= !empty($item->xfn) ? ' rel="' . esc_attr($item->xfn) . '"' : '';
-        $attributes .= !empty($item->url) ? ' href="' . esc_attr($item->url) . '"' : '';
-        $attributes .= ' class="menu-link ' . ($depth > 0 ? 'sub-menu-link' : 'main-menu-link') . '"';
-        if ($depth != 0) {
-            $stingPatern = '<a{ATTRIBUTES}><img src="'.$image_id.'"
-													alt="{TITLE}" title="{TITLE}"><span class="top_menu_text">{TITLE}</span></a>';
-        } else {
-            $stingPatern = '<a{ATTRIBUTES}>{TITLE}</a>';
-        }
-        $item_output = strtr($stingPatern, [
-            '{ATTRIBUTES}' => $attributes,
-            '{TITLE}' => apply_filters('the_title', $item->title, $item->ID),
-        ]);
+	public function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
+		$item    = $data_object;
+		$image_id = get_field( 'icon_menu', $item->ID );
+		$indent  = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' );
+		$depth_classes = array(
+			( 0 === $depth ? 'main-menu-item' : 'box' ),
+			( $depth >= 2 ? 'sub-sub-menu-item' : '' ),
+			( $depth % 2 ? 'menu-item-odd' : 'menu-item-even' ),
+			'menu-item-depth-' . $depth,
+		);
+		$depth_class_names = esc_attr( implode( ' ', $depth_classes ) );
+		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+		$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
+		$output .= $indent . '<li id="nav-menu-item-' . $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
 
-        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
-    }
+		$attributes = ! empty( $item->attr_title ) ? ' title="' . esc_attr( $item->attr_title ) . '"' : '';
+		$attributes .= ! empty( $item->target ) ? ' target="' . esc_attr( $item->target ) . '"' : '';
+		$attributes .= ! empty( $item->xfn ) ? ' rel="' . esc_attr( $item->xfn ) . '"' : '';
+		$attributes .= ! empty( $item->url ) ? ' href="' . esc_attr( $item->url ) . '"' : '';
+		$attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'main-menu-link' ) . '"';
 
+		if ( 0 !== $depth ) {
+			$link_template = '<a{ATTRIBUTES}><img src="' . esc_url( $image_id ) . '" alt="{TITLE}" title="{TITLE}"><span class="top_menu_text">{TITLE}</span></a>';
+		} else {
+			$link_template = '<a{ATTRIBUTES}>{TITLE}</a>';
+		}
+		$item_output = strtr( $link_template, array(
+			'{ATTRIBUTES}' => $attributes,
+			'{TITLE}'      => apply_filters( 'the_title', $item->title, $item->ID ),
+		) );
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
 }
-class My_Walker_Nav_Menu extends Walker_Nav_Menu
-{
+class My_Walker_Nav_Menu extends Walker_Nav_Menu {
 
-    function start_lvl(&$output, $depth = 0, $args = null)
-    {
-        $indent = ($depth > 0 ? str_repeat("\t", $depth) : ''); // отступ в коде
-        $display_depth = ($depth + 1); // потому что первый уровень подменю считается как 0
-        $classes = [
-            'sub-menu',
-            ($display_depth % 2 ? 'menu-odd' : 'menu-even'),
-            ($display_depth >= 2 ? 'sub-sub-menu' : ''),
-            'menu-depth-' . $display_depth,
-        ];
-        $class_names = implode(' ', $classes);
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' );
+		$output .= "\n" . $indent . '<div class="dropdown-menu mega-dropdown-menu"><div class="container"><div class="tab-content"><div class="tab-pane active"><ul class="nav-list list-inline top_menu_icon_text content">' . "\n";
+	}
 
-        $output .= "\n" . $indent . '<div class="dropdown-menu mega-dropdown-menu"><div class="container"><div class="tab-content"><div class="tab-pane active"><ul class="nav-list list-inline top_menu_icon_text content">' . "\n";
-    }
-    function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
-    {
-        $item = $data_object; // используем более описательное имя для использования внутри этого метода.
-        $image_id = get_field('icon_menu', $item->ID);
-        $indent = ($depth > 0 ? str_repeat("\t", $depth) : ''); // отступ в коде
-        $depth_classes = [
-            ($depth == 0 ? 'main-menu-item' : 'box'),
-            ($depth >= 2 ? 'sub-sub-menu-item' : ''),
-            ($depth % 2 ? 'menu-item-odd' : 'menu-item-even'),
-            'menu-item-depth-' . $depth,
-        ];
-        $depth_class_names = esc_attr(implode(' ', $depth_classes));
-        $classes = empty($item->classes) ? [] : (array) $item->classes;
-        $class_names = esc_attr(implode(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item)));
-        $output .= $indent . '<li id="nav-menu-item-' . $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
-        $attributes = !empty($item->attr_title) ? ' title="' . esc_attr($item->attr_title) . '"' : '';
-        $attributes .= !empty($item->target) ? ' target="' . esc_attr($item->target) . '"' : '';
-        $attributes .= !empty($item->xfn) ? ' rel="' . esc_attr($item->xfn) . '"' : '';
-        $attributes .= !empty($item->url) ? ' href="' . esc_attr($item->url) . '"' : '';
-        $attributes .= ' class="menu-link ' . ($depth > 0 ? 'sub-menu-link' : 'main-menu-link') . '"';
-        if ($depth != 0) {
-            $stingPatern = '<a{ATTRIBUTES}><img src="'.$image_id.'"
-													alt="{TITLE}" title="{TITLE}"><span class="top_menu_text">{TITLE}</span></a>';
-        } else {
-            $stingPatern = '<a{ATTRIBUTES}>{TITLE}</a>';
-        }
-        $item_output = strtr($stingPatern, [
-            '{ATTRIBUTES}' => $attributes,
-            '{TITLE}' => apply_filters('the_title', $item->title, $item->ID),
-        ]);
+	public function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
+		$item     = $data_object;
+		$image_id = get_field( 'icon_menu', $item->ID );
+		$indent   = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' );
+		$depth_classes = array(
+			( 0 === $depth ? 'main-menu-item' : 'box' ),
+			( $depth >= 2 ? 'sub-sub-menu-item' : '' ),
+			( $depth % 2 ? 'menu-item-odd' : 'menu-item-even' ),
+			'menu-item-depth-' . $depth,
+		);
+		$depth_class_names = esc_attr( implode( ' ', $depth_classes ) );
+		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+		$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
+		$output .= $indent . '<li id="nav-menu-item-' . $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
 
-        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
-    }
+		$attributes = ! empty( $item->attr_title ) ? ' title="' . esc_attr( $item->attr_title ) . '"' : '';
+		$attributes .= ! empty( $item->target ) ? ' target="' . esc_attr( $item->target ) . '"' : '';
+		$attributes .= ! empty( $item->xfn ) ? ' rel="' . esc_attr( $item->xfn ) . '"' : '';
+		$attributes .= ! empty( $item->url ) ? ' href="' . esc_attr( $item->url ) . '"' : '';
+		$attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'main-menu-link' ) . '"';
 
+		if ( 0 !== $depth ) {
+			$link_template = '<a{ATTRIBUTES}><img src="' . esc_url( $image_id ) . '" alt="{TITLE}" title="{TITLE}"><span class="top_menu_text">{TITLE}</span></a>';
+		} else {
+			$link_template = '<a{ATTRIBUTES}>{TITLE}</a>';
+		}
+		$item_output = strtr( $link_template, array(
+			'{ATTRIBUTES}' => $attributes,
+			'{TITLE}'      => apply_filters( 'the_title', $item->title, $item->ID ),
+		) );
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
 }
-function my_scripts_method()
-{
-    wp_enqueue_script(
-        'custom-script',
-        get_template_directory_uri() . '/js/custom.js',
-        array('jquery'),
-        '1.0',
-        true // Важный параметр! Указывает, что скрипт нужно добавить в футер
-    );
+
+// =============================================================================
+// Scripts
+// =============================================================================
+add_action( 'wp_enqueue_scripts', 'customtheams_enqueue_custom_script' );
+function customtheams_enqueue_custom_script() {
+	wp_enqueue_script(
+		'custom-script',
+		get_template_directory_uri() . '/js/custom.js',
+		array( 'jquery' ),
+		'1.0',
+		true
+	);
 }
-add_action('wp_enqueue_scripts', 'my_scripts_method');
 
-// Обработка массового добавления
-add_action('wp_ajax_woocommerce_bulk_add_to_cart', 'woocommerce_bulk_add_to_cart');
-add_action('wp_ajax_nopriv_woocommerce_bulk_add_to_cart', 'woocommerce_bulk_add_to_cart');
+// =============================================================================
+// WooCommerce: Cart & AJAX
+// =============================================================================
+add_action( 'wp_ajax_woocommerce_bulk_add_to_cart', 'customtheams_woocommerce_bulk_add_to_cart' );
+add_action( 'wp_ajax_nopriv_woocommerce_bulk_add_to_cart', 'customtheams_woocommerce_bulk_add_to_cart' );
 
-function woocommerce_bulk_add_to_cart()
-{
+function customtheams_woocommerce_bulk_add_to_cart() {
     $products = isset($_POST['products']) ? $_POST['products'] : array();
     $added = 0;
     $errors = array();
@@ -421,9 +394,8 @@ function woocommerce_bulk_add_to_cart()
 
 
 
-add_action('init', 'clear_cart_on_click');
-function clear_cart_on_click()
-{
+add_action( 'init', 'customtheams_clear_cart_on_click' );
+function customtheams_clear_cart_on_click() {
     if (isset($_GET['clear-cart'])) {
         WC()->cart->empty_cart();
         wc_add_notice(__('Корзина очищена', 'woocommerce'), 'notice');
@@ -433,52 +405,17 @@ function clear_cart_on_click()
 }
 
 
-// Добавляем ссылку "Удалить" под каждым товаром
-add_action('woocommerce_after_cart_item_name', 'add_remove_item_link', 10, 1);
-function add_remove_item_link($cart_item)
-{
+add_action( 'woocommerce_after_cart_item_name', 'customtheams_add_remove_item_link', 10, 1 );
+function customtheams_add_remove_item_link( $cart_item ) {
     $remove_url = wc_get_cart_remove_url($cart_item['key']);
     echo '<a href="' . esc_url($remove_url) . '" class="remove-item-link" style="color: red; display: block; margin-top: 5px;">Удалить</a>';
 }
 
 
-// add_action('wp_footer', 'show_current_template');
-// function show_current_template() {
-//     if (current_user_can('administrator')) { // Показывать только админам
-//         global $template;
-//         echo '<div style="position:fixed; bottom:10px; left:10px; background:#fff; padding:5px 10px; border:1px solid #000; z-index:9999;">';
-//         echo '<strong>Текущий шаблон:</strong> ' . str_replace(WP_CONTENT_DIR . '/themes/', '', $template);
-//         echo '</div>';
-//     }
-// }
-
-
-// add_action('wp_footer', 'display_all_loaded_templates', 9999);
-// function display_all_loaded_templates() {
-//     if (!current_user_can('administrator')) return;
-
-//     echo '<div style="position:fixed;bottom:10px;left:10px;background:#fff;padding:10px;border:2px solid red;z-index:99999;max-height:300px;overflow-y:scroll;">';
-//     echo '<h3>Загруженные шаблоны WooCommerce</h3>';
-//     echo '<ol>';
-
-//     $included_files = get_included_files();
-//     foreach ($included_files as $file) {
-//         if (strpos($file, 'woocommerce') !== false || strpos($file, 'WooCommerce') !== false) {
-//             echo '<li>' . str_replace(ABSPATH, '', $file) . '</li>';
-//         }
-//     }
-
-//     echo '</ol>';
-//     echo '</div>';
-// }
-
-// Удаляем стандартный шорткод
-remove_shortcode('products');
-
-// Регистрируем кастомную версию
-add_shortcode('products-cat', 'custom_products_shortcode');
-function custom_products_shortcode($atts)
-{
+// Shortcodes
+remove_shortcode( 'products' );
+add_shortcode( 'products-cat', 'customtheams_products_shortcode' );
+function customtheams_products_shortcode( $atts ) {
     $atts = shortcode_atts(array(
         'category' => '',
         'limit' => 100,
@@ -523,10 +460,12 @@ function custom_products_shortcode($atts)
     return ob_get_clean();
 }
 
-// Редактирование существующих пунктов
-add_filter('woocommerce_account_menu_items', 'custom_my_account_menu');
-function custom_my_account_menu($items)
-{
+// =============================================================================
+// WooCommerce: My Account
+// =============================================================================
+
+add_filter( 'woocommerce_account_menu_items', 'customtheams_my_account_menu' );
+function customtheams_my_account_menu( $items ) {
     unset($items['downloads']); // Удаляем раздел "Загрузки"
 
     // Изменяем порядок и названия
@@ -538,18 +477,16 @@ function custom_my_account_menu($items)
         'customer-logout' => __('Выход', 'woocommerce')
     );
 }
-add_filter('woocommerce_login_redirect', 'custom_login_redirect', 10, 2);
-function custom_login_redirect($redirect, $user)
-{
+add_filter( 'woocommerce_login_redirect', 'customtheams_login_redirect', 10, 2 );
+function customtheams_login_redirect( $redirect, $user ) {
     if (wc_user_has_role($user, 'customer')) {
         return wc_get_account_endpoint_url('orders'); // Или любой другой endpoint
     }
     return $redirect;
 }
 
-add_filter('woocommerce_get_account_endpoint_url', 'change_default_account_page', 10, 2);
-function change_default_account_page($url, $endpoint)
-{
+add_filter( 'woocommerce_get_account_endpoint_url', 'customtheams_change_default_account_page', 10, 2 );
+function customtheams_change_default_account_page( $url, $endpoint ) {
 
     if ($endpoint === 'dashboard') {
         // Перенаправляем на страницу заказов вместо дашборда
@@ -561,7 +498,11 @@ function change_default_account_page($url, $endpoint)
     return $url;
 }
 
-function get_cross_sell_parents($product_id) {
+// =============================================================================
+// WooCommerce: Products
+// =============================================================================
+
+function get_cross_sell_parents( $product_id ) {
     if (!$product_id) return array();
     
     global $wpdb;
@@ -595,11 +536,14 @@ function get_cross_sell_parents($product_id) {
 
 
 
-// Функции для работы с количеством товаров в корзине
-add_action('wp_ajax_update_cart_quantity', 'update_cart_quantity');
-add_action('wp_ajax_nopriv_update_cart_quantity', 'update_cart_quantity');
+// =============================================================================
+// Cart Quantity & Remove
+// =============================================================================
 
-function update_cart_quantity() {
+add_action( 'wp_ajax_update_cart_quantity', 'customtheams_update_cart_quantity' );
+add_action( 'wp_ajax_nopriv_update_cart_quantity', 'customtheams_update_cart_quantity' );
+
+function customtheams_update_cart_quantity() {
     if (!wp_verify_nonce($_POST['nonce'], 'cart_nonce')) {
         wp_die('Security check failed');
     }
@@ -621,9 +565,8 @@ function update_cart_quantity() {
     wp_send_json($response);
 }
 
-// Модифицируем поле количества
-add_filter('woocommerce_cart_item_quantity', 'custom_cart_quantity_field', 10, 3);
-function custom_cart_quantity_field($product_quantity, $cart_item_key, $cart_item) {
+add_filter( 'woocommerce_cart_item_quantity', 'customtheams_cart_quantity_field', 10, 3 );
+function customtheams_cart_quantity_field( $product_quantity, $cart_item_key, $cart_item ) {
     $min_quantity = 1;
     $max_quantity = $cart_item['data']->get_max_purchase_quantity() ?: 999;
     
@@ -645,9 +588,8 @@ function custom_cart_quantity_field($product_quantity, $cart_item_key, $cart_ite
     return $product_quantity;
 }
 
-// Подключаем скрипты
-add_action('wp_enqueue_scripts', 'cart_quantity_scripts');
-function cart_quantity_scripts() {
+add_action( 'wp_enqueue_scripts', 'customtheams_cart_quantity_scripts' );
+function customtheams_cart_quantity_scripts() {
     if (is_cart()) {
         wp_enqueue_script('cart-quantity', get_template_directory_uri() . '/js/cart-quantity.js', array('jquery'), '1.0', true);
         wp_localize_script('cart-quantity', 'cart_ajax', array(
@@ -706,7 +648,7 @@ function remove_from_cart_by_product_id() {
     $product_id = intval($_POST['products'][0]['product_id']);
     $qti = intval($_POST['products'][0]['quantity']);
     $variation_id = isset($_POST['variation_id']) ? intval($_POST['variation_id']) : 0;
-        $cart_item_key = find_cart_item_key_by_product_id($product_id, $variation_id);
+        $cart_item_key = customtheams_find_cart_item_key_by_product_id( $product_id, $variation_id );
         if ($cart_item_key) {
             $result = WC()->cart->set_quantity($cart_item_key, $qti);
             if ($result) {
@@ -716,7 +658,7 @@ function remove_from_cart_by_product_id() {
     wp_send_json_error('Товар не найден в корзине');
 }
 
-function find_cart_item_key_by_product_id($product_id, $variation_id = 0) {
+function customtheams_find_cart_item_key_by_product_id( $product_id, $variation_id = 0 ) {
     foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
             if ($cart_item['product_id'] == $product_id) {
                 return $cart_item_key;
@@ -746,7 +688,7 @@ function find_cart_item_key_by_product_id($product_id, $variation_id = 0) {
 
 
 // Отключаем комментарии для всех типов записей
-function disable_comments_post_types_support() {
+function customtheams_disable_comments_post_types_support() {
     $post_types = get_post_types();
     foreach ($post_types as $post_type) {
         if (post_type_supports($post_type, 'comments')) {
@@ -755,27 +697,26 @@ function disable_comments_post_types_support() {
         }
     }
 }
-add_action('admin_init', 'disable_comments_post_types_support');
+add_action( 'admin_init', 'customtheams_disable_comments_post_types_support' );
 
-// Закрываем комментарии
-function disable_comments_status() {
+function customtheams_disable_comments_status() {
     return false;
 }
-add_filter('comments_open', 'disable_comments_status', 20, 2);
-add_filter('pings_open', 'disable_comments_status', 20, 2);
+add_filter( 'comments_open', 'customtheams_disable_comments_status', 20, 2 );
+add_filter( 'pings_open', 'customtheams_disable_comments_status', 20, 2 );
 
-// Скрываем существующие комментарии
-function disable_comments_hide_existing($comments) {
+function customtheams_disable_comments_hide_existing( $comments ) {
     return array();
 }
-add_filter('comments_array', 'disable_comments_hide_existing', 10, 2);
+add_filter( 'comments_array', 'customtheams_disable_comments_hide_existing', 10, 2 );
 
+// =============================================================================
+// Debug & Admin
+// =============================================================================
 
+add_filter( 'woocommerce_template_debug_mode', '__return_true' );
 
-add_filter('woocommerce_template_debug_mode', '__return_true');
-
-
-add_action('admin_bar_menu', function($wp_admin_bar) {
+add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
     if (is_woocommerce() || is_cart() || is_checkout() || is_account_page()) {
         global $template;
         $wp_admin_bar->add_node([
@@ -785,10 +726,14 @@ add_action('admin_bar_menu', function($wp_admin_bar) {
             'meta'  => ['title' => 'Текущий шаблон: ' . $template]
         ]);
     }
-}, 999);
+}, 999 );
 
+// =============================================================================
+// Thank You Redirect
+// =============================================================================
 
-function truemisha_redirect_to_thank_you() {
+add_action( 'template_redirect', 'customtheams_redirect_to_thank_you' );
+function customtheams_redirect_to_thank_you() {
  
 	// если не страница "Заказ принят", то ничего не делаем
 	if( ! is_order_received_page() ) {
@@ -822,5 +767,4 @@ function truemisha_redirect_to_thank_you() {
 	exit;
  
 }
-add_action( 'template_redirect', 'truemisha_redirect_to_thank_you' );
 
