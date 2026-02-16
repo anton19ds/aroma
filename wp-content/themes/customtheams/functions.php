@@ -110,6 +110,12 @@ add_filter( 'show_admin_bar', '__return_false' );
  * Купоны: WooCommerce → Настройки → Общие → «Включить купоны».
  */
 add_filter( 'woocommerce_coupons_enabled', 'customtheams_enable_checkout_coupons' );
+
+add_filter( 'woocommerce_cart_totals_coupon_html', 'customtheams_cart_coupon_remove_brackets', 10, 3 );
+function customtheams_cart_coupon_remove_brackets( $coupon_html, $coupon, $discount_amount_html ) {
+	$coupon_html = str_replace( array( '[Убрать]', '[Remove]', '[Удалить]' ), array( 'Убрать', 'Remove', 'Удалить' ), $coupon_html );
+	return $coupon_html;
+}
 function customtheams_enable_checkout_coupons( $enabled ) {
 	if ( is_checkout() || is_cart() ) {
 		return true;

@@ -21,20 +21,27 @@ $theme_uri = get_template_directory_uri();
 	.prod-title-sub-wgt-offer-wrapper { grid-row-gap: 0; }
 	.custom-shopcart-table .product-detail p { margin-bottom: 7px; }
 
-	/* Typography */
-	.kg-span, span.prod-offer-wrap .kg-span {
-		font-weight: 600;
-		font-family: 'Conv_Avenir Next LT Pro Condensed', 'Avenir Next LT Pro', Sans-Serif !important;
+	/* Typography — единая толщина шрифта, пробелы */
+	.cart-wrapper {
+		font-weight: 400 !important;
 	}
-	span.prod-offer-wrap, span.prod-offer-wrap b { font-family: 'Avenir Next LT Pro' !important; }
-	span.prod-offer-wrap { font-weight: 400 !important; }
-	span.prod-incl { font-family: 'Avenir Next LT Pro' !important; }
-	table tbody tr td:nth-of-type(2),
-	table tbody tr td:nth-of-type(3) {
-		font-family: 'Avenir Next LT Pro' !important;
-		text-shadow: none !important;
-		font-weight: 600 !important;
+	.cart-wrapper .kg-span,
+	.cart-wrapper span.prod-offer-wrap .kg-span,
+	.cart-wrapper span.prod-offer-wrap,
+	.cart-wrapper span.prod-offer-wrap b,
+	.cart-wrapper span.prod-incl,
+	.cart-wrapper table tbody tr td,
+	.cart-wrapper .subtol-wrap,
+	.cart-wrapper .total-price,
+	.cart-wrapper .nos-span { font-family: 'Avenir Next LT Pro', sans-serif !important; font-weight: 400 !important; }
+	.cart-wrapper .woocommerce-remove-coupon {
+		font-weight: 400 !important;
+		text-decoration: underline;
 	}
+	.cart-wrapper .prod-incl { white-space: pre; }
+	.cart-wrapper .total-row .subtol-wrap span { margin-right: 0.5em; }
+	.cart-wrapper .total-row .total-price { margin-left: 0.5em; }
+	.cart-wrapper .total-price .amount { margin-left: 0.2em; }
 	p.cart_empty_msg { font-size: 18px; color: #6c684a; text-align: center; font-weight: 600; }
 	p.free_ship_dis { font-size: 17px; line-height: 26px; }
 
@@ -53,10 +60,8 @@ $theme_uri = get_template_directory_uri();
 
 	/* Totals */
 	.total-wrapper { height: auto; }
-	.total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+	.total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 1em; }
 	.total-row:last-child { margin-bottom: 0; }
-	.subtol-wrap { font-family: 'Avenir Next LT Pro', 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important; font-weight: 600; }
-	.total-price { font-family: 'Avenir Next LT Pro', 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important; font-weight: 600; }
 	td.tot-val-mob-hide { color: #6c684a !important; }
 
 	/* Coupon form */
@@ -286,15 +291,15 @@ $theme_uri = get_template_directory_uri();
 												</div>
 												<?php //print_r($cart_item) ?>
 											</div>
-											<span class="prod-incl">X <?php
-											echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key); // PHPCS: XSS ok.
+											<span class="prod-incl"><?php echo esc_html_x( '×', 'quantity times price', 'woocommerce' ); ?> <?php
+											echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); // PHPCS: XSS ok.
 											?></span>
-											<span class="tot-val-desk-hide"><?= wc_price($cart_item['line_total']) ?></span>
+											<span class="tot-val-desk-hide"><?php echo wp_kses_post( wc_price( $cart_item['line_total'] ) ); ?></span>
 										</div>
 									</div>
 								</td>
-								<td class="tot-val-mob-hide" id="priseC<?= $product_id ?>">
-									<?= wc_price($cart_item['line_total']) ?></td>
+								<td class="tot-val-mob-hide" id="priseC<?php echo esc_attr( $product_id ); ?>">
+									<?php echo wp_kses_post( wc_price( $cart_item['line_total'] ) ); ?></td>
 							</tr>
 							<?php
 						}
@@ -313,7 +318,7 @@ $theme_uri = get_template_directory_uri();
 			<?php endforeach; ?>
 			<div class="total-row">
 				<div class="subtol-wrap"><span>Итого</span></div>
-				<div class="total-price"><span><?php echo wp_kses_post( WC()->cart->get_cart_total() ); ?></span></div>
+				<div class="total-price"><span> <?php echo wp_kses_post( WC()->cart->get_cart_total() ); ?></span></div>
 			</div>
 		</div>
 		<div class="coupon-wrapper">
