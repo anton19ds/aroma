@@ -1277,11 +1277,28 @@
     align-items: center;
 }
 
-/* Убрать полоску сверху у каждого способа оплаты */
-.woocommerce-checkout #payment ul.wc_payment_methods > li.wc_payment_method,
-.woocommerce-checkout #payment .wc_payment_method {
+/* Убрать полоску сверху у каждого способа оплаты (включая первый — неактивный) */
+body.woocommerce-checkout #payment.woocommerce-checkout-payment,
+body.woocommerce-checkout #payment ul.wc_payment_methods,
+body.woocommerce-checkout #payment ul.wc_payment_methods > li,
+body.woocommerce-checkout #payment ul.wc_payment_methods > li.wc_payment_method,
+body.woocommerce-checkout #payment ul.wc_payment_methods > li.wc_payment_method:first-child,
+body.woocommerce-checkout #payment .wc_payment_method {
     border-top: none !important;
+    border-top-width: 0 !important;
     padding-top: 0;
+}
+body.woocommerce-checkout #payment ul.wc_payment_methods::before,
+body.woocommerce-checkout #payment ul.wc_payment_methods > li::before {
+    display: none !important;
+    content: none !important;
+}
+body.woocommerce-checkout #payment .wc_payment_method > label {
+    border-top: none !important;
+}
+/* Родительский контейнер списка оплаты — убрать верхнюю границу */
+body.woocommerce-checkout div#payment > ul.wc_payment_methods {
+    border-top: 0 !important;
 }
 
 .wc_payment_methods.payment_methods.methods li input {
@@ -1327,6 +1344,58 @@
 
 .woocommerce-checkout #payment div.payment_box p {
     line-height: inherit;
+}
+
+/* Мобильный вид: способ оплаты — плашка с описанием снизу */
+@media only screen and (max-width: 991px) {
+    body.woocommerce-checkout #payment ul.wc_payment_methods {
+        display: block;
+        padding: 0;
+        margin: 0 0 16px 0;
+    }
+    body.woocommerce-checkout #payment ul.wc_payment_methods > li.wc_payment_method {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 0;
+        margin: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    body.woocommerce-checkout #payment ul.wc_payment_methods > li.wc_payment_method:last-of-type {
+        border-bottom: none;
+    }
+    body.woocommerce-checkout #payment .wc_payment_method > label {
+        order: 1;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 0;
+        width: 100%;
+        padding: 0;
+    }
+    body.woocommerce-checkout #payment .wc_payment_method input[type="radio"] {
+        order: 0;
+        margin-right: 10px;
+    }
+    /* Боковая всплывающая плашка с текстом описания — под инпутом выбора оплаты */
+    body.woocommerce-checkout #payment div.payment_box {
+        order: 2;
+        width: 100%;
+        margin: 12px 0 0 0;
+        padding: 14px 16px;
+        background: #e9e6ed;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        margin-left: 0;
+    }
+    body.woocommerce-checkout #payment div.payment_box p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #333;
+    }
 }
 
 #nav-menu-item-144 > a {

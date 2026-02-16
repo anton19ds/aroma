@@ -116,6 +116,15 @@ function customtheams_cart_coupon_remove_brackets( $coupon_html, $coupon, $disco
 	$coupon_html = str_replace( array( '[Убрать]', '[Remove]', '[Удалить]' ), array( 'Убрать', 'Remove', 'Удалить' ), $coupon_html );
 	return $coupon_html;
 }
+
+add_filter( 'woocommerce_gateway_description', 'customtheams_bacs_checkout_description', 10, 2 );
+function customtheams_bacs_checkout_description( $description, $gateway_id ) {
+	if ( $gateway_id === 'bacs' ) {
+		return 'Оплату нужно направлять на наш банковский счет. Заказ будет отправлен после поступления средств на наш счёт. Указывайте номер заказа в подписи к платежу.';
+	}
+	return $description;
+}
+
 function customtheams_enable_checkout_coupons( $enabled ) {
 	if ( is_checkout() || is_cart() ) {
 		return true;
