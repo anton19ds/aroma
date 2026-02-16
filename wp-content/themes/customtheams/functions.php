@@ -101,6 +101,9 @@ function customtheams_enqueue_assets() {
 	}
 	wp_enqueue_style( 'new-style', $theme_uri . '/new.css', array(), '1.0' );
 	wp_enqueue_style( 'style-name', get_stylesheet_uri() );
+	if ( function_exists( 'is_checkout' ) && is_checkout() && ! is_wc_endpoint_url() ) {
+		wp_enqueue_style( 'customtheams-checkout-mobile-payment', $theme_uri . '/css/checkout-mobile-payment.css', array( 'style-name' ), '1.0' );
+	}
 }
 
 add_filter( 'show_admin_bar', '__return_false' );
