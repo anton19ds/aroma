@@ -380,14 +380,28 @@ do_action('woocommerce_before_cart'); ?>
 			<div class="coupon-input-btn">
 				<a href="/checkout/" class="checkout-btn">Оформить заказ</a>
 			</div>
-		</div>
-		<div class="cart-start-btn-wrap">
+			<div class="cart-start-btn-wrap">
 			<a href="/">
 				<i class="fa fa-arrow-left" aria-hidden="true"></i> Вернуться к покупкам
 			</a>
 		</div>
+		</div>
+		
 	</div>
 </div>
+<style>
+	.coupon-wrapper{
+		display: flex;
+		align-items: center;
+		margin-top: 20px;
+	}
+	.coupon-wrapper .cart-start-btn-wrap{
+		margin: 0 0 0 auto;
+	}
+	.coupon-wrapper .coupon-input-btn{
+		margin-top: 0
+	}
+</style>
 <?php do_action('woocommerce_after_cart'); ?>
 <?php get_footer(); ?>
 

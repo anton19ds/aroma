@@ -1,4 +1,4 @@
-ё123123123123123123<?php
+<?php
 /**
  * The Template for displaying products in a product category. Simply includes the archive template
  *

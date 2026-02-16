@@ -1,4 +1,3 @@
-123123123
 
 
 <?php
@@ -30,7 +29,6 @@ $calculator_text          = '';
 
 
 
-123123123
 <tr class="woocommerce-shipping-totals shipping">
 	<th><?php echo wp_kses_post( $package_name ); ?></th>
 	<td data-title="<?php echo esc_attr( $package_name ); ?>">

@@ -32,6 +32,8 @@ if ( apply_filters( 'woocommerce_checkout_show_terms', true ) && function_exists
 				</label>
 				<input type="hidden" name="terms-field" value="1" />
 			</p>
+
+
 		<?php endif; ?>
 	</div>
 	<?php

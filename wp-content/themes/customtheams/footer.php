@@ -1,7 +1,7 @@
 <div class="client-section">
 	<div class="container">
 		<div class="client-logo">
-			<?php $pdata = get_field('sertifikats', 55312);
+			<?php $pdata = get_field('sertifikats', 126);
 			foreach($pdata as $item):?>
 			<?php if(!empty($item['img']) && !empty($item['file']))?>
 			<figure class=" ">
@@ -133,7 +133,7 @@
 </style>
 <footer>
 	<div class="container">
-		<?php $group = get_field('footer_block', 55312) ?>
+		<?php $group = get_field('footer_block', 126) ?>
 		<div class="certificate-grid">
 			<div class="certificate-content pink-color">
 				<figure>
@@ -179,15 +179,15 @@
 		</div>
 		<div class="contact-details">
 			<div class="home-contact-us">
-				<h2><?php echo get_field('title_contact_us', 55312)?></h2>
+				<h2><?php echo get_field('title_contact_us', 126)?></h2>
 				<div class="">
-					<?php echo get_field('contact_footer', 55312) ?>
+					<?php echo get_field('contact_footer', 126) ?>
 				</div>
 			</div>
 			<div class="footer-world">
-				<h2><?php echo get_field('worldwide_shipping', 55312)?></h2>
+				<h2><?php echo get_field('worldwide_shipping', 126)?></h2>
 				<img src="<?php echo get_template_directory_uri(); ?>/images/photo/map.png" alt="" title="">
-				<h3><?php echo get_field('text_after_map', 55312)?></h3>
+				<h3><?php echo get_field('text_after_map', 126)?></h3>
 				
 			</div>
 		</div>
@@ -245,7 +245,7 @@
 
 
 		<div class="footer-para">
-			<p><?php echo get_field('disclaimer', 55312) ?></p>
+			<p><?php echo get_field('disclaimer', 126) ?></p>
 		</div>
 		<div class="copyright">
 			<div class="" style="width: 100%;">
