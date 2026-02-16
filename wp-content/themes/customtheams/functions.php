@@ -127,13 +127,17 @@ function elixir_send_order_email_to_customer_on_pending( $order_id, $order = nul
 
 /**
  * Отправка уведомления о заказе в Telegram при оформлении.
- * Требует в .env: TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID
+ * Требует в .env: TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID (несколько чатов через запятую)
  */
 add_action( 'woocommerce_new_order', 'elixir_send_order_to_telegram', 10, 2 );
 function elixir_send_order_to_telegram( $order_id, $order = null ) {
 	$token = getenv( 'TELEGRAM_BOT_TOKEN' );
-	$chat_id = getenv( 'TELEGRAM_CHAT_ID' );
-	if ( empty( $token ) || empty( $chat_id ) ) {
+	$chat_ids_raw = getenv( 'TELEGRAM_CHAT_ID' );
+	if ( empty( $token ) || empty( $chat_ids_raw ) ) {
+		return;
+	}
+	$chat_ids = array_map( 'trim', array_filter( explode( ',', $chat_ids_raw ) ) );
+	if ( empty( $chat_ids ) ) {
 		return;
 	}
 	if ( ! $order ) {
@@ -167,18 +171,20 @@ function elixir_send_order_to_telegram( $order_id, $order = null ) {
 	$msg .= "<b>Статус:</b> " . esc_html( wc_get_order_status_name( $order->get_status() ) );
 
 	$url = 'https://api.telegram.org/bot' . $token . '/sendMessage';
-	$body = array(
-		'chat_id'    => $chat_id,
-		'text'       => $msg,
-		'parse_mode' => 'HTML',
-		'disable_web_page_preview' => true,
-	);
+	foreach ( $chat_ids as $chat_id ) {
+		$body = array(
+			'chat_id'                  => $chat_id,
+			'text'                     => $msg,
+			'parse_mode'               => 'HTML',
+			'disable_web_page_preview' => true,
+		);
 
-	wp_remote_post( $url, array(
-		'body' => $body,
-		'timeout' => 15,
-		'blocking' => false,
-	) );
+		wp_remote_post( $url, array(
+			'body' => $body,
+			'timeout' => 15,
+			'blocking' => false,
+		) );
+	}
 }
 
 //add_theme_support('menus');
