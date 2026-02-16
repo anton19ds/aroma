@@ -1,62 +1,49 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template Name: Cart
+ * Страница корзины с формой купона.
+ */
+defined( 'ABSPATH' ) || exit;
+get_header();
+
+$theme_uri = get_template_directory_uri();
+?>
 <style>
-	.breadcrum-banner .gurantee-section-bg {
-		min-height: 350px;
-	}
+	/* Banner */
+	.breadcrum-banner .gurantee-section-bg { min-height: 350px; }
+	.breadcrum-banner .gurantee-content { height: 350px !important; min-height: 350px !important; }
 
-	.breadcrum-banner .gurantee-content {
-		height: 350px !important;
-		min-height: 350px !important;
-	}
+	/* Product detail */
+	.product-detail .img-remove-wrapper .prod-img-wrapper img { width: 100px; height: 100px; margin-bottom: 0; }
+	.product-detail .img-remove-wrapper .prod-img-wrapper { background: none; }
+	.prod-img-wrapper { margin-right: 0; }
+	.img-remove-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+	.prod-title-sub-wgt-offer-wrapper { grid-row-gap: 0; }
+	.custom-shopcart-table .product-detail p { margin-bottom: 7px; }
 
-	.product-detail .img-remove-wrapper .prod-img-wrapper img {
-		width: 100px;
-		height: 100px;
-		margin-bottom: 0px;
-	}
-	.product-detail .img-remove-wrapper .prod-img-wrapper {
-		background: none;
-	}
-	.kg-span {
-		font-weight: bold;
-		font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-		font-family: 'Avenir Next LT Pro' !important;
-		src: url(AvenirNextLTPro-HeavyCn.woff2) format('woff2'), url(AvenirNextLTPro-HeavyCn.woff) format('woff');
+	/* Typography */
+	.kg-span, span.prod-offer-wrap .kg-span {
 		font-weight: 600;
+		font-family: 'Conv_Avenir Next LT Pro Condensed', 'Avenir Next LT Pro', Sans-Serif !important;
 	}
-
-	p.cart_empty_msg {
-		font-size: 18px;
-		color: #6c684a;
-		text-align: center;
-		font-weight: 600;
-	}
-
-	span.prod-offer-wrap b {
-		font-family: 'Avenir Next LT Pro' !important;
-	}
-
-	span.prod-offer-wrap {
-		font-family: 'Avenir Next LT Pro' !important;
-		font-weight: 400 !important;
-	}
-
-	span.prod-incl {
-		font-family: 'Avenir Next LT Pro' !important;
-	}
-
+	span.prod-offer-wrap, span.prod-offer-wrap b { font-family: 'Avenir Next LT Pro' !important; }
+	span.prod-offer-wrap { font-weight: 400 !important; }
+	span.prod-incl { font-family: 'Avenir Next LT Pro' !important; }
 	table tbody tr td:nth-of-type(2),
 	table tbody tr td:nth-of-type(3) {
 		font-family: 'Avenir Next LT Pro' !important;
 		text-shadow: none !important;
 		font-weight: 600 !important;
 	}
+	p.cart_empty_msg { font-size: 18px; color: #6c684a; text-align: center; font-weight: 600; }
+	p.free_ship_dis { font-size: 17px; line-height: 26px; }
 
+	/* Buttons */
 	.new__buton__remove {
 		color: #fff !important;
 		background-color: #d9534f;
 		border-color: #d9534f;
-		padding: 2px 15px 3px 15px;
+		padding: 2px 15px 3px;
 		border-radius: 2px;
 		margin-top: 3px;
 		display: block;
@@ -64,129 +51,82 @@
 		font-size: 15px;
 	}
 
-	.prod-title-sub-wgt-offer-wrapper {
-		grid-row-gap: 0px;
-	}
+	/* Totals */
+	.total-wrapper { height: auto; }
+	.total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+	.total-row:last-child { margin-bottom: 0; }
+	.subtol-wrap { font-family: 'Avenir Next LT Pro', 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important; font-weight: 600; }
+	.total-price { font-family: 'Avenir Next LT Pro', 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important; font-weight: 600; }
+	td.tot-val-mob-hide { color: #6c684a !important; }
 
-	.custom-shopcart-table .product-detail p {
-		margin-bottom: 7px;
+	/* Coupon form */
+	.coupon-wrapper { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 20px; }
+	.coupon-wrapper .cart-start-btn-wrap { margin-left: auto; }
+	.coupon-wrapper .coupon-input-btn,
+	.coupon-wrapper .cart-coupon-form-wrap { margin-top: 0; }
+	.coupon-input-btn,
+	.cart-coupon-form-wrap { display: flex; justify-content: space-between; }
+	.coupon-input-btn form,
+	.cart-coupon-form { display: flex !important; justify-content: flex-start; gap: 10px; margin-bottom: 0; align-items: center; }
+	.cart-coupon-input {
+		min-width: 200px;
+		padding: 10px 14px;
+		font-size: 14px;
+		font-family: 'Avenir Next LT Pro', sans-serif;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+		color: #333;
 	}
-
-	.img-remove-wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.total-wrapper {
-		height: auto;
-	}
-
-	.subtol-wrap {
-		font-family: 'Avenir Next LT Pro' !important;
+	.cart-coupon-input:focus { outline: none; border-color: #6c684a; }
+	.cart-coupon-btn {
+		padding: 10px 20px;
+		font-size: 14px;
+		font-family: 'Avenir Next LT Pro', sans-serif;
 		font-weight: 600;
+		background: #6c684a;
+		color: #fff !important;
+		border: none;
+		border-radius: 2px;
+		cursor: pointer;
+		white-space: nowrap;
 	}
-
-	.total-price {
-		font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-		font-weight: 700 !important;
-		font-family: 'Avenir Next LT Pro' !important;
-		src: url(AvenirNextLTPro-BoldCn.woff2) format('woff2'), url(AvenirNextLTPro-BoldCn.woff) format('woff');
-		font-weight: 600 !important;
-	}
-
-	p.free_ship_dis {
-		font-size: 17px;
-		line-height: 26px;
-	}
-
-	p.free_ship_dis {
-		font-size: 17px;
-		line-height: 26px;
-	}
-
-	.coupon-input-btn form {
-		display: flex !important;
-		justify-content: space-between;
-		gap: 8px;
-		margin-bottom: 20px;
-	}
-
-	.coupon-input-btn {
-		justify-content: space-between;
-		display: flex;
-	}
-
-	.coupon-input-btn {}
-
-	.coupon-input-btn form button {
-		width: 184px;
-	}
-
-	.subtol-wrap {
-		font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-		font-weight: 700 !important;
-	}
-
-	span.prod-offer-wrap b {
-		font-family: 'Avenir Next LT Pro' !important;
-		src: url(AvenirNextLTPro-HeavyCn.woff2) format('woff2'), url(AvenirNextLTPro-HeavyCn.woff) format('woff');
-		font-weight: 600;
-	}
-
-	.subtol-wrap {
-		font-family: 'Avenir Next LT Pro' !important;
-		src: url(AvenirNextLTPro-BoldCn.woff2) format('woff2'), url(AvenirNextLTPro-BoldCn.woff) format('woff');
-		font-weight: 600 !important;
-	}
-
-	td.tot-val-mob-hide {
-		color: #6c684a !important;
-	}
-
-	.prod-img-wrapper {
-		margin-right: 0px;
-	}
-
-	.kg-span {
-		font-weight: 600 !important;
-		font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-	}
-
-	span.prod-offer-wrap .kg-span {
-		font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-	}
-
-	span.prod-offer-wrap .kg-span {
-		font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-		font-family: 'Avenir Next LT Pro' !important;
-		src: url(AvenirNextLTPro-HeavyCn.woff2) format('woff2'), url(AvenirNextLTPro-HeavyCn.woff) format('woff');
-		font-weight: 600;
-	}
+	.cart-coupon-btn:hover { background: #5a5640; color: #fff !important; }
+	.coupon-input-btn form button { width: 184px; }
 
 	@media only screen and (min-width: 300px) and (max-width: 991px) {
-		.coupon-input-btn form {
+		.coupon-wrapper {
 			flex-direction: column;
-			gap: 15px;
-			margin-bottom: 15px;
+			align-items: stretch;
 		}
 
-		.coupon-input-btn {
+		.coupon-input-btn form,
+		.cart-coupon-form {
+			flex-direction: column;
+			gap: 10px;
+			align-items: stretch;
+		}
+
+		.coupon-input-btn,
+		.cart-coupon-form-wrap {
 			display: block;
 		}
 
-		.coupon-input-btn form button {
+		.cart-coupon-input {
+			min-width: 0;
+			width: 100%;
+		}
+
+		.coupon-input-btn form button,
+		.cart-coupon-btn {
 			width: 100%;
 		}
 
 		.coupon-wrapper .coupon-input-btn {
-			display: flex;
-			flex-direction: column;
+			display: block;
 		}
 
-		.coupon-wrapper .coupon-input-btn form {
-			order: 1;
+		.coupon-wrapper .cart-coupon-form-wrap {
+			order: 0;
 		}
 
 		span.tot-val-desk-hide {
@@ -219,17 +159,13 @@
 			font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
 		}
 
-		span.prod-offer-wrap .kg-span {
-			font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important;
-		}
+		span.prod-offer-wrap .kg-span { font-family: 'Conv_Avenir Next LT Pro Condensed', Sans-Serif !important; }
 	}
 </style>
-<?php
-defined('ABSPATH') || exit;
-do_action('woocommerce_before_cart'); ?>
+<?php do_action( 'woocommerce_before_cart' ); ?>
 <div class="gurantee-section breadcrum-banner shopping-section h-350">
 	<div class="gurantee-section-bg"
-		style="background-image: url('https://elixir-aroma.ru/images/order-banner.jpg');">
+		style="background-image: url('<?php echo esc_url( $theme_uri ); ?>/images/order-banner.jpg');">
 		<div class="gurantee-content">
 			<h1>Shopping Cart</h1>
 			<p>in Cart</p>
@@ -239,7 +175,7 @@ do_action('woocommerce_before_cart'); ?>
 <div class="cart-wrapper">
 	<div class="container" id="AppendCartSection">
 		<div class="cart-start-btn-wrap">
-			<a href="/">
+			<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
 				<i class="fa fa-arrow-left" aria-hidden="true"></i> Продолжить покупки</a>
 			<a href="?clear-cart" class="button">
 				<i class="fa fa-trash" aria-hidden="true"></i>
@@ -369,86 +305,52 @@ do_action('woocommerce_before_cart'); ?>
 			<?php do_action('woocommerce_after_cart_table'); ?>
 		</form>
 		<div class="total-wrapper">
-			<div class="subtol-wrap">
-				<span>Итого</span>
-			</div>
-			<div class="total-price">
-				<span><?= WC()->cart->get_cart_total(); ?></span>
+			<?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
+				<div class="total-row cart-coupon-discount">
+					<div class="subtol-wrap"><span><?php wc_cart_totals_coupon_label( $coupon ); ?></span></div>
+					<div class="total-price"><?php wc_cart_totals_coupon_html( $coupon ); ?></div>
+				</div>
+			<?php endforeach; ?>
+			<div class="total-row">
+				<div class="subtol-wrap"><span>Итого</span></div>
+				<div class="total-price"><span><?php echo wp_kses_post( WC()->cart->get_cart_total() ); ?></span></div>
 			</div>
 		</div>
 		<div class="coupon-wrapper">
+			<?php if ( wc_coupons_enabled() ) : ?>
+				<div class="coupon-input-btn cart-coupon-form-wrap">
+					<form class="cart-coupon-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+						<label for="coupon_code" class="screen-reader-text"><?php esc_html_e( 'Промокод:', 'woocommerce' ); ?></label>
+						<input type="text" name="coupon_code" class="input-text cart-coupon-input" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Введите промокод', 'woocommerce' ); ?>" />
+						<button type="submit" class="button cart-coupon-btn" name="apply_coupon" value="<?php esc_attr_e( 'Применить', 'woocommerce' ); ?>"><?php esc_html_e( 'Применить', 'woocommerce' ); ?></button>
+					</form>
+				</div>
+			<?php endif; ?>
 			<div class="coupon-input-btn">
-				<a href="/checkout/" class="checkout-btn">Оформить заказ</a>
+				<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="checkout-btn">Оформить заказ</a>
 			</div>
 			<div class="cart-start-btn-wrap">
-			<a href="/">
-				<i class="fa fa-arrow-left" aria-hidden="true"></i> Вернуться к покупкам
-			</a>
+				<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
+					<i class="fa fa-arrow-left" aria-hidden="true"></i> Вернуться к покупкам
+				</a>
+			</div>
 		</div>
-		</div>
-		
 	</div>
 </div>
-<style>
-	.coupon-wrapper{
-		display: flex;
-		align-items: center;
-		margin-top: 20px;
-	}
-	.coupon-wrapper .cart-start-btn-wrap{
-		margin: 0 0 0 auto;
-	}
-	.coupon-wrapper .coupon-input-btn{
-		margin-top: 0
-	}
-</style>
-<?php do_action('woocommerce_after_cart'); ?>
+<?php do_action( 'woocommerce_after_cart' ); ?>
 <?php get_footer(); ?>
 
 
 <script>
-
-
-
 	function setQty(pid, action, product_variant_id, ptype) {
 		event.preventDefault();
-		//alert("123");
-		var ptype = ptype;
-		if (ptype == '' || ptype == undefined) {
-			ptype = 'small';
-		}
-		//var totalproduct = jQuery('#totalproduct').val();
-		//totalproduct = parseInt(totalproduct);
+		ptype = (ptype && ptype !== '') ? ptype : 'small';
 		var inputBoxID = "qty" + pid + "_qa";
 		var currQty = (document.getElementById(inputBoxID).value) * 1;
-		// newQty = currQty;
-		// if (action == 'add') {
-		// 	var newQty = currQty + 1;
-		// 	totalproduct = parseInt(totalproduct) + 1;
-		// }
-		// else if (action == 'remove') {
-		// 	var newQty = currQty - 1;
-		// 	totalproduct = parseInt(totalproduct) - 1;
-		// }
-		// var productID = pid;
-		// var action = action;
-		// var quantity = newQty;
-		// if (quantity && quantity != '' && quantity != '0') {
-		// 	quantity = parseInt(quantity);
-		// }
-		// if (productID == undefined) {
-		// 	alert('something went wrong. Try again later.');
-		// }
-		// if (product_variant_id == undefined) {
-		// 	alert('something went wrong. Try again later.');
-		// }
-		//var dataString = '&productID=' + productID + '&quantity=' + quantity + '&product_variant_id=' + product_variant_id + '&action=' + action + '&ptype=' + ptype;
-
 		var bulk;
 		var products = [];
-		if (action == 'add') {
+		if (action === 'add') {
 			bulk = 'woocommerce_bulk_add_to_cart';
-			//var products = [];
 			products.push({
 				product_id: pid,
 				quantity: 1
@@ -474,34 +376,14 @@ do_action('woocommerce_before_cart'); ?>
 					method: 'GET',
 					success: function (cart) {
 						jQuery('.total-price .woocommerce-Price-amount.amount').html((cart.totals.total_price / 100).toFixed(2).replace('.', ',') + cart.totals.currency_suffix);
-						jQuery.each(cart.items, function (indexInArray, valueOfElement) {
-							console.log(valueOfElement.id);
-							jQuery('#qty' + valueOfElement.id + '_qa').val(valueOfElement.quantity);
-							jQuery('#priseC' + valueOfElement.id).html((valueOfElement.totals.line_total / 100).toFixed(2).replace('.', ',') + valueOfElement.totals.currency_suffix);
+						jQuery.each(cart.items, function (i, item) {
+							jQuery('#qty' + item.id + '_qa').val(item.quantity);
+							jQuery('#priseC' + item.id).html((item.totals.line_total / 100).toFixed(2).replace('.', ',') + item.totals.currency_suffix);
 						});
 					}
 				});
-				if (response.error) {
-					//jQuery(".notification-bar.sdiv").addClass('error').html(response.message).show();
-
-				} else {
-					//jQuery(".notification-bar.sdiv").addClass('success').show();
-					// Обновляем счетчик корзины
-					// if (response.fragments) {
-					//     $.each(response.fragments, function(key, value) {
-					//         $(key).replaceWith(value);
-					//     });
-					// }
-				}
-
-				// button.prop('disabled', false).text('Добавить выбранные товары');
-				//setTimeout(function () { jQuery(".notification-bar.sdiv").fadeOut(); }, 3000);
 			},
-			error: function () {
-				// message.addClass('error').html('Ошибка сервера').show();
-				// button.prop('disabled', false).text('Добавить выбранные товары');
-				// setTimeout(function() { message.fadeOut(); }, 3000);
-			}
+			error: function () {}
 		});
 		return false;
 	}
