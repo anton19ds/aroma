@@ -56,27 +56,40 @@
 	</div>
 </div>
 <style>
-/* Мобильный вид: плашка с описанием способа оплаты снизу под radio */
+/* Мобильный вид: выравнивание, отступы, без картинок, общий вид */
 @media only screen and (max-width: 991px) {
+	/* Блок оплаты — отступы и общий вид */
+	#order_review {
+		padding: 20px 16px !important;
+	}
+	#payment {
+		margin-top: 24px !important;
+		padding-top: 24px !important;
+	}
 	#payment ul.wc_payment_methods {
 		display: block !important;
 		padding: 0 !important;
-		margin: 0 0 16px !important;
+		margin: 0 0 20px !important;
+		list-style: none !important;
 	}
 	#payment ul.wc_payment_methods > li.wc_payment_method {
 		display: flex !important;
 		flex-wrap: wrap !important;
 		align-items: flex-start !important;
-		padding: 12px 0 !important;
+		padding: 16px 0 !important;
 		margin: 0 !important;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 	}
 	#payment ul.wc_payment_methods > li.wc_payment_method:last-of-type {
 		border-bottom: none !important;
 	}
+	/* Выравнивание radio и label по центру по вертикали */
 	#payment .wc_payment_method input[type="radio"] {
 		flex: 0 0 auto !important;
-		margin: 0 10px 0 0 !important;
+		width: 20px !important;
+		height: 20px !important;
+		margin: 0 12px 0 0 !important;
+		align-self: center !important;
 	}
 	#payment .wc_payment_method > label {
 		display: flex !important;
@@ -85,15 +98,22 @@
 		min-width: 0 !important;
 		margin: 0 !important;
 		padding: 0 !important;
+		font-size: 15px !important;
+		line-height: 1.3 !important;
 	}
+	/* Убрать картинку/логотип способа оплаты на мобильном */
+	#payment .wc_payment_method > label img {
+		display: none !important;
+	}
+	/* Плашка с описанием — отступы, общий вид */
 	#payment div.payment_box {
 		flex: 0 0 100% !important;
 		width: 100% !important;
 		max-width: 100% !important;
 		display: block !important;
-		margin: 12px 0 0 0 !important;
+		margin: 14px 0 0 0 !important;
 		margin-left: 0 !important;
-		padding: 14px 16px !important;
+		padding: 16px 18px !important;
 		background: #e9e6ed !important;
 		border-radius: 10px !important;
 		border: none !important;
@@ -103,8 +123,17 @@
 	#payment div.payment_box p {
 		margin: 0 !important;
 		font-size: 14px !important;
-		line-height: 1.5 !important;
+		line-height: 1.55 !important;
 		color: #333 !important;
+	}
+	/* Отступы у блока с кнопкой и политикой */
+	#payment .place-order {
+		padding-top: 24px !important;
+		margin-top: 24px !important;
+	}
+	#payment .woocommerce-terms-and-conditions-wrapper {
+		margin-bottom: 20px !important;
+		padding: 16px !important;
 	}
 }
 </style>
