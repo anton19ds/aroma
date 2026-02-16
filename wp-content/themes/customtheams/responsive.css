@@ -1277,10 +1277,27 @@
     align-items: center;
 }
 
+/* Убрать полоску сверху у каждого способа оплаты */
+.woocommerce-checkout #payment ul.wc_payment_methods > li.wc_payment_method,
+.woocommerce-checkout #payment .wc_payment_method {
+    border-top: none !important;
+    padding-top: 0;
+}
+
 .wc_payment_methods.payment_methods.methods li input {
     width: auto;
     height: 30px;
+}
 
+/* Убрать выделение цветом при выборе radio */
+.woocommerce-checkout #payment .wc_payment_method input[type="radio"]:focus,
+.woocommerce-checkout #payment .wc_payment_method input[type="radio"]:checked {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.woocommerce-checkout #payment .wc_payment_method label:has(input:checked) {
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 .wc_payment_methods.payment_methods.methods li label {
