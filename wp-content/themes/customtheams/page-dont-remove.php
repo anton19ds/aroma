@@ -100,7 +100,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close popup_closed_btn" data-dismiss="modal"><img
-                                    src="https://www.natureinbottle.com/images/hjd/close_btn.png" alt=""></button>
+                                    src="https://elixir-aroma.ru/images/hjd/close_btn.png" alt=""></button>
                         </div>
                         <div class="modal-body">
                             <div class="essentialModalHeader">

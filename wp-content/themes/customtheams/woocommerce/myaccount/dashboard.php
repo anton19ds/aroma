@@ -66,6 +66,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	do_action( 'woocommerce_account_dashboard' );
 
 	/**
+	 * Display customer orders on dashboard.
+	 */
+	woocommerce_account_orders( 1 );
+
+	/**
 	 * Deprecated woocommerce_before_my_account action.
 	 *
 	 * @deprecated 2.6.0

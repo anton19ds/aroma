@@ -27,9 +27,9 @@ if (!$faq_banner_subtitle) $faq_banner_subtitle = 'Frequently Asked Questions';
                     $faq_tabs = get_field('faq_tabs', 'option');
                     $tab_ids = array('product', 'orders', 'shipping');
                     $tab_defaults = array(
-                        array('label' => 'Product and pricing', 'img' => 'https://www.natureinbottle.com/front-assets/images/f1.png'),
-                        array('label' => 'Orders and payments', 'img' => 'https://www.natureinbottle.com/front-assets/images/f2.png'),
-                        array('label' => 'Shipping and returns', 'img' => 'https://www.natureinbottle.com/front-assets/images/f3.png'),
+                        array('label' => 'Product and pricing', 'img' => 'https://elixir-aroma.ru/front-assets/images/f1.png'),
+                        array('label' => 'Orders and payments', 'img' => 'https://elixir-aroma.ru/front-assets/images/f2.png'),
+                        array('label' => 'Shipping and returns', 'img' => 'https://elixir-aroma.ru/front-assets/images/f3.png'),
                     );
                     for ($i = 0; $i < 3; $i++) {
                         $tab_id = $tab_ids[$i];

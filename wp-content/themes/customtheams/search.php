@@ -18,7 +18,7 @@ while (have_posts()):
 	?>
 	<div class="gurantee-section breadcrum-banner mobile-margin-ess essent_oilBanner-wrap">
 		<div class="gurantee-section-bg"
-			style="background-image: url('https://www.natureinbottle.com/upload/pages/Essential-Oils-Organic-NatureInBottle.jpeg');">
+			style="background-image: url('https://elixir-aroma.ru/upload/pages/Essential-Oils-Organic-NatureInBottle.jpeg');">
 			<div class="gurantee-content">
 				<h1>
                     Результат поиска:<br>
@@ -84,7 +84,7 @@ if (!is_a($product, WC_Product::class) || !$product->is_visible()) {
 	<div class="boxquickview">
 
 	</div>
-	<script src="https://www.natureinbottle.com/js/handleCounter.js"></script>
+	<script src="https://elixir-aroma.ru/js/handleCounter.js"></script>
 	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.6/assets/owl.carousel.min.css'>
 	<link rel='stylesheet'
 		href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.6/assets/owl.theme.default.min.css'>

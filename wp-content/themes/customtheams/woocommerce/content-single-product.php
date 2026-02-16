@@ -918,7 +918,7 @@ global $woocommerce;
 							$category_posts->the_post();
 							$thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
 							if (!$thumbnail_url) {
-								$thumbnail_url = 'https://www.natureinbottle.com/upload/overview/overview181220221559021671359342.jpeg'; // Заглушка, если нет изображения
+								$thumbnail_url = 'https://elixir-aroma.ru/upload/overview/overview181220221559021671359342.jpeg'; // Заглушка, если нет изображения
 							}
 							?>
 							<div class="blogTypeGridContent">

@@ -1,5 +1,5 @@
 <div class="gurantee-section breadcrum-banner login-page">
-	<div class="gurantee-section-bg" style="background-image: url('https://www.natureinbottle.com/images/login_banner.jpg');">
+	<div class="gurantee-section-bg" style="background-image: url('https://elixir-aroma.ru/images/login_banner.jpg');">
 		<div class="gurantee-content">
 			<h1>Log In</h1>
 			<p>Login to save your basket or view past orders</p>
@@ -77,7 +77,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
        <div class="form-group login-button-or">
                 <button type="submit"  name="login" value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?></button>
                 <span>
-                    <a href="https://www.natureinbottle.com/user/register">
+                    <a href="https://elixir-aroma.ru/user/register">
                         <span>&nbsp; или </span>&nbsp; Создайте аккаунт
                     </a>
                 </span>

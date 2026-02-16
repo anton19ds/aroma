@@ -229,7 +229,7 @@ defined('ABSPATH') || exit;
 do_action('woocommerce_before_cart'); ?>
 <div class="gurantee-section breadcrum-banner shopping-section h-350">
 	<div class="gurantee-section-bg"
-		style="background-image: url('https://www.natureinbottle.com/images/order-banner.jpg');">
+		style="background-image: url('https://elixir-aroma.ru/images/order-banner.jpg');">
 		<div class="gurantee-content">
 			<h1>Shopping Cart</h1>
 			<p>in Cart</p>
