@@ -14,7 +14,7 @@
 			<div class="form-container">
 				<div class="login-form-container" style="display: contents;">
 
-					<div class="col-md-12 col-sm-12 col-xs-12 text-title all-label">
+					<div class="text-title all-label">
 						<?php
 						if (!defined('ABSPATH')) {
 							exit;
