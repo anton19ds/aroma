@@ -55,3 +55,56 @@
 		</div>
 	</div>
 </div>
+<style>
+/* Мобильный вид: плашка с описанием способа оплаты снизу под radio */
+@media only screen and (max-width: 991px) {
+	#payment ul.wc_payment_methods {
+		display: block !important;
+		padding: 0 !important;
+		margin: 0 0 16px !important;
+	}
+	#payment ul.wc_payment_methods > li.wc_payment_method {
+		display: flex !important;
+		flex-wrap: wrap !important;
+		align-items: flex-start !important;
+		padding: 12px 0 !important;
+		margin: 0 !important;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	}
+	#payment ul.wc_payment_methods > li.wc_payment_method:last-of-type {
+		border-bottom: none !important;
+	}
+	#payment .wc_payment_method input[type="radio"] {
+		flex: 0 0 auto !important;
+		margin: 0 10px 0 0 !important;
+	}
+	#payment .wc_payment_method > label {
+		display: flex !important;
+		align-items: center !important;
+		flex: 1 1 auto !important;
+		min-width: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	#payment div.payment_box {
+		flex: 0 0 100% !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		display: block !important;
+		margin: 12px 0 0 0 !important;
+		margin-left: 0 !important;
+		padding: 14px 16px !important;
+		background: #e9e6ed !important;
+		border-radius: 10px !important;
+		border: none !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+		box-sizing: border-box !important;
+	}
+	#payment div.payment_box p {
+		margin: 0 !important;
+		font-size: 14px !important;
+		line-height: 1.5 !important;
+		color: #333 !important;
+	}
+}
+</style>
