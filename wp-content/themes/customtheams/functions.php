@@ -184,24 +184,52 @@ function elixir_send_order_to_telegram( $order_id, $order = null ) {
 
 	$items_lines = array();
 	foreach ( $order->get_items() as $item ) {
+		$product = $item->get_product();
 		$name = $item->get_name();
-		$qty = $item->get_quantity();
+		$qty = (int) $item->get_quantity();
 		$total = strip_tags( wc_price( $item->get_total() + $item->get_total_tax() ) );
-		$items_lines[] = sprintf( '• %s × %d — %s', esc_html( $name ), $qty, $total );
+		$parent_label = '';
+		if ( $product && is_callable( 'get_cross_sell_parents' ) ) {
+			$parent = get_cross_sell_parents( $product->get_id() );
+			if ( $parent && is_a( $parent, 'WC_Product' ) ) {
+				$parent_label = esc_html( $parent->get_name() ) . ' — ';
+			}
+		}
+		$items_lines[] = sprintf( '• %s%s × %d — %s', $parent_label, esc_html( $name ), $qty, $total );
 	}
 	$items_block = implode( "\n", $items_lines );
 
 	$shipping = $order->has_shipping_address() ? $order->get_formatted_shipping_address() : $order->get_formatted_billing_address();
+	$shipping_plain = esc_html( preg_replace( '#<br\s*/?>#i', "\n", $shipping ) );
 	$payment = $order->get_payment_method_title();
 
 	$msg = "🛒 <b>Новый заказ #" . esc_html( $order->get_order_number() ) . "</b>\n\n";
 	$msg .= "<b>Покупатель:</b>\n";
-	$msg .= "• Имя: " . esc_html( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() ) . "\n";
-	$msg .= "• Email: " . esc_html( $order->get_billing_email() ) . "\n";
-	$msg .= "• Телефон: " . esc_html( $order->get_billing_phone() ) . "\n";
-	$msg .= "• Адрес доставки:\n" . esc_html( preg_replace( '#<br\s*/?>#i', "\n", $shipping ) ) . "\n\n";
+	$msg .= "ФИО: " . esc_html( trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() ) ) . "\n";
+	$msg .= "Телефон: " . esc_html( $order->get_billing_phone() ) . "\n";
+	$msg .= "E-Mail: " . esc_html( $order->get_billing_email() ) . "\n\n";
+	$msg .= "<b>Адрес доставки:</b>\n" . $shipping_plain . "\n\n";
 	$msg .= "<b>Товары:</b>\n" . $items_block . "\n\n";
-	$msg .= "<b>Итого:</b> " . strip_tags( $order->get_formatted_order_total() ) . "\n";
+
+	$shipping_total = (float) $order->get_shipping_total();
+	if ( $shipping_total > 0 ) {
+		$msg .= "<b>Доставка:</b> " . strip_tags( wc_price( $shipping_total ) ) . "\n";
+	}
+	$coupon_items = $order->get_items( 'coupon' );
+	if ( ! empty( $coupon_items ) ) {
+		foreach ( $coupon_items as $coupon_item ) {
+			$code = $coupon_item->get_code();
+			$discount = (float) $coupon_item->get_discount_amount() + (float) $coupon_item->get_discount_tax();
+			$discount_formatted = $discount > 0 ? ' (-' . strip_tags( wc_price( $discount ) ) . ')' : '';
+			$msg .= "<b>Промокод:</b> " . esc_html( $code ) . $discount_formatted . "\n";
+		}
+	} elseif ( $order->get_discount_total() > 0 ) {
+		$coupons = $order->get_coupon_codes();
+		if ( ! empty( $coupons ) ) {
+			$msg .= "<b>Промокод:</b> " . esc_html( implode( ', ', $coupons ) ) . ' (-' . strip_tags( wc_price( $order->get_discount_total() + $order->get_discount_tax() ) ) . ")\n";
+		}
+	}
+	$msg .= "\n<b>Итого:</b> " . strip_tags( $order->get_formatted_order_total() ) . "\n";
 	$msg .= "<b>Оплата:</b> " . esc_html( $payment ? $payment : '—' ) . "\n";
 	$msg .= "<b>Статус:</b> " . esc_html( wc_get_order_status_name( $order->get_status() ) );
 
