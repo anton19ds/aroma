@@ -14,7 +14,7 @@ get_header(); ?>
 <div class="gurantee-section breadcrum-banner custom-blend-cover">
 	
 	<div class="gurantee-section-bg"
-		style="background-image: url('<?= the_field('wraper')?>');">
+		style="background-image: url('<?php echo get_the_post_thumbnail_url();?>');">
 		<div class="gurantee-content custom-dp-font">
 			<h1>
 				<font dir="auto" style="vertical-align: inherit;">

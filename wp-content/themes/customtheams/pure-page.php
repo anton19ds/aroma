@@ -33,13 +33,14 @@
 		<div class="timeline-grid-wrapper">
 			<?php
 			$section1_items = get_field('pure_section1_items');
+			
 			if ($section1_items && is_array($section1_items)) {
 				foreach ($section1_items as $item) {
 					$item_image = isset($item['image']) ? $item['image'] : '';
 					$item_title = isset($item['title']) ? $item['title'] : '';
 					$item_text = isset($item['text']) ? $item['text'] : '';
 					$item_class = isset($item['class']) ? $item['class'] : '';
-					$item_standards = isset($item['standards']) ? $item['standards'] : '';
+					$item_standards = isset($item['	']) ? $item['standards'] : '';
 					
 					// Получаем URL изображения
 					if (is_array($item_image) && isset($item_image['url'])) {
@@ -122,9 +123,9 @@
 			$section2_description = get_field('pure_section2_description');
 			?>
 			<h2>
-				<?php echo $section2_title ? wp_kses_post($section2_title) : '<strong>U</strong>NIVERSALLY ACCEPTED QUALITY (УНИВЕРСАЛЬНО ПРИНЯТОЕ КАЧЕСТВО)'; ?>
+				<?php echo $section2_title ? $section2_title : '<strong>U</strong>NIVERSALLY ACCEPTED QUALITY (УНИВЕРСАЛЬНО ПРИНЯТОЕ КАЧЕСТВО)'; ?>
 			</h2>
-			<p><?php echo $section2_description ? wp_kses_post($section2_description) : 'Наш высококвалифицированный, опытный научный персонал использует передовые методы тестирования, чтобы помочь гарантировать, что продукты соответствуют нашим высоким стандартам. Наша команда контроля качества использует ряд физических, химических и микробиологических научных тестов для измерения точных компонентов и свойств нашей продукции. Поскольку чистота и аутентичность имеют первостепенное значение в Nature In Bottle, наша техническая команда регулярно разрабатывает новые методы тестирования, чтобы помочь обеспечить качество всех наших продуктов.'; ?></p>
+			<p><?php echo $section2_description ? $section2_description : 'Наш высококвалифицированный, опытный научный персонал использует передовые методы тестирования, чтобы помочь гарантировать, что продукты соответствуют нашим высоким стандартам. Наша команда контроля качества использует ряд физических, химических и микробиологических научных тестов для измерения точных компонентов и свойств нашей продукции. Поскольку чистота и аутентичность имеют первостепенное значение в Nature In Bottle, наша техническая команда регулярно разрабатывает новые методы тестирования, чтобы помочь обеспечить качество всех наших продуктов.'; ?></p>
 		</div>
 		<div class="timeline-grid-wrapper">
 			<?php
@@ -220,7 +221,7 @@ if (!$banner1_image) {
 }
 if (!$banner1_text) $banner1_text = 'Мы — компания <strong>не MLM</strong>, продающая онлайн напрямую потребителю, поэтому у нас нет посредников. Наши цены <strong>всегда оптовые</strong>, для <strong>каждого клиента</strong> — наше намерение всегда заключалось в том, чтобы обеспечить доступность эфирных масел и натуральных косметических ингредиентов высшего качества для всех — от новых ремесленников с начинающимся бизнесом до устоявшихся профессиональных производителей косметики.';
 ?>
-<div class="banner-with-content-wrap">
+<div class="banner-with-content-wrap" style="display: none; ">
 	<div class="banner-inside-detl-wrap">
 		<h3 class="banner-text">
 			<?php echo wp_kses_post($banner1_title); ?>
@@ -262,7 +263,7 @@ if (!$banner2_image) {
 }
 if (!$banner2_text) $banner2_text = 'Наша гарантия возврата денег в течение 90 дней демонстрирует нашу уверенность в качестве нашей продукции. Мы понимаем, что покупатели хотят быть уверены в том, что покупают, поэтому мы стремимся к полному удовлетворению потребностей наших клиентов. Если вы недовольны своей покупкой по какой-либо причине, мы сделаем все возможное, чтобы решить проблему к вашему удовлетворению. Мы также предлагаем бесплатные образцы большинства наших продуктов, чтобы вы могли попробовать перед покупкой.';
 ?>
-<div class="banner-with-content-wrap" style="background-image: url(<?php echo esc_url($banner2_bg_image_url); ?>);">
+<div class="banner-with-content-wrap" style=" display: none; background-image: url(<?php echo esc_url($banner2_bg_image_url); ?>);">
 	<div class="banner-inside-detl-wrap">
 		<h3 class="banner-text">
 			<?php echo wp_kses_post($banner2_title); ?>

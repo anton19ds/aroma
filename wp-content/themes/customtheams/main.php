@@ -11,17 +11,17 @@
 
 <?php get_header(); ?>
 <div class="">
-	<div class="banner slideshow-container`">
+	<div class="banner slideshow-container">
 		<?php $group = get_field('galerrymainpage');
-		foreach ($group as $key => $value):
+		foreach ($group as $item):
 			?>
-			<?php if (!empty($value)): ?>
+			<?php if (!empty($item['image'])): ?>
 				<div class="banner-content mySlides fade-effect">
-					<a href="#" target="_blank">
-						<img src="<?= $value ?>" alt="" title="" class="desktop-show">
+					<a href="<?= $item['link']?>" target="_blank">
+						<img src="<?= $item['image'] ?>" alt="" title="" class="desktop-show">
 					</a>
-					<a href="#" target="_blank">
-						<img src="<?= $value ?>" alt="" title="" class="mobile-show">
+					<a href="<?= $item['link']?>" target="_blank">
+						<img src="<?= $item['image'] ?>" alt="" title="" class="mobile-show">
 					</a>
 				</div>
 			<?php endif; ?>
@@ -30,10 +30,10 @@
 	<div class="dots-styling">
 		<?php
 		$i = 1;
-		foreach ($group as $key => $value): ?>
+		foreach ($group as $item): ?>
 			<?php
-			if (!empty($value)): ?>
-				<!-- <span class="dot active" onclick="currentSlide($i)"></span> -->
+			if (!empty($item['image'])): ?>
+				<span class="dot active" onclick="currentSlide($i)"></span>
 				<?php
 				$i++;
 			endif; ?>

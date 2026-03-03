@@ -608,7 +608,7 @@ p.whatsUp {
 .prd-cate-abt {
     display: grid;
     align-items: center;
-    grid-template-columns: 66% 32%;
+    grid-template-columns: 50% 50%;
     gap: 2%;
     border-top: 2px solid #e2e2e2;
     margin-top: 40px;
@@ -619,24 +619,26 @@ p.whatsUp {
 }
 
 .product-cate-image img {
-    width: 100%;
+    width: 150px;
 }
 
 .product-cate-abt img {
-    width: 162px;
+    width: 150px;
 }
 
 .product-category {
     display: grid;
-    gap: 6%;
-    grid-template-columns: 20% 70%;
+    gap: 50px;
+    grid-template-columns: 30% 60%;
     border-right: 2px solid #e2e2e2;
+    align-items: center;
 }
 
 .product-cate-abt {
     display: flex;
     align-items: center;
     gap: 50px;
+    justify-content: end;
 }
 
 .prd-cate-abt ul li a {
@@ -798,7 +800,7 @@ p.whatsUp {
 .bannerContainer.inner-banner .bannerItem 
 {
     position: relative;
-    z-index: 999999;
+    z-index: 99;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -3012,6 +3014,7 @@ b, strong {
     color: #6c684a;
     font-size: 20px;
 }
+
  
 .total-wrapper {
     display: flex;
@@ -3574,9 +3577,7 @@ input:focus {
     width: 88%;
     margin: 0 auto;
 }
-.timeline-cover.grey-color .timeline-grid-wrapper .timeline-img-detail-wrap:first-child .timeline-img img {
-    margin-bottom: 150px;
-}
+
 .banner-with-content-wrap {
     height: 400px;
     padding: 50px 0;

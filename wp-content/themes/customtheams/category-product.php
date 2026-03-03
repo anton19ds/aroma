@@ -26,7 +26,7 @@ while (have_posts()):
 	?>
 	<div class="gurantee-section breadcrum-banner mobile-margin-ess essent_oilBanner-wrap">
 		<div class="gurantee-section-bg"
-			style="background-image: url('https://elixir-aroma.ru/upload/pages/Essential-Oils-Organic-NatureInBottle.jpeg');">
+			style="background-image: url(<?php echo get_the_post_thumbnail_url();?>);">
 			<div class="gurantee-content">
 				<h1><?php the_title(); ?></h1>
 				<p><?php the_field('description_category') ?></p>

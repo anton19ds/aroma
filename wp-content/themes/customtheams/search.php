@@ -9,16 +9,9 @@
 
 ?>
 <?php get_header(); ?>
-
-<?php
-global $more;
-while (have_posts()):
-	the_post();
-	$more = 1;
-	?>
-	<div class="gurantee-section breadcrum-banner mobile-margin-ess essent_oilBanner-wrap">
+<div class="gurantee-section breadcrum-banner mobile-margin-ess essent_oilBanner-wrap">
 		<div class="gurantee-section-bg"
-			style="background-image: url('https://elixir-aroma.ru/upload/pages/Essential-Oils-Organic-NatureInBottle.jpeg');">
+			style="background-image: url('<?php echo get_template_directory_uri();?>/images/search_result_banner.jpg');">
 			<div class="gurantee-content">
 				<h1>
                     Результат поиска:<br>
@@ -30,6 +23,14 @@ while (have_posts()):
 	<div class="product-list-container pb-70 ">
 		<div class=" container padding-left-right-15">
 			<div class="product-list-grid">
+<?php
+global $more;
+while (have_posts()):
+	the_post();
+	$more = 1;
+	?>
+	
+	
 		<!-- content-product			 -->
 <?php
 /**
@@ -76,11 +77,11 @@ if (!is_a($product, WC_Product::class) || !$product->is_visible()) {
 		<a class="quick-view" onclick="quickview(<?php echo $product->id?>)">Quick View</a>
 	</div>
 </div>
-			</div>
+		
+	<?php endwhile; ?>
+		</div>
 		</div>
 	</div>
-	<?php endwhile; ?>
-	
 	<div class="boxquickview">
 
 	</div>

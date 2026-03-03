@@ -5,7 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php the_title(); ?></title>
-	<link href="<?= get_template_directory_uri(); ?>/images/favicon.png" rel="shortcut icon" type="image/png">
+	<?php $favikon = get_field('favikon', 126)?>
+	<link href="<?= $favikon; ?>" rel="shortcut icon" type="image/png">
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
 		(function (m, e, t, r, i, k, a) {
@@ -46,7 +47,8 @@
 			<div class="logo-search-account-container">
 				<div class="logo-container">
 					<a href="<?php echo home_url(); ?>">
-						<img src="<?= get_template_directory_uri(); ?>/images/logoSite.png" alt="" title="">
+						<?php $logo = get_field('logo', 126);?>
+						<img src="<?= $logo ?>" alt="" title="">
 					</a>
 				</div>
 				<div class="search-section">

@@ -170,10 +170,9 @@ $theme_uri = get_template_directory_uri();
 <?php do_action( 'woocommerce_before_cart' ); ?>
 <div class="gurantee-section breadcrum-banner shopping-section h-350">
 	<div class="gurantee-section-bg"
-		style="background-image: url('<?php echo esc_url( $theme_uri ); ?>/images/order-banner.jpg');">
+		style="background-image: url('https://elixir-aroma.ru/wp-content/uploads/2026/02/order-banner.webp">
 		<div class="gurantee-content">
-			<h1>Shopping Cart</h1>
-			<p>in Cart</p>
+			<h1>Корзина</h1>
 		</div>
 	</div>
 </div>

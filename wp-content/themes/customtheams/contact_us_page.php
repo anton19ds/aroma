@@ -59,20 +59,8 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 ?>
 <?php get_header(); ?>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-.contact-form-custom {
-	font-family: "Source Sans 3", sans-serif;
-}
-.contact-form-custom .form-label {
-	font-family: "Source Sans 3", sans-serif;
-	margin-bottom: 0.35em;
-}
-.contact-form-custom .form-control {
-	font-family: "Source Sans 3", sans-serif;
-}
+
 .contact-form-custom .form-field-wrap {
 	margin-bottom: 0.75rem;
 }
@@ -109,6 +97,16 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 @media (max-width: 767px) {
 	.contact-form-custom .form-row-name-email {
 		flex-direction: column;
+	}
+	.flag-wrapper{
+		gap: 5px;
+	}
+	.flag-card{
+		margin-bottom: 0;
+		margin-top: 20px;
+	}
+	.contact-rightside{
+		margin-top: 20px;
 	}
 }
 </style>
@@ -153,9 +151,7 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 					<h4>Чат с нами:</h4>
 					<div class="chat-info">
 						<span>
-							<img src="<?php echo get_template_directory_uri(); ?>/images/photo/Whatsapp_Icon.png"
-								alt="WhatsApp">
-							<a href="https://wa.me/18887555274" target="_blank">Message us on Whatsapp</a>
+							<a href="<?php echo get_field('telegram')?>" target="_blank">Написать в Telegram</a>
 						</span>
 					</div>
 				</div>
@@ -176,7 +172,7 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 					</div>
 				<?php endif; ?>
 
-				<form method="post" action="" class="contact-form-custom row" id="contact-form-custom">
+				<form method="post" action="" class="contact-form-custom" id="contact-form-custom">
 					<?php wp_nonce_field( 'contact_form_submit', 'contact_form_nonce' ); ?>
 					<div class="col-12 form-row-name-email">
 						<div class="form-field-wrap">
@@ -208,26 +204,30 @@ set_transient( 'contact_captcha_' . $captcha_key, $captcha_num1 + $captcha_num2,
 
 		</div>
 
-		<div class="row">
 			<div class="flag-wrapper">
 
 				<div class="flag-card">
-					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/united-states.png" alt="">
+					<a href="<?php echo get_field('telegram')?>" target="_blank">
+					<img src="<?php echo get_field('telegram_icon')?>" alt="">
+					</a>
 					<h3>Telegram</h3>
 				</div>
 
 				<div class="flag-card">
-					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/european-union.png" alt="">
+					<a href="<?php echo get_field('whatssap')?>" target="_blank">
+					<img src="<?php echo get_field('whatssap_icon')?>" alt="">
+					</a>
 					<h3>Whatsapp</h3>
 				</div>
 
 
 				<div class="flag-card">
-					<img src="<?php echo get_template_directory_uri(); ?>/images/photo/india.png" alt="">
+					<a href="<?php echo get_field('email')?>" target="_blank">
+					<img src="<?php echo get_field('email_icon')?>" alt="">
+					</a>
 					<h3>Email</h3>
 				</div>
 			</div>
-		</div>
 	</div>
 </section>
 

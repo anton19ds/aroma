@@ -2208,12 +2208,24 @@ a.pl-head-href h2 {
 	}
 
 	.cart-start-btn-wrap {
-		margin-right: 10px;
+		margin-right: 0px;
 	}
 
 	.cart-start-btn-wrap a {
-		font-size: 19px;
+		font-size: 14px;
 	}
+	.cart-wrapper .woocommerce-remove-coupon {
+    font-size: 16px;
+}
+.total-wrapper span {
+    font-size: 16px;
+}
+.coupon-input-btn input{
+	width: 100%;
+}
+.coupon-input-btn a{
+	width: 100%;
+}
 
 	div#AppendCartSection td {
 		padding: 0;
