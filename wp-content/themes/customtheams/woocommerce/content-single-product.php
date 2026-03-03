@@ -667,56 +667,76 @@ global $woocommerce;
 
 						<div class="refrence-wrapper desktopShows">
 							<?php $arrayP = get_field('references')?>
-							<h2><?php echo $arrayP['title']?></h2>
+							<?php if(!empty(array_filter($arrayP, function($a) { return $a !== null && $a !== ''; }))):?>
+							<h2>Техническая информация:</h2>
 							<ul>
+
+								<?php if($arrayP['cas_number']):?>
 								<li>
-									<span class="ref-left-li-span"><?php echo $arrayP['cas_number_title']?></span>
+									<span class="ref-left-li-span">CAS</span>
 									<span class="ref-right-li-span"><?php echo $arrayP['cas_number']?></span>
 								</li>
+								<?php endif;?>
 
-
+								<?php if($arrayP['einecs_number']):?>
 								<li>
-									<span class="ref-left-li-span"><?php echo $arrayP['einecs_number_title']?></span>
+									<span class="ref-left-li-span">EINECS</span>
 									<span class="ref-right-li-span"><?php echo $arrayP['einecs_number']?></span>
 								</li>
+								<?php endif;?>
 
+								<?php if(!empty($arrayP['inci_name'])):?>
 								<li>
-									<span class="ref-left-li-span"><?php echo $arrayP['product_code_title']?></span>
-									<span class="ref-right-li-span"><?php echo $arrayP['product_code']?></span>
-								</li>
-								<li>
-									<span class="ref-left-li-span"><?php echo $arrayP['inci_name_title']?></span>
+									<span class="ref-left-li-span">INCI</span>
 									<span class="ref-right-li-span"><?php echo $arrayP['inci_name']?></span>
 								</li>
+								<?php endif;?>
+
 							</ul>
+							<?php endif;?>
 						</div>
 						<div class="prod-specification desktopShows">
 							<ul>
+								<?php $part_used = get_field('part_used');
+								if($part_used): ?>
 								<li>
-									<div class="prod-top-title"><?php the_field('part_used_title')?></div>
-									<div class="prod-bottom-title productLeftTable"><?php the_field('part_used') ?>
+									<div class="prod-top-title">Используемая часть</div>
+									<div class="prod-bottom-title productLeftTable"><?php echo $part_used; ?>
 									</div>
 								</li>
-
+								<?php endif;?>
+								<?php $synonyms = get_field('synonyms');
+								if($synonyms): ?>
 								<li>
-									<div class="prod-top-title"><?php the_field('synonyms_title')?></div>
+									<div class="prod-top-title">Ботанические синонимы</div>
 									<div class="prod-bottom-title productLeftTable"><?php the_field('synonyms') ?></div>
 								</li>
+								<?php endif;?>
+								<?php $common_names = get_field('common_names');
+								if($common_names): ?>
 								<li>
-									<div class="prod-top-title"><?php the_field('common_names_title')?></div>
+									<div class="prod-top-title">Другие названия</div>
 									<div class="prod-bottom-title productLeftTable"><?php the_field('common_names') ?>
 									</div>
 								</li>
+								<?php endif;?>
+								<?php $origin = get_field('origin');
+								if($origin): ?>
 								<li>
-									<div class="prod-top-title"><?php the_field('origin_title')?></div>
+
+									<div class="prod-top-title">Старна происхождения</div>
 									<div class="prod-bottom-title productLeftTable"><?php the_field('origin') ?></div>
 								</li>
+								<?php endif;?>
+								<?php $note_classification = get_field('note_classification');
+								if($note_classification): ?>
 								<li>
-									<div class="prod-top-title"><?php the_field('note_classification_title')?></div>
+									<div class="prod-top-title">Ароматические ноты</div>
 									<div class="prod-bottom-title productLeftTable">
 										<?php the_field('note_classification') ?>
 									</div>
 								</li>
+								<?php endif;?>
 							</ul>
 						</div>
 					</div>
@@ -774,7 +794,7 @@ global $woocommerce;
 							<?php endif; ?>
 							<div class="prod-cart-wrapper">
 								<button type="submit" class="" id="sendAjaxreauest">
-									<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart </button>
+									<i class="fa fa-shopping-cart" aria-hidden="true"></i> Добавить в корзину</button>
 							</div>
 						</form>
 

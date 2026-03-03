@@ -14,7 +14,7 @@
 			<div class="form-container">
 				<div class="login-form-container" style="display: contents;">
 
-					<div class="col-md-12 col-sm-12 col-xs-12 text-title all-label">
+					<div class="text-title all-label">
 						<?php
 						if (!defined('ABSPATH')) {
 							exit;
@@ -123,17 +123,11 @@
 	#payment div.payment_box p {
 		margin: 0 !important;
 		font-size: 14px !important;
-		line-height: 1.55 !important;
-		color: #333 !important;
 	}
 	/* Отступы у блока с кнопкой и политикой */
 	#payment .place-order {
 		padding-top: 24px !important;
 		margin-top: 24px !important;
-	}
-	#payment .woocommerce-terms-and-conditions-wrapper {
-		margin-bottom: 20px !important;
-		padding: 16px !important;
 	}
 }
 </style>

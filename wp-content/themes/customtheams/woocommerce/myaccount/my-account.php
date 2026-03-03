@@ -23,10 +23,10 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.6.0
  */?>
  <div class="gurantee-section breadcrum-banner login-page account height-350">
-	<div class="gurantee-section-bg" style="background-image: url('https://elixir-aroma.ru/images/acc.jpg');">
+	<div class="gurantee-section-bg" style="background-image: url('<?php echo get_the_post_thumbnail_url();?>');">
 		<div class="gurantee-content custom-dp-font">
-			<h1>Account Page</h1>
-			<p>Check your purchase history and update your personal details</p>
+			<h1>Личный кабинет</h1>
+			<p>Проверьте историю покупок и обновите свои личные данные</p>
 		</div>
 	</div>
 </div>

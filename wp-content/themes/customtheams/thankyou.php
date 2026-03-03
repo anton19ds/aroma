@@ -90,13 +90,7 @@ defined('ABSPATH') || exit;
 		<?php endif; ?>
 		<div class="container">
 			<div class="block-b">
-				<p>Здесь текст платежных данных</p>
-				<p>>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id fugiat officiis sit, libero
-					vel accusamus ratione sequi ipsam modi? Reiciendis natus nisi eum nihil asperiores laboriosam provident
-					placeat quo reprehenderit.</p>
-				<p>>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id fugiat officiis sit, libero
-					vel accusamus ratione sequi ipsam modi? Reiciendis natus nisi eum nihil asperiores laboriosam provident
-					placeat quo reprehenderit.</p>
+				<?php echo get_field('pay_data')?>
 			</div>
 		</div>
 
@@ -771,3 +765,7 @@ defined('ABSPATH') || exit;
 }
 	</style>
 <?php get_footer() ?>
+
+
+
+

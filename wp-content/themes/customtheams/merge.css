@@ -1575,16 +1575,7 @@ span.nos-span
     color: #333333;
 }
 
-.timeline-img-detail-wrap:last-child .timeline-img:before 
-{
-    content: '';
-    height: 90%;
-    width: 1px;
-    position: absolute;
-    top: 0;
-    right: -35px;
-    background-color: #000;
-}
+
 
 .qs-point
 {
@@ -1596,11 +1587,6 @@ span.nos-span
 {
     font-size: 17px;
     font-weight: 700;
-}
-
-.timeline-cover.grey-color .timeline-grid-wrapper .timeline-img-detail-wrap:first-child .timeline-img img
-{
-	margin-bottom:150px;
 }
 
 .custom-ethical
@@ -1763,17 +1749,11 @@ table tbody tr td:nth-of-type(3) {
 		grid-row-gap: 0px;
 		margin-bottom: 40px;
 	}
-.timeline-img-detail-wrap:last-child .timeline-img:before {
-    display: none;
-}
+
 
 .timeline-img:before {
     display: none;
 }
-
-	.timeline-cover.grey-color .timeline-grid-wrapper .timeline-img-detail-wrap:first-child .timeline-img img {
-		margin-bottom: 30px;
-	}
 
 	.banner-inside-detl-wrap {
 		width: 100%;

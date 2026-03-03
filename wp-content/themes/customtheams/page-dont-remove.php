@@ -100,7 +100,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close popup_closed_btn" data-dismiss="modal"><img
-                                    src="https://elixir-aroma.ru/images/hjd/close_btn.png" alt=""></button>
+                                    src="<?php echo get_template_directory_uri(); ?>/images/close_btn.png" alt=""></button>
                         </div>
                         <div class="modal-body">
                             <div class="essentialModalHeader">
@@ -174,7 +174,7 @@
                                             <div class="prod-cart-wrapper  mt-10">
                                                 <input type="hidden" name="cartProductId" value="<?= $product->id?>">
                                                 <button type="button" class="addnowcart" id="sendAjaxreauest"><i class="fa fa-shopping-cart"
-                                                        aria-hidden="true"></i> Add to Cart</button>
+                                                        aria-hidden="true"></i> Добавить в Корзину</button>
                                             </div>
                                         </div>
                                     </form>

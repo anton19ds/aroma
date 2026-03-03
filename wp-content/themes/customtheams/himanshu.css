@@ -1337,16 +1337,6 @@ span.nos-span
     color: #333333;
 }
 
-.timeline-img-detail-wrap:last-child .timeline-img:before 
-{
-    content: '';
-    height: 90%;
-    width: 1px;
-    position: absolute;
-    top: 0;
-    right: -35px;
-    background-color: #000;
-}
 
 .qs-point
 {
@@ -1360,10 +1350,6 @@ span.nos-span
     font-weight: 700;
 }
 
-.timeline-cover.grey-color .timeline-grid-wrapper .timeline-img-detail-wrap:first-child .timeline-img img
-{
-	margin-bottom:150px;
-}
 
 .custom-ethical
 {
@@ -1441,10 +1427,6 @@ span.nos-span
 		grid-column-gap: 0;
 		grid-row-gap: 0px;
 		margin-bottom: 20px;
-	}
-
-	.timeline-cover.grey-color .timeline-grid-wrapper .timeline-img-detail-wrap:first-child .timeline-img img {
-		margin-bottom: 30px;
 	}
 
 	.banner-inside-detl-wrap {
