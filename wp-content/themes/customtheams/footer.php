@@ -130,6 +130,54 @@
 		right: 2%;
 		top: 30%;
 	}
+
+	/* Footer: wholesale price request form */
+	.footer-wholesale {
+		max-width: 420px;
+	}
+	.footer-wholesale form {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		flex-wrap: nowrap;
+	}
+	.footer-wholesale input[type="email"] {
+		flex: 1 1 auto;
+		min-width: 0;
+		height: 40px;
+		padding: 0 12px;
+		border: 1px solid #d5d5d5;
+		border-radius: 2px;
+		font-size: 14px;
+	}
+	.footer-wholesale button {
+		flex: 0 0 auto;
+		height: 40px;
+		padding: 0 18px;
+		border: 1px solid #6c684a;
+		background: #6c684a;
+		color: #fff;
+		border-radius: 2px;
+		cursor: pointer;
+		white-space: nowrap;
+	}
+	.footer-wholesale button:hover {
+		background: #5a5640;
+		border-color: #5a5640;
+	}
+	.footer-wholesale .footer-wholesale-hint {
+		margin-top: 10px;
+		font-size: 13px;
+		color: #666;
+		line-height: 1.4;
+	}
+	.footer-wholesale .footer-wholesale-msg {
+		margin-top: 10px;
+		font-size: 13px;
+		line-height: 1.4;
+	}
+	.footer-wholesale .footer-wholesale-msg--success { color: #2e7d32; }
+	.footer-wholesale .footer-wholesale-msg--error { color: #c62828; }
 </style>
 <footer>
 	<div class="container">
@@ -178,6 +226,23 @@
 
 		</div>
 		<div class="contact-details">
+			<div class="footer-wholesale" id="wholesale-price-request">
+				<h2>ОПТОВЫЙ ПРАЙС</h2>
+				<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+					<input type="hidden" name="action" value="customtheams_wholesale_price_request" />
+					<?php echo wp_kses_post( wp_nonce_field( 'customtheams_wholesale_price_request', '_wpnonce', true, false ) ); ?>
+					<input type="email" name="email" placeholder="Введите Email" required />
+					<button type="submit">Запросить</button>
+				</form>
+				<p class="footer-wholesale-hint">Отправим прайс-лист на вашу почту. Менеджер может уточнить детали по email.</p>
+				<?php
+				$wholesale_status = isset( $_GET['wholesale_request'] ) ? sanitize_key( wp_unslash( $_GET['wholesale_request'] ) ) : '';
+				if ( $wholesale_status === 'success' ) : ?>
+					<div class="footer-wholesale-msg footer-wholesale-msg--success">Запрос отправлен. Спасибо!</div>
+				<?php elseif ( $wholesale_status === 'failed' ) : ?>
+					<div class="footer-wholesale-msg footer-wholesale-msg--error">Не удалось отправить запрос. Проверьте email и попробуйте ещё раз.</div>
+				<?php endif; ?>
+			</div>
 			<div class="home-contact-us">
 				<h2><?php echo get_field('title_contact_us', 126)?></h2>
 				<div class="">

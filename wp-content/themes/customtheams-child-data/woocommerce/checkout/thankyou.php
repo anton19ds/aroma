@@ -76,6 +76,14 @@ defined( 'ABSPATH' ) || exit;
 
 			</ul>
 
+			<?php if ( $order && $order instanceof WC_Order ) : ?>
+				<p style="margin-top: 16px;">
+					<a class="button pay" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $order->get_checkout_payment_url() ) ); ?>">
+						Оплатить онлайн (IntellectMoney)
+					</a>
+				</p>
+			<?php endif; ?>
+
 		<?php endif; ?>
 
 		<?php do_action( 'woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id() ); ?>

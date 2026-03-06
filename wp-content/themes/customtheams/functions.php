@@ -114,6 +114,131 @@ add_filter( 'show_admin_bar', '__return_false' );
  */
 add_filter( 'woocommerce_coupons_enabled', 'customtheams_enable_checkout_coupons' );
 
+// =============================================================================
+// Footer: wholesale price request form -> email to admin
+// =============================================================================
+
+add_action( 'admin_post_nopriv_customtheams_wholesale_price_request', 'customtheams_handle_wholesale_price_request' );
+add_action( 'admin_post_customtheams_wholesale_price_request', 'customtheams_handle_wholesale_price_request' );
+function customtheams_handle_wholesale_price_request() {
+	$redirect = wp_get_referer();
+	if ( empty( $redirect ) ) {
+		$redirect = home_url( '/' );
+	}
+	$redirect = remove_query_arg( array( 'wholesale_request' ), $redirect );
+
+	$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+	if ( ! wp_verify_nonce( $nonce, 'customtheams_wholesale_price_request' ) ) {
+		wp_safe_redirect( add_query_arg( 'wholesale_request', 'failed', $redirect ) . '#wholesale-price-request' );
+		exit;
+	}
+
+	$email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+	if ( empty( $email ) || ! is_email( $email ) ) {
+		wp_safe_redirect( add_query_arg( 'wholesale_request', 'failed', $redirect ) . '#wholesale-price-request' );
+		exit;
+	}
+
+	$admin_email = get_option( 'admin_email' );
+	$site_name = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+	$subject = sprintf( '[%s] Запрос оптового прайса', $site_name );
+
+	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+
+	$message_lines = array(
+		'Запрос оптового прайса',
+		'',
+		'Email: ' . $email,
+		'Страница: ' . $redirect,
+		'Дата: ' . wp_date( 'Y-m-d H:i:s' ),
+		'IP: ' . $ip,
+		'User-Agent: ' . $ua,
+	);
+	$message = implode( "\n", $message_lines );
+
+	$headers = array(
+		'Content-Type: text/plain; charset=UTF-8',
+		'Reply-To: ' . $email,
+	);
+
+	$sent = wp_mail( $admin_email, $subject, $message, $headers );
+
+	wp_safe_redirect( add_query_arg( 'wholesale_request', $sent ? 'success' : 'failed', $redirect ) . '#wholesale-price-request' );
+	exit;
+}
+
+// =============================================================================
+// WooCommerce: Payment flow (default bacs, online pay on thank you)
+// =============================================================================
+
+add_filter( 'woocommerce_default_gateway', function( $default ) {
+	// По умолчанию оформляем заказ как "Прямой банковский перевод".
+	if ( function_exists( 'is_checkout' ) && is_checkout() && ! is_checkout_pay_page() ) {
+		return 'bacs';
+	}
+	return $default;
+} );
+
+add_filter( 'woocommerce_checkout_posted_data', function( $data ) {
+	// Если на странице checkout скрыт выбор способов оплаты, подставляем bacs.
+	if ( function_exists( 'is_checkout' ) && is_checkout() && ! is_checkout_pay_page() ) {
+		if ( empty( $data['payment_method'] ) ) {
+			$data['payment_method'] = 'bacs';
+		}
+	}
+	return $data;
+} );
+
+add_filter( 'woocommerce_available_payment_gateways', function( $gateways ) {
+	// На checkout показываем/используем только bacs.
+	if ( function_exists( 'is_checkout' ) && is_checkout() && ! is_checkout_pay_page() ) {
+		if ( isset( $gateways['bacs'] ) ) {
+			if ( WC()->session ) {
+				WC()->session->set( 'chosen_payment_method', 'bacs' );
+			}
+			return array( 'bacs' => $gateways['bacs'] );
+		}
+	}
+
+	// На странице оплаты заказа (order-pay) показываем только IntellectMoney.
+	if ( function_exists( 'is_checkout_pay_page' ) && is_checkout_pay_page() ) {
+		if ( isset( $gateways['intellectmoney'] ) ) {
+			if ( WC()->session ) {
+				WC()->session->set( 'chosen_payment_method', 'intellectmoney' );
+			}
+			return array( 'intellectmoney' => $gateways['intellectmoney'] );
+		}
+	}
+
+	return $gateways;
+}, 20 );
+
+add_action( 'template_redirect', function() {
+	// Если пришли на order-pay со служебным параметром — выбираем IntellectMoney.
+	if ( function_exists( 'is_checkout_pay_page' ) && is_checkout_pay_page() ) {
+		$pay_with = isset( $_GET['pay_with'] ) ? sanitize_text_field( wp_unslash( $_GET['pay_with'] ) ) : '';
+		if ( $pay_with === 'intellectmoney' && WC()->session ) {
+			WC()->session->set( 'chosen_payment_method', 'intellectmoney' );
+		}
+	}
+} );
+
+add_action( 'woocommerce_thankyou', function( $order_id ) {
+	// Для bacs переводим заказ в pending, чтобы был доступен "Оплатить" (order-pay).
+	$order = wc_get_order( $order_id );
+	if ( ! $order ) {
+		return;
+	}
+	if ( $order->get_payment_method() !== 'bacs' ) {
+		return;
+	}
+	// pending/failed — статусы, при которых Woo считает, что заказ можно оплатить.
+	if ( $order->has_status( array( 'on-hold' ) ) ) {
+		$order->update_status( 'pending', 'Переведено в ожидание оплаты для возможности оплаты онлайн.', true );
+	}
+}, 5 );
+
 add_filter( 'woocommerce_cart_totals_coupon_html', 'customtheams_cart_coupon_remove_brackets', 10, 3 );
 function customtheams_cart_coupon_remove_brackets( $coupon_html, $coupon, $discount_amount_html ) {
 	$coupon_html = str_replace( array( '[Убрать]', '[Remove]', '[Удалить]' ), array( 'Убрать', 'Remove', 'Удалить' ), $coupon_html );
@@ -164,6 +289,14 @@ function elixir_send_order_email_to_customer_on_pending( $order_id, $order = nul
  * Требует в .env: TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID (несколько чатов через запятую)
  */
 add_action( 'woocommerce_new_order', 'elixir_send_order_to_telegram', 10, 2 );
+function customtheams_telegram_clean_price( $price_html ) {
+	$price = wp_strip_all_tags( (string) $price_html );
+	$price = html_entity_decode( $price, ENT_QUOTES, 'UTF-8' );
+	// WooCommerce часто вставляет неразрывный пробел между суммой и валютой.
+	$price = str_replace( "\xc2\xa0", ' ', $price );
+	$price = preg_replace( '/\s+/u', ' ', $price );
+	return trim( $price );
+}
 function elixir_send_order_to_telegram( $order_id, $order = null ) {
 	$token = getenv( 'TELEGRAM_BOT_TOKEN' );
 	$chat_ids_raw = get_field('chat_id',126);
@@ -187,7 +320,7 @@ function elixir_send_order_to_telegram( $order_id, $order = null ) {
 		$product = $item->get_product();
 		$name = $item->get_name();
 		$qty = (int) $item->get_quantity();
-		$total = strip_tags( wc_price( $item->get_total() + $item->get_total_tax() ) );
+		$total = customtheams_telegram_clean_price( wc_price( $item->get_total() + $item->get_total_tax() ) );
 		$parent_label = '';
 		if ( $product && is_callable( 'get_cross_sell_parents' ) ) {
 			$parent = get_cross_sell_parents( $product->get_id() );
@@ -213,23 +346,23 @@ function elixir_send_order_to_telegram( $order_id, $order = null ) {
 
 	$shipping_total = (float) $order->get_shipping_total();
 	if ( $shipping_total > 0 ) {
-		$msg .= "<b>Доставка:</b> " . strip_tags( wc_price( $shipping_total ) ) . "\n";
+		$msg .= "<b>Доставка:</b> " . customtheams_telegram_clean_price( wc_price( $shipping_total ) ) . "\n";
 	}
 	$coupon_items = $order->get_items( 'coupon' );
 	if ( ! empty( $coupon_items ) ) {
 		foreach ( $coupon_items as $coupon_item ) {
 			$code = $coupon_item->get_code();
 			$discount = (float) $coupon_item->get_discount_amount() + (float) $coupon_item->get_discount_tax();
-			$discount_formatted = $discount > 0 ? ' (-' . strip_tags( wc_price( $discount ) ) . ')' : '';
+			$discount_formatted = $discount > 0 ? ' (-' . customtheams_telegram_clean_price( wc_price( $discount ) ) . ')' : '';
 			$msg .= "<b>Промокод:</b> " . esc_html( $code ) . $discount_formatted . "\n";
 		}
 	} elseif ( $order->get_discount_total() > 0 ) {
 		$coupons = $order->get_coupon_codes();
 		if ( ! empty( $coupons ) ) {
-			$msg .= "<b>Промокод:</b> " . esc_html( implode( ', ', $coupons ) ) . ' (-' . strip_tags( wc_price( $order->get_discount_total() + $order->get_discount_tax() ) ) . ")\n";
+			$msg .= "<b>Промокод:</b> " . esc_html( implode( ', ', $coupons ) ) . ' (-' . customtheams_telegram_clean_price( wc_price( $order->get_discount_total() + $order->get_discount_tax() ) ) . ")\n";
 		}
 	}
-	$msg .= "\n<b>Итого:</b> " . strip_tags( $order->get_formatted_order_total() ) . "\n";
+	$msg .= "\n<b>Итого:</b> " . customtheams_telegram_clean_price( $order->get_formatted_order_total() ) . "\n";
 	$msg .= "<b>Оплата:</b> " . esc_html( $payment ? $payment : '—' ) . "\n";
 	$msg .= "<b>Статус:</b> " . esc_html( wc_get_order_status_name( $order->get_status() ) );
 

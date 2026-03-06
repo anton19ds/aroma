@@ -92,6 +92,26 @@ defined('ABSPATH') || exit;
 			<div class="block-b">
 				<?php echo get_field('pay_data')?>
 			</div>
+			<?php
+			// Кнопка онлайн-оплаты через IntellectMoney (после оформления по bacs).
+			if ( $order && $order instanceof WC_Order ) {
+				$can_pay = $order->needs_payment();
+				$pay_url = $order->get_checkout_payment_url();
+				?>
+				<div class="block-b" style="margin-top: 20px;">
+					<?php if ( $can_pay ) : ?>
+						<a class="button pay" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $pay_url ) ); ?>">
+							Оплатить онлайн (IntellectMoney)
+						</a>
+					<?php else : ?>
+						<a class="button pay" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $pay_url ) ); ?>">
+							Перейти к онлайн-оплате (IntellectMoney)
+						</a>
+					<?php endif; ?>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 
 		<?php do_action('woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id()); ?>
