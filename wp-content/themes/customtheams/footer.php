@@ -252,7 +252,8 @@
 					msgEl.textContent = '';
 					submitBtn.disabled = true;
 					var body = new FormData(form);
-					fetch(form.action, {
+					var actionUrl = form.getAttribute('action');
+					fetch(actionUrl, {
 						method: 'POST',
 						body: body,
 						credentials: 'same-origin'
