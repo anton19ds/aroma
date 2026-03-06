@@ -19,7 +19,10 @@ defined( 'ABSPATH' ) || exit;
 
 $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 ?>
-5
+<section class="main-bgd">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
 <form id="order_review" method="post">
 
 	<table class="shop_table">
@@ -108,3 +111,4 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 		</div>
 	</div>
 </form>
+</div></div></div></section>
