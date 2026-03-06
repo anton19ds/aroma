@@ -37,8 +37,7 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 		<thead>
 			<tr>
 				<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
-				<th class="product-quantity"><?php esc_html_e( 'Qty', 'woocommerce' ); ?></th>
-				<th class="product-total"></th>
+				<th class="product-qty-total"><?php esc_html_e( 'Qty', 'woocommerce' ); ?> / <?php esc_html_e( 'Total', 'woocommerce' ); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -48,11 +47,20 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 					if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
 						continue;
 					}
+					$product = $item->get_product();
+					$item_name = $item->get_name();
+					$parent_label = '';
+					if ( $product && is_callable( 'get_cross_sell_parents' ) ) {
+						$parent = get_cross_sell_parents( $product->get_id() );
+						if ( $parent && is_a( $parent, 'WC_Product' ) ) {
+							$parent_label = esc_html( $parent->get_name() ) . ' — ';
+						}
+					}
 					?>
 					<tr class="<?php echo esc_attr( apply_filters( 'woocommerce_order_item_class', 'order_item', $item, $order ) ); ?>">
 						<td class="product-name">
 							<?php
-								echo wp_kses_post( apply_filters( 'woocommerce_order_item_name', $item->get_name(), $item, false ) );
+								echo wp_kses_post( $parent_label . apply_filters( 'woocommerce_order_item_name', $item_name, $item, false ) );
 
 								do_action( 'woocommerce_order_item_meta_start', $item_id, $item, $order, false );
 
@@ -61,11 +69,10 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 								do_action( 'woocommerce_order_item_meta_end', $item_id, $item, $order, false );
 							?>
 						</td>
-						<td class="product-quantity form-pay-qty-price">
+						<td class="product-qty-total">
 							<strong class="product-quantity"><?php echo sprintf( '&times;&nbsp;%s', esc_html( $item->get_quantity() ) ); ?></strong>
 							<span class="form-pay-line-price"><?php echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?></span>
 						</td>
-						<td class="product-subtotal"><?php echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -74,8 +81,8 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 			<?php if ( $totals ) : ?>
 				<?php foreach ( $totals as $total ) : ?>
 					<tr>
-						<th scope="row" colspan="2"><?php echo $total['label']; ?></th><?php // @codingStandardsIgnoreLine ?>
-						<td class="product-total"><?php echo $total['value']; ?></td><?php // @codingStandardsIgnoreLine ?>
+						<th scope="row"><?php echo $total['label']; ?></th><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<td class="product-total"><?php echo $total['value']; ?></td><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -124,7 +131,7 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 </form>
 </div></div></div></section>
 <style>
-/* Таблица оплаты заказа: ровная сетка, без «Итого» в шапке, колонка товара на всю ширину */
+/* Таблица оплаты заказа: 2 колонки, колонка товара продлена, без отдельного «Итого» в шапке */
 .form-pay-order-review .form-pay-shop-table {
 	table-layout: fixed;
 	width: 100%;
@@ -137,35 +144,26 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	font-weight: 600;
 }
 .form-pay-order-review .form-pay-shop-table .product-name {
-	width: 50%;
+	width: 70%;
 	min-width: 0;
 	padding: 12px 15px;
 	border-bottom: 1px solid #eee;
 	vertical-align: top;
 }
-.form-pay-order-review .form-pay-shop-table .product-quantity {
-	width: 25%;
-	padding: 12px 15px;
-	text-align: left;
-	border-bottom: 1px solid #eee;
-	vertical-align: top;
-}
-.form-pay-order-review .form-pay-shop-table .product-quantity.form-pay-qty-price {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-.form-pay-order-review .form-pay-shop-table .product-quantity .form-pay-line-price {
-	display: block;
-	font-weight: 600;
-}
-.form-pay-order-review .form-pay-shop-table .product-total,
-.form-pay-order-review .form-pay-shop-table .product-subtotal {
-	width: 25%;
+.form-pay-order-review .form-pay-shop-table .product-qty-total {
+	width: 30%;
 	padding: 12px 15px;
 	text-align: right;
 	border-bottom: 1px solid #eee;
 	vertical-align: top;
+}
+.form-pay-order-review .form-pay-shop-table .product-qty-total .product-quantity {
+	display: block;
+}
+.form-pay-order-review .form-pay-shop-table .product-qty-total .form-pay-line-price {
+	display: block;
+	font-weight: 600;
+	margin-top: 4px;
 }
 .form-pay-order-review .form-pay-shop-table tfoot th {
 	padding: 10px 15px;
@@ -173,7 +171,7 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	border-top: 1px solid #eee;
 	font-weight: 600;
 }
-.form-pay-order-review .form-pay-shop-table tfoot td {
+.form-pay-order-review .form-pay-shop-table tfoot td.product-total {
 	padding: 10px 15px;
 	text-align: right;
 	border-top: 1px solid #eee;
