@@ -143,6 +143,7 @@ function customtheams_handle_wholesale_price_request() {
 
 /**
  * Отправляет письмо администратору о запросе оптового прайса.
+ * Пробует wp_mail, при неудаче — PHP mail().
  *
  * @param string $email Email отправителя.
  * @return bool true при успешной отправке, false при ошибке.
@@ -153,12 +154,25 @@ function customtheams_send_wholesale_request_to_admin( $email ) {
 	$message = "Запрос оптового прайса\n\n"
 		. "Email: $email\n"
 		. "Дата: " . wp_date( 'Y-m-d H:i:s' ) . "\n";
-	$headers = array(
+
+	$sent = wp_mail( $to, $subject, $message, array(
 		'Content-Type: text/plain; charset=UTF-8',
 		'Reply-To: ' . $email,
-	);
+	) );
 
-	return wp_mail( $to, $subject, $message, $headers );
+	if ( ! $sent && function_exists( 'mail' ) ) {
+		$from   = get_option( 'admin_email' );
+		$domain = wp_parse_url( home_url(), PHP_URL_HOST ) ?: 'localhost';
+		if ( ! is_email( $from ) ) {
+			$from = 'noreply@' . $domain;
+		}
+		$headers = "From: " . get_bloginfo( 'name' ) . " <{$from}>\r\n"
+			. "Reply-To: {$email}\r\n"
+			. "Content-Type: text/plain; charset=UTF-8\r\n";
+		$sent = @mail( $to, '=?UTF-8?B?' . base64_encode( $subject ) . '?=', $message, $headers );
+	}
+
+	return (bool) $sent;
 }
 
 // =============================================================================
