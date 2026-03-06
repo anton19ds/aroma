@@ -120,7 +120,34 @@ add_filter( 'woocommerce_coupons_enabled', 'customtheams_enable_checkout_coupons
 
 add_action( 'admin_post_nopriv_customtheams_wholesale_price_request', 'customtheams_handle_wholesale_price_request' );
 add_action( 'admin_post_customtheams_wholesale_price_request', 'customtheams_handle_wholesale_price_request' );
+
+// AJAX: форма оптового прайса без перезагрузки
+add_action( 'wp_ajax_customtheams_wholesale_price_request', 'customtheams_ajax_wholesale_price_request' );
+add_action( 'wp_ajax_nopriv_customtheams_wholesale_price_request', 'customtheams_ajax_wholesale_price_request' );
+function customtheams_ajax_wholesale_price_request() {
+	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'customtheams_wholesale_price_request' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Ошибка проверки. Обновите страницу и попробуйте снова.', 'customtheams' ) ) );
+	}
+	$email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+	if ( ! $email || ! is_email( $email ) ) {
+		wp_send_json_error( array( 'message' => __( 'Введите корректный email.', 'customtheams' ) ) );
+	}
+	if ( function_exists( 'customtheams_load_env' ) ) {
+		customtheams_load_env();
+	}
+	$sent = customtheams_send_wholesale_request_to_admin( $email );
+	if ( $sent ) {
+		wp_send_json_success( array( 'message' => __( 'Запрос отправлен. Спасибо!', 'customtheams' ) ) );
+	}
+	wp_send_json_error( array( 'message' => __( 'Не удалось отправить запрос. Проверьте email и попробуйте ещё раз.', 'customtheams' ) ) );
+}
+
 function customtheams_handle_wholesale_price_request() {
+	// Подгружаем .env при обработке формы (SMTP-настройки для отправки).
+	if ( function_exists( 'customtheams_load_env' ) ) {
+		customtheams_load_env();
+	}
+
 	$redirect = wp_get_referer() ?: home_url( '/' );
 	$redirect = remove_query_arg( 'wholesale_request', $redirect );
 

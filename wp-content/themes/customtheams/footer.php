@@ -228,21 +228,56 @@
 		<div class="contact-details">
 			<div class="footer-wholesale" id="wholesale-price-request">
 				<h2>ОПТОВЫЙ ПРАЙС</h2>
-				<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+				<form id="wholesale-price-form" method="post" action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
 					<input type="hidden" name="action" value="customtheams_wholesale_price_request" />
 					<?php echo wp_kses_post( wp_nonce_field( 'customtheams_wholesale_price_request', '_wpnonce', true, false ) ); ?>
 					<input type="email" name="email" placeholder="Введите Email" required />
-					<button type="submit">Запросить</button>
+					<button type="submit" id="wholesale-price-submit">Запросить</button>
 				</form>
 				<p class="footer-wholesale-hint">Отправим прайс-лист на вашу почту. Менеджер может уточнить детали по email.</p>
-				<?php
-				$wholesale_status = isset( $_GET['wholesale_request'] ) ? sanitize_key( wp_unslash( $_GET['wholesale_request'] ) ) : '';
-				if ( $wholesale_status === 'success' ) : ?>
-					<div class="footer-wholesale-msg footer-wholesale-msg--success">Запрос отправлен. Спасибо!</div>
-				<?php elseif ( $wholesale_status === 'failed' ) : ?>
-					<div class="footer-wholesale-msg footer-wholesale-msg--error">Не удалось отправить запрос. Проверьте email и попробуйте ещё раз.</div>
-				<?php endif; ?>
+				<div id="wholesale-form-msg" class="footer-wholesale-msg" aria-live="polite" style="display: none;"></div>
 			</div>
+			<script>
+			(function() {
+				var form = document.getElementById('wholesale-price-form');
+				var msgEl = document.getElementById('wholesale-form-msg');
+				var submitBtn = document.getElementById('wholesale-price-submit');
+				if (!form || !msgEl) return;
+				form.addEventListener('submit', function(e) {
+					e.preventDefault();
+					var email = form.querySelector('input[name="email"]');
+					if (!email || !email.value.trim()) return;
+					msgEl.style.display = 'none';
+					msgEl.className = 'footer-wholesale-msg';
+					msgEl.textContent = '';
+					submitBtn.disabled = true;
+					var body = new FormData(form);
+					fetch(form.action, {
+						method: 'POST',
+						body: body,
+						credentials: 'same-origin'
+					})
+					.then(function(r) { return r.json(); })
+					.then(function(data) {
+						if (data.success && data.data && data.data.message) {
+							msgEl.textContent = data.data.message;
+							msgEl.className = 'footer-wholesale-msg footer-wholesale-msg--success';
+							form.reset();
+						} else {
+							msgEl.textContent = (data.data && data.data.message) ? data.data.message : 'Не удалось отправить запрос. Попробуйте ещё раз.';
+							msgEl.className = 'footer-wholesale-msg footer-wholesale-msg--error';
+						}
+						msgEl.style.display = 'block';
+					})
+					.catch(function() {
+						msgEl.textContent = 'Ошибка сети. Попробуйте ещё раз.';
+						msgEl.className = 'footer-wholesale-msg footer-wholesale-msg--error';
+						msgEl.style.display = 'block';
+					})
+					.finally(function() { submitBtn.disabled = false; });
+				});
+			})();
+			</script>
 			<div class="home-contact-us">
 				<h2><?php echo get_field('title_contact_us', 126)?></h2>
 				<div class="">
