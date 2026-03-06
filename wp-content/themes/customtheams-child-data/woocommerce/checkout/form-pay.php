@@ -19,6 +19,14 @@ defined( 'ABSPATH' ) || exit;
 
 $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 ?>
+
+<div class="gurantee-section breadcrum-banner shopping-section h-350">
+	<div class="gurantee-section-bg" style="background-image: url('https://elixir-aroma.ru/wp-content/uploads/2026/02/order-banner.webp">
+		<div class="gurantee-content">
+			<h1>Оплата заказа</h1>
+		</div>
+	</div>
+</div>
 <section class="main-bgd">
 	<div class="container">
 		<div class="row">
