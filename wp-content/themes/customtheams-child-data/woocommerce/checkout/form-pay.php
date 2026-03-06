@@ -31,14 +31,14 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-<form id="order_review" method="post">
+<form id="order_review" method="post" class="form-pay-order-review">
 
-	<table class="shop_table">
+	<table class="shop_table form-pay-shop-table">
 		<thead>
 			<tr>
 				<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
 				<th class="product-quantity"><?php esc_html_e( 'Qty', 'woocommerce' ); ?></th>
-				<th class="product-total"><?php esc_html_e( 'Totals', 'woocommerce' ); ?></th>
+				<th class="product-total"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -120,3 +120,56 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	</div>
 </form>
 </div></div></div></section>
+<style>
+/* Таблица оплаты заказа: ровная сетка, без «Итого» в шапке, колонка товара на всю ширину */
+.form-pay-order-review .form-pay-shop-table {
+	table-layout: fixed;
+	width: 100%;
+	border-collapse: collapse;
+}
+.form-pay-order-review .form-pay-shop-table thead th {
+	padding: 12px 15px;
+	text-align: left;
+	border-bottom: 2px solid #ddd;
+	font-weight: 600;
+}
+.form-pay-order-review .form-pay-shop-table .product-name {
+	width: 55%;
+	min-width: 0;
+	padding: 12px 15px;
+	border-bottom: 1px solid #eee;
+	vertical-align: top;
+}
+.form-pay-order-review .form-pay-shop-table .product-quantity {
+	width: 15%;
+	padding: 12px 15px;
+	text-align: center;
+	border-bottom: 1px solid #eee;
+	vertical-align: top;
+}
+.form-pay-order-review .form-pay-shop-table .product-total,
+.form-pay-order-review .form-pay-shop-table .product-subtotal {
+	width: 30%;
+	padding: 12px 15px;
+	text-align: right;
+	border-bottom: 1px solid #eee;
+	vertical-align: top;
+}
+.form-pay-order-review .form-pay-shop-table tfoot th {
+	padding: 10px 15px;
+	text-align: left;
+	border-top: 1px solid #eee;
+	font-weight: 600;
+}
+.form-pay-order-review .form-pay-shop-table tfoot td {
+	padding: 10px 15px;
+	text-align: right;
+	border-top: 1px solid #eee;
+}
+.form-pay-order-review .form-pay-shop-table tfoot tr:last-child th,
+.form-pay-order-review .form-pay-shop-table tfoot tr:last-child td {
+	border-top-width: 2px;
+	border-top-color: #333;
+	font-weight: 700;
+}
+</style>
