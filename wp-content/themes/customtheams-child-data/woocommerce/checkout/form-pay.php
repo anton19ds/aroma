@@ -131,6 +131,9 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 </form>
 </div></div></div></section>
 <style>
+	#order_review{
+		margin-top: 40px;
+	}
 /* Таблица оплаты заказа: 2 колонки, колонка товара продлена, без отдельного «Итого» в шапке */
 .form-pay-order-review .form-pay-shop-table {
 	table-layout: fixed;
@@ -151,7 +154,8 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	vertical-align: top;
 }
 .form-pay-order-review .form-pay-shop-table .product-qty-total {
-	width: 30%;
+	width: 100%;
+	flex-direction: column;
 	padding: 12px 15px;
 	text-align: right;
 	border-bottom: 1px solid #eee;
@@ -181,5 +185,16 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	border-top-width: 2px;
 	border-top-color: #333;
 	font-weight: 700;
+}
+.wc_payment_method.payment_method_intellectmoney label,
+#payment_method_intellectmoney{
+	opacity: 0;
+	height: 0;
+}
+.wc_payment_methods.payment_methods.methods li{
+	flex-direction: column;
+}
+.client-section{
+	margin-top: 0;
 }
 </style>

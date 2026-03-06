@@ -79,10 +79,10 @@ defined('ABSPATH') || exit;
 					</li>
 
 					<?php if ($order->get_payment_method_title()): ?>
-						<li class="woocommerce-order-overview__payment-method method">
+						<!-- <li class="woocommerce-order-overview__payment-method method">
 							<?php esc_html_e('Payment method:', 'woocommerce'); ?>
 							<strong><?php echo wp_kses_post($order->get_payment_method_title()); ?></strong>
-						</li>
+						</li> -->
 					<?php endif; ?>
 
 				</ul>
@@ -100,12 +100,12 @@ defined('ABSPATH') || exit;
 				?>
 				<div class="block-b" style="margin-top: 20px;">
 					<?php if ( $can_pay ) : ?>
-						<a class="button pay" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $pay_url ) ); ?>">
-							Оплатить онлайн (IntellectMoney)
+						<a class="button pay cus_a" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $pay_url ) ); ?>">
+							Оплатить через интернет-эквайринг IntellectMoney
 						</a>
 					<?php else : ?>
-						<a class="button pay" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $pay_url ) ); ?>">
-							Перейти к онлайн-оплате (IntellectMoney)
+						<a class="button pay cus_a" href="<?php echo esc_url( add_query_arg( array( 'pay_with' => 'intellectmoney' ), $pay_url ) ); ?>">
+							Оплатить через интернет-эквайринг IntellectMoney
 						</a>
 					<?php endif; ?>
 				</div>
@@ -124,6 +124,18 @@ defined('ABSPATH') || exit;
 
 	<style>
 /* ===== ОСНОВНЫЕ СТИЛИ СТРАНИЦЫ ===== */
+
+
+.cus_a{
+    background-color: #0ea50e;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 21px;
+}
 .woocommerce-order {
     background: #ffffff;
     min-height: 100vh;
