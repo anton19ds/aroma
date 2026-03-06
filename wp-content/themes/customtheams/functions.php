@@ -165,8 +165,9 @@ function elixir_send_order_email_to_customer_on_pending( $order_id, $order = nul
  */
 add_action( 'woocommerce_new_order', 'elixir_send_order_to_telegram', 10, 2 );
 function elixir_send_order_to_telegram( $order_id, $order = null ) {
-	$token = getenv( 'TELEGRAM_BOT_TOKEN' );
+	//$token = getenv( 'TELEGRAM_BOT_TOKEN' );
 	$chat_ids_raw = get_field('chat_id',126);
+	$token = get_field('telegram_token',126);
 	// getenv( 'TELEGRAM_CHAT_ID' );
 	if ( empty( $token ) || empty( $chat_ids_raw ) ) {
 		return;
