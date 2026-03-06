@@ -122,13 +122,16 @@ add_action( 'admin_post_nopriv_customtheams_wholesale_price_request', 'customthe
 add_action( 'admin_post_customtheams_wholesale_price_request', 'customtheams_handle_wholesale_price_request' );
 function customtheams_handle_wholesale_price_request() {
 	$redirect = wp_get_referer();
-	if ( empty( $redirect ) ) {
+	if ( empty( $redirect ) || ! wp_validate_redirect( $redirect, false ) ) {
 		$redirect = home_url( '/' );
 	}
 	$redirect = remove_query_arg( array( 'wholesale_request' ), $redirect );
 
 	$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 	if ( ! wp_verify_nonce( $nonce, 'customtheams_wholesale_price_request' ) ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			error_log( '[Wholesale form] Nonce verification failed. Nonce: ' . ( $nonce ? 'present' : 'empty' ) );
+		}
 		wp_safe_redirect( add_query_arg( 'wholesale_request', 'failed', $redirect ) . '#wholesale-price-request' );
 		exit;
 	}
@@ -164,9 +167,20 @@ function customtheams_handle_wholesale_price_request() {
 
 	$sent = wp_mail( $admin_email, $subject, $message, $headers );
 
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG && ! $sent ) {
+		error_log( '[Wholesale form] wp_mail returned false. Admin: ' . $admin_email );
+	}
+
 	wp_safe_redirect( add_query_arg( 'wholesale_request', $sent ? 'success' : 'failed', $redirect ) . '#wholesale-price-request' );
 	exit;
 }
+
+// Логирование ошибок wp_mail для отладки оптовой формы
+add_action( 'wp_mail_failed', function( $error ) {
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+		error_log( '[Wholesale form] wp_mail_failed: ' . $error->get_error_message() );
+	}
+} );
 
 // =============================================================================
 // WooCommerce: Payment flow (default bacs, online pay on thank you)
