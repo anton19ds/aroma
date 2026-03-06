@@ -228,9 +228,9 @@
 		<div class="contact-details">
 			<div class="footer-wholesale" id="wholesale-price-request">
 				<h2>ОПТОВЫЙ ПРАЙС</h2>
-				<form id="wholesale-price-form" method="post" action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
+				<form id="wholesale-price-form" method="post" action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'customtheams_wholesale_price_request' ) ); ?>">
 					<input type="hidden" name="action" value="customtheams_wholesale_price_request" />
-					<?php echo wp_kses_post( wp_nonce_field( 'customtheams_wholesale_price_request', '_wpnonce', true, false ) ); ?>
+					<?php wp_nonce_field( 'customtheams_wholesale_price_request', '_wpnonce', true ); ?>
 					<input type="email" name="email" placeholder="Введите Email" required />
 					<button type="submit" id="wholesale-price-submit">Запросить</button>
 				</form>
@@ -252,6 +252,8 @@
 					msgEl.textContent = '';
 					submitBtn.disabled = true;
 					var body = new FormData(form);
+					var nonce = form.getAttribute('data-nonce');
+					if (nonce) body.set('_wpnonce', nonce);
 					var actionUrl = form.getAttribute('action');
 					fetch(actionUrl, {
 						method: 'POST',
