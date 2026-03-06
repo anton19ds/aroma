@@ -143,7 +143,7 @@ function customtheams_handle_wholesale_price_request() {
 
 /**
  * Отправляет письмо администратору о запросе оптового прайса.
- * Пробует wp_mail, при неудаче — PHP mail().
+ * Использует SMTP из .env (MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD и т.д.).
  *
  * @param string $email Email отправителя.
  * @return bool true при успешной отправке, false при ошибке.
@@ -151,28 +151,48 @@ function customtheams_handle_wholesale_price_request() {
 function customtheams_send_wholesale_request_to_admin( $email ) {
 	$to      = get_option( 'admin_email' );
 	$subject = sprintf( '[%s] Запрос оптового прайса', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$message = "Запрос оптового прайса\n\n"
+	$body    = "Запрос оптового прайса\n\n"
 		. "Email: $email\n"
 		. "Дата: " . wp_date( 'Y-m-d H:i:s' ) . "\n";
 
-	$sent = wp_mail( $to, $subject, $message, array(
+	$host = getenv( 'MAIL_HOST' );
+	if ( ! empty( $host ) ) {
+		// Отправка через SMTP из .env
+		require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+		require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+		require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+
+		$mail = new PHPMailer\PHPMailer\PHPMailer( true );
+		try {
+			$mail->CharSet   = 'UTF-8';
+			$mail->Encoding = 'base64';
+			$mail->isSMTP();
+			$mail->Host       = $host;
+			$mail->Port       = (int) getenv( 'MAIL_PORT' ) ?: 587;
+			$mail->SMTPAuth   = ! empty( getenv( 'MAIL_USERNAME' ) );
+			$mail->Username   = getenv( 'MAIL_USERNAME' ) ?: '';
+			$mail->Password   = getenv( 'MAIL_PASSWORD' ) ?: '';
+			$mail->SMTPSecure = getenv( 'MAIL_ENCRYPTION' ) ?: 'tls';
+			$mail->From       = getenv( 'MAIL_FROM_ADDRESS' ) ?: get_option( 'admin_email' );
+			$mail->FromName   = getenv( 'MAIL_FROM_NAME' ) ?: get_bloginfo( 'name' );
+
+			$mail->addAddress( $to );
+			$mail->addReplyTo( $email );
+			$mail->Subject = $subject;
+			$mail->Body    = $body;
+			$mail->isHTML( false );
+
+			return $mail->send();
+		} catch ( PHPMailer\PHPMailer\Exception $e ) {
+			return false;
+		}
+	}
+
+	// Нет SMTP в .env — fallback на wp_mail
+	return wp_mail( $to, $subject, $body, array(
 		'Content-Type: text/plain; charset=UTF-8',
 		'Reply-To: ' . $email,
 	) );
-
-	if ( ! $sent && function_exists( 'mail' ) ) {
-		$from   = get_option( 'admin_email' );
-		$domain = wp_parse_url( home_url(), PHP_URL_HOST ) ?: 'localhost';
-		if ( ! is_email( $from ) ) {
-			$from = 'noreply@' . $domain;
-		}
-		$headers = "From: " . get_bloginfo( 'name' ) . " <{$from}>\r\n"
-			. "Reply-To: {$email}\r\n"
-			. "Content-Type: text/plain; charset=UTF-8\r\n";
-		$sent = @mail( $to, '=?UTF-8?B?' . base64_encode( $subject ) . '?=', $message, $headers );
-	}
-
-	return (bool) $sent;
 }
 
 // =============================================================================
