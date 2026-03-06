@@ -61,8 +61,11 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 								do_action( 'woocommerce_order_item_meta_end', $item_id, $item, $order, false );
 							?>
 						</td>
-						<td class="product-quantity"><?php echo apply_filters( 'woocommerce_order_item_quantity_html', ' <strong class="product-quantity">' . sprintf( '&times;&nbsp;%s', esc_html( $item->get_quantity() ) ) . '</strong>', $item ); ?></td><?php // @codingStandardsIgnoreLine ?>
-						<td class="product-subtotal"><?php echo $order->get_formatted_line_subtotal( $item ); ?></td><?php // @codingStandardsIgnoreLine ?>
+						<td class="product-quantity form-pay-qty-price">
+							<strong class="product-quantity"><?php echo sprintf( '&times;&nbsp;%s', esc_html( $item->get_quantity() ) ); ?></strong>
+							<span class="form-pay-line-price"><?php echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?></span>
+						</td>
+						<td class="product-subtotal"><?php echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -134,22 +137,31 @@ $totals = $order->get_order_item_totals(); // phpcs:ignore WordPress.WP.GlobalVa
 	font-weight: 600;
 }
 .form-pay-order-review .form-pay-shop-table .product-name {
-	width: 55%;
+	width: 50%;
 	min-width: 0;
 	padding: 12px 15px;
 	border-bottom: 1px solid #eee;
 	vertical-align: top;
 }
 .form-pay-order-review .form-pay-shop-table .product-quantity {
-	width: 15%;
+	width: 25%;
 	padding: 12px 15px;
-	text-align: center;
+	text-align: left;
 	border-bottom: 1px solid #eee;
 	vertical-align: top;
 }
+.form-pay-order-review .form-pay-shop-table .product-quantity.form-pay-qty-price {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.form-pay-order-review .form-pay-shop-table .product-quantity .form-pay-line-price {
+	display: block;
+	font-weight: 600;
+}
 .form-pay-order-review .form-pay-shop-table .product-total,
 .form-pay-order-review .form-pay-shop-table .product-subtotal {
-	width: 30%;
+	width: 25%;
 	padding: 12px 15px;
 	text-align: right;
 	border-bottom: 1px solid #eee;
