@@ -673,21 +673,21 @@ global $woocommerce;
 
 								<?php if($arrayP['cas_number']):?>
 								<li>
-									<span class="ref-left-li-span">CAS</span>
+									<span class="ref-left-li-span">CAS:</span>
 									<span class="ref-right-li-span"><?php echo $arrayP['cas_number']?></span>
 								</li>
 								<?php endif;?>
 
 								<?php if($arrayP['einecs_number']):?>
 								<li>
-									<span class="ref-left-li-span">EINECS</span>
+									<span class="ref-left-li-span">EINECS:</span>
 									<span class="ref-right-li-span"><?php echo $arrayP['einecs_number']?></span>
 								</li>
 								<?php endif;?>
 
 								<?php if(!empty($arrayP['inci_name'])):?>
 								<li>
-									<span class="ref-left-li-span">INCI</span>
+									<span class="ref-left-li-span">INCI:</span>
 									<span class="ref-right-li-span"><?php echo $arrayP['inci_name']?></span>
 								</li>
 								<?php endif;?>
@@ -700,7 +700,7 @@ global $woocommerce;
 								<?php $part_used = get_field('part_used');
 								if($part_used): ?>
 								<li>
-									<div class="prod-top-title">Используемая часть</div>
+									<div class="prod-top-title">Используемая часть растения:</div>
 									<div class="prod-bottom-title productLeftTable"><?php echo $part_used; ?>
 									</div>
 								</li>
@@ -708,14 +708,14 @@ global $woocommerce;
 								<?php $synonyms = get_field('synonyms');
 								if($synonyms): ?>
 								<li>
-									<div class="prod-top-title">Ботанические синонимы</div>
+									<div class="prod-top-title">Ботанические синонимы:</div>
 									<div class="prod-bottom-title productLeftTable"><?php the_field('synonyms') ?></div>
 								</li>
 								<?php endif;?>
 								<?php $common_names = get_field('common_names');
 								if($common_names): ?>
 								<li>
-									<div class="prod-top-title">Другие названия</div>
+									<div class="prod-top-title">Другие названия:</div>
 									<div class="prod-bottom-title productLeftTable"><?php the_field('common_names') ?>
 									</div>
 								</li>
@@ -724,14 +724,14 @@ global $woocommerce;
 								if($origin): ?>
 								<li>
 
-									<div class="prod-top-title">Старна происхождения</div>
+									<div class="prod-top-title">Страна происхождения:</div>
 									<div class="prod-bottom-title productLeftTable"><?php the_field('origin') ?></div>
 								</li>
 								<?php endif;?>
 								<?php $note_classification = get_field('note_classification');
 								if($note_classification): ?>
 								<li>
-									<div class="prod-top-title">Ароматические ноты</div>
+									<div class="prod-top-title">Ароматическая нота:</div>
 									<div class="prod-bottom-title productLeftTable">
 										<?php the_field('note_classification') ?>
 									</div>

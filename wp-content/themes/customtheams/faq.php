@@ -29,9 +29,9 @@ if (!$faq_banner_subtitle)
                     $faq_tabs = get_field('faq_tabs', 'option');
                     $tab_ids = array('product', 'orders', 'shipping');
                     $tab_defaults = array(
-                         array('label' => 'ДОСТАВКА И ВОЗВРАТЫ', 'img' => get_template_directory_uri().'/images/f1.png'),
-                         array('label' => 'ЗАКАЗЫ И ПЛАТЕЖИ', 'img' => get_template_directory_uri().'/images/f2.png'),
-                         array('label' => 'ТОВАР И ЦЕНЫ', 'img' => get_template_directory_uri().'/images/f3.png'),
+                         array('label' => 'ДОСТАВКА ПО РОССИИ', 'img' => get_template_directory_uri().'/images/f1.png'),
+                         array('label' => 'ВОЗВРАТ ТОВАРА', 'img' => get_template_directory_uri().'/images/f2.png'),
+                         array('label' => 'ЗАКАЗЫ И ПЛАТЕЖИ', 'img' => get_template_directory_uri().'/images/f3.png'),
                     );
                     for ($i = 0; $i < 3; $i++) {
                          $tab_id = $tab_ids[$i];

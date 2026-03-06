@@ -298,8 +298,9 @@ function customtheams_telegram_clean_price( $price_html ) {
 	return trim( $price );
 }
 function elixir_send_order_to_telegram( $order_id, $order = null ) {
-	$token = getenv( 'TELEGRAM_BOT_TOKEN' );
+	//$token = getenv( 'TELEGRAM_BOT_TOKEN' );
 	$chat_ids_raw = get_field('chat_id',126);
+	$token = get_field('telegram_token',126);
 	// getenv( 'TELEGRAM_CHAT_ID' );
 	if ( empty( $token ) || empty( $chat_ids_raw ) ) {
 		return;
